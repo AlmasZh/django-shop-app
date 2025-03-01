@@ -1,0 +1,41 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Vivid</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static "output.css" %}" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-white text-gray-800">
+    <header class="flex justify-between items-center p-4 border-b border-gray-200">
+        <div class="text-2xl font-bold">Vivid</div>
+        <div class="flex space-x-4">
+            <a class="text-gray-600" href="#">Man</a>
+            <a class="text-gray-600" href="#">Woman</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <input class="border border-gray-300 rounded-full px-4 py-1" placeholder="Search....." type="text"/>
+            <i class="fas fa-user text-gray-600 cursor-pointer" id="user-icon"></i>
+            <i class="fas fa-heart text-gray-600"></i>
+            <i class="fas fa-shopping-cart text-gray-600"></i>
+        </div>
+    </header>
+
+    <div id="user-info" class="hidden absolute top-16 right-4 bg-white border border-gray-200 shadow-lg rounded-lg p-4 w-64">
+        <h3 class="text-lg font-bold mb-2">Almas Zhakanov</h3>
+        <p>almas.zh22@gmail.com</p>
+    </div>
+
+    <script>
+        document.getElementById('user-icon').addEventListener('click', function() {
+            var userInfo = document.getElementById('user-info');
+            if (userInfo.classList.contains('hidden')) {
+                userInfo.classList.remove('hidden');
+            } else {
+                userInfo.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
