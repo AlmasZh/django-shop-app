@@ -17,7 +17,7 @@ def signup_view(request):
             user = form.save()
             print(user)
             login(request, user)  # Automatically log in the user after signup
-            return redirect("home")  # Redirect to home or dashboard
+            return redirect("products:home")  # Redirect to home or dashboard
     else:
         form = SignupForm()
 
@@ -33,14 +33,12 @@ def login_view(request):
             )
             if user is not None:
                 login(request, user)
-                return redirect('shop:home_page')
+                return redirect('products:home')
             else:
                 messages.error(
                     request, 'username or password is wrong', 'danger'
                 )
-                return redirect('accounts:user_login')
+                return redirect('users:login')
     else:
         form = UserLoginForm()
-    context = {'title':'Login', 'form': form}
-    # return render(request, 'login.html', context)
-    return render(request, "users/login.html", context)
+    return render(request, "users/login.html", {"form": form})
