@@ -5,3 +5,5 @@ package-lock.json
 package.json
 static/output.css
 db.sqlite3
+.idea/
+.pytest_cache/
