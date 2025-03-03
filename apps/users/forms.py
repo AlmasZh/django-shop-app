@@ -1,21 +1,44 @@
 from django import forms
 from apps.users.models import CustomUser
-from django.contrib.auth.forms import UserCreationForm
+# from django.contrib.auth.forms import UserCreationForm
 
+style = 'w-full px-3 py-1 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500'
 
 class SignupForm(forms.ModelForm):
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+    first_name = forms.CharField(
+        widget=forms.TextInput(attrs={'class': style, 'placeholder': 'First Name'}),
+        required=True
+    )
+    last_name = forms.CharField(
+        widget=forms.TextInput(attrs={'class': style, 'placeholder': 'Last Name'}),
         required=True
     )
     email = forms.EmailField(
         required=True,
-        widget=forms.EmailInput(attrs={'class': 'form-control'})
+        widget=forms.EmailInput(attrs={'class': style, 'placeholder': 'email'})
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': style, 'placeholder': 'Password'}),
+        required=True
+    )
+    confirm_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': style, 'placeholder': 'Confirm Password'}),
+        required=True
     )
 
     class Meta:
         model = CustomUser
-        fields = ["email", "password"]
+        fields = ["first_name", "last_name", "email"]
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
+
+        if password and confirm_password and password != confirm_password:
+            self.add_error("confirm_password", "Passwords do not match!")
+
+        return cleaned_data
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -23,3 +46,15 @@ class SignupForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+class UserLoginForm(forms.Form):
+    email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={'class': style, 'placeholder': 'email'}
+        )
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={'class': style, 'placeholder': 'password'}
+        )
+    )
