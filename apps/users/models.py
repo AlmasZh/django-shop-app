@@ -13,8 +13,8 @@ class UserManager(BaseUserManager):
         user.save(using=self.db)
         return user
 
-    def create_superuser(self, email, full_name, password):
-        user = self.create_user(email, full_name, password)
+    def create_superuser(self, email, password):
+        user = self.create_user(email, password)
         user.is_admin = True
         user.save(using=self.db)
         return user
@@ -35,3 +35,4 @@ class CustomUser(AbstractBaseUser):
     
     def __str__(self):
         return self.email
+    
