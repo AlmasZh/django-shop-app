@@ -1,0 +1,7 @@
+venv/
+.idea/
+.pytest_cache/
+Dockerfile
+db.sqlite3
+node_modules/
+package*
