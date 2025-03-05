@@ -1,0 +1,95 @@
+[33mcommit a1c01daa4e800e74053e6123dbe79cf918fc5076[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Wed Mar 5 13:40:02 2025 +0500
+
+    add orders app
+
+[33mcommit 9a9a8163302f7ce7788a92b81a9b8bee0a792bf6[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Wed Mar 5 11:42:01 2025 +0500
+
+    add models into admin panel
+
+[33mcommit d6b5b07c1c06eeef600e503acae6782846136db7[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 3 20:32:48 2025 +0500
+
+    fix: redirects
+
+[33mcommit 4beb4582dccd61cf395337978b97e8037ba97b82[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 3 15:24:45 2025 +0500
+
+    add permissions to User model; improve user's forms and views
+
+[33mcommit ec470ea704dd2bc3558c5a84f7c26290dd42fc85[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 3 13:00:37 2025 +0500
+
+    add Product and Category models
+
+[33mcommit 6ae32dab8727d958528a14835bee5b13a13faaf5[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 3 09:52:46 2025 +0500
+
+    add products app
+
+[33mcommit fe8c18a3366c490c72b2fe04120715a4ea4d3449[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 3 09:31:42 2025 +0500
+
+    add docker, docker-compose
+
+[33mcommit 8033c325963a5ee6aa7c86f8a97600636d9184ad[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 3 09:30:55 2025 +0500
+
+    add tests for user's model
+
+[33mcommit f04d9ad80ad795bf7331ffbe0c8c0eeb35213801[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Sun Mar 2 18:06:26 2025 +0500
+
+    change User model
+
+[33mcommit abb7924a238728b47fb2e5ee6e829e74ffec6305[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Sat Mar 1 22:13:00 2025 +0500
+
+    add signup page and its form in django
+
+[33mcommit 1413bab8048bd8c879d69098d4f5df659d665525[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Sat Mar 1 22:11:52 2025 +0500
+
+    add main page with tailwindcss
+
+[33mcommit 60cac57e94cb772a12297bf45821f0322277ee58[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Sat Mar 1 22:10:39 2025 +0500
+
+    add main page with tailwindcss
+
+[33mcommit 61989e30e8d022d7217e5a1182da97c5e03953de[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Wed Feb 26 17:09:17 2025 +0500
+
+    add users app and model
+
+[33mcommit d6c9f2105ba6e4c0974654bc1862999914e5dcd8[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Wed Feb 26 14:08:17 2025 +0500
+
+    change requrements.txt file so that it uses default library versions
+
+[33mcommit 17f4a615ac3bc12f0736a904b4609add5781ece8[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Sun Jan 26 19:27:17 2025 +0500
+
+    added django project
+
+[33mcommit 21e802ee62bdaf5f1f2a450b588185c3cb775ede[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Sun Jan 26 14:55:45 2025 +0500
+
+    added .gitignore file
