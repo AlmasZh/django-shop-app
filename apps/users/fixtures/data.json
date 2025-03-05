@@ -55,9 +55,26 @@
   "pk": 4,
   "fields": {
     "password": "pbkdf2_sha256$870000$3LB3FncmOFfeVwQMNSmDMx$CfvHzBhnb6ELajow7bbq3TYd9bkeMa6ElmD2YvnshV0=",
-    "last_login": null,
+    "last_login": "2025-03-03T13:12:23.013Z",
     "is_superuser": false,
     "email": "admin@gmail.comom",
+    "first_name": "",
+    "last_name": "",
+    "is_active": true,
+    "is_staff": true,
+    "is_manager": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$y5ZbGSzpZ7Wtkl3loIAWPa$GK7WJeTdBd0y0qHGbsEn3lewK2tyI/1SAWRK9Do1hZY=",
+    "last_login": "2025-03-03T13:15:16.898Z",
+    "is_superuser": true,
+    "email": "main@gmail.com",
     "first_name": "",
     "last_name": "",
     "is_active": true,

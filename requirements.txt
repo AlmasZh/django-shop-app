@@ -2,3 +2,5 @@ Django
 psycopg2-binary
 pytest
 Pillow
+djangorestframework
+pytest-django
