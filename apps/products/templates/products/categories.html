@@ -1,0 +1,46 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Man Clothes</title>
+    <link rel="stylesheet" href="{% static "output.css" %}" >
+        <script src="https://kit.fontawesome.com/1dceec0453.js" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href='https://fonts.googleapis.com/css?family=Alata' rel='stylesheet'>
+</head>
+<body>
+    {% include "products/header.html" %}
+    <section class="pl-[120px] pr-[120px] mt-15 flex flex-col">
+        <div class="text-[30px]" style="font-family: Arial;">Man's T-Shirt</div>
+        <div class="w-full flex flex-row mt-10">
+            <div class="text-[20px] flex flex-col gap-4 w-[20%] "><p class="text-[#656565] hover:text-[#000000]">Clothes</p><p class="text-[#656565] hover:text-[#000000]">Accessories</p><p class="text-[#656565] hover:text-[#000000]">Shoes</p><p class="text-[#656565] hover:text-[#000000]">Parfume</p></div>
+            <div class="flex flex-col w-[80%] gap-2.5">
+                <div class="flex flex-row mb-2 gap-1.5">
+                    <div class="inline pb-1.5 pt-1.5 pl-2.5 pr-2.5 border-[1.5px] rounded-[5px] gap-0.5 border-[#9F9F9F]">Color <i class="fa-solid fa-angle-down"></i></div>
+                    <div class="inline pb-1.5 pt-1.5 pl-2.5 pr-2.5 border-[1.5px] rounded-[5px] gap-0.5 border-[#9F9F9F]" >Size <i class="fa-solid fa-angle-down"></i></div>
+                    <div class="inline pb-1.5 pt-1.5 pl-2.5 pr-2.5 border-[1.5px] rounded-[5px] gap-0.5 border-[#9F9F9F]" >Price <i class="fa-solid fa-angle-down"></i></div>
+                    <div class="inline pb-1.5 pt-1.5 pl-2.5 pr-2.5 border-[1.5px] rounded-[5px] gap-0.5 border-[#9F9F9F]" >Only with a discount</div>
+                </div>
+                <div class="flex flex-row gap-2.5">
+                    <div class="flex flex-col justify-self-center items-start overflow-hidden "><a href="{% url 'products:itempage' %}">
+                        <img class="w-[240px] h-[350px]" src="{%static 'Photo/Screenshot_9.png'%}" alt="item">
+                        <div class="text-[18px]" style="font-family: Microsoft Sans Serif;" >
+                            <p>7 310 ₸</p><p class="text-[15px]">T-Shirt</p>
+                        </div>
+                    </a>
+                    </div>
+                    <!--вообщем осы жер api жасалады-->
+            <div class="flex flex-col justify-self-center items-start overflow-hidden ">
+                <img class="w-[240px] h-[350px]" src="{{ item.picture }}" alt="item">
+                <div class="text-[18px]" style="font-family: Microsoft Sans Serif;" >
+                    <p>{{item.price}}₸</p><p class="text-[15px]">{{item.name}}</p>
+                </div>
+            </div>  
+            </div>
+        </div>
+    </section>
+</body>
+</html>

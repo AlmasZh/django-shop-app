@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Man Clothes</title>
+    <link rel="stylesheet" href="{% static "output.css" %}" >
+        <script src="https://kit.fontawesome.com/1dceec0453.js" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href='https://fonts.googleapis.com/css?family=Alata' rel='stylesheet'>
+</head>
+<body>
+    {% include "products/header.html" %}
+      
+      <section class="relative w-full h-[500px] overflow-hidden flex justify-center items-center mt-20">
+        <div class="absolute flex gap-4">
+          <div class="w-[1300px] h-[500px] bg-gradient-to-r from-[#000000] to-[#141414] flex justify-center items-center"><img src="{%static 'Photo/box.png'%}" alt="Photo"></div>
+          <div class="w-[1300px] h-[500px] bg-gradient-to-r from-[#000000] to-[#141414] flex justify-center items-center"><img src="{%static 'Photo/box.png'%}" alt="Photo"></div>
+          <div class="w-[1300px] h-[500px] bg-gradient-to-r from-[#000000] to-[#141414] flex justify-center items-center"><img src="{%static 'Photo/box.png'%}" alt="Photo"></div>
+        </div>
+        <div class="absolute flex flex-row justify-between items-center w-full " style="padding: 1% 1%;">
+          <button class="w-[70px] h-[70px] bg-white rounded-[50px] flex justify-center items-center"><svg class="w-[25px] h-[25px]"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg></button>
+    
+          <button class="w-[70px] h-[70px] bg-white rounded-[50px] flex justify-center items-center"><svg xmlns="http://www.w3.org/2000/svg" class="w-[25px] h-[25px]" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg></button>
+        </div>
+      </section>
+      <section class="flex flex-col mt-10 gap-2 w-full justify-center items-center pl-[104px] pr-[104px] mb-10">
+        
+        <div class="flex flex-col gap-2 ">
+            <span class="text-[20px]" style="font-family: Microsoft Sans Serif;">Categories</span>
+          <div class="flex flex-row w-full justify-between gap-2.5" >
+            <div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden">
+                  <a href="{% url 'products:categories' %}"><img src="{%static 'Photo/Screenshot_7.png'%}" class="w-full h-full alt="T-shirt"></a>
+               </div>
+                <div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden " >
+                  <img src="{%static 'Photo/Screenshot_1 copy.png'%}" class="w-full h-full alt="accessories">
+                </div>
+                <div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden">
+                  <img src="{%static 'Photo/Screenshot_2.png'%}" class="w-full h-full alt="Shose">
+                </div>
+                <div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden">
+                  <img src="{%static 'Photo/Screenshot_3.png'%}" class="w-full h-full alt="Parfume">
+                </div>
+            </div>
+          <div class="flex flex-row w-full justify-between gap-2.5 " >
+            <div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden">
+              
+                <img src="{%static 'Photo/Screenshot_4.png'%}" class="w-full h-full alt="T-shirt">
+              </div>
+              <div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden " >
+                <img src="{%static 'Photo/Screenshot_5.png'%}" class="w-full h-full alt="accessories">
+              </div>
+              <div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden">
+                <img src="{%static 'Photo/Screenshot_6.png'%}" class="w-full h-full alt="Shose">
+              </div>
+              <div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-[#D9D9D9] text-[35px] overflow-hidden">
+                <span>See</span><span>More</span>
+              </div>
+          </div>
+        </div>
+      </section>
+      <section class="w-[84%] h-[180px] bg-black m-auto flex items-center overflow-hidden mb-10">
+        <div class="relative"> <img class="relative top-20 w-full scale-110 blur-[1px]" src="{%static 'Photo\jaanus-jagomagi-FFUPFHcp2YU-unsplash.jpg'%}" alt=""></div>
+        <div class="absolute flex flex-col pl-[3%] text-[25px] text-white font-bold"><span>Sale of collections</span><span>From previous seasons</span></div>
+      </section>
+      <span class="pl-[120px] text-[18px]" style="font-family: Microsoft Sans Serif;">Popular</span>
+      <section class="flex flex-col justify-center items-center mb-100 pl-[120px] pr-[104px] ">
+        <div class="flex flex-row gap-5 w-full justify-start">
+            <div class="flex flex-col justify-self-center items-start overflow-hidden ">
+                <img class="w-[240px] h-[350px]" src="{%static 'Photo/Screenshot_9.png'%}" alt="item">
+                <div class="text-[18px]" style="font-family: Microsoft Sans Serif;" >
+                    <p>7 310 ₸</p><p class="text-[15px]">T-Shirt</p>
+                </div>
+            </div>
+
+
+            <!--вообщем осы жер api жасалады-->
+            <div class="flex flex-col justify-self-center items-start overflow-hidden ">
+                <img class="w-[240px] h-[350px]" src="{{ user.picture }}" alt="item">
+                <div class="text-[18px]" style="font-family: Microsoft Sans Serif;" >
+                    <p>{{item.price}}₸</p><p class="text-[15px]">{{item.name}}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute flex flex-row justify-between items-center w-full " style="padding: 5% 5%;">
+            <button class="w-[70px] h-[70px] shadow-lg bg-white rounded-[50px] flex justify-center items-center"><svg class="w-[25px] h-[25px]"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg></button>
+      
+            <button class="w-[70px] h-[70px] shadow-lg bg-white rounded-[50px] flex justify-center items-center"><svg xmlns="http://www.w3.org/2000/svg" class="w-[25px] h-[25px]" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg></button>
+          </div>
+
+      </section>
+</body>
+</html>
+<body>
+    
+</body>
+</html>

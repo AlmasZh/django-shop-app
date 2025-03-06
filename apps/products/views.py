@@ -4,4 +4,14 @@ from django.shortcuts import render
 def home(request):
     return render(request, 'products/index.html')
 
+def manclothes(request):
+    return render(request, 'products/Manclothes.html')  
 
+def categories(request):
+    return render(request,'products/categories.html')
+def register(request):
+    return render(request,'products/Register.html')
+def personal(request):
+    return render(request,'products/personal.html')
+def itempage(request):
+    return render(request,'products/itempage.html')

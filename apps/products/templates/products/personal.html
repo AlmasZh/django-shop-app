@@ -1,0 +1,183 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль пользователя</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-white">
+    {% include "products/header.html" %}
+    <div class="container mx-auto p-6">
+        <!-- Панель без рамки -->
+        <div class="bg-white rounded-lg w-full max-w-6xl mx-auto">
+            <!-- Шапка профиля -->
+            <div class="p-8 border-b flex flex-col sm:flex-row items-center gap-6">
+                <!-- Информация о пользователе -->
+                <div class="text-center sm:text-left">
+                    <h2 class="text-3xl font-bold">Dias</h2>
+                    <p class="text-gray-500 text-lg">Dias.aubkairov6@gmail.com</p>
+                    <p class="text-gray-700 mt-1">admin/seller</p>
+                </div>
+                
+                <!-- Кнопка редактирования -->
+                <button class="ml-auto px-6 py-3 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors text-lg">
+                    Редактировать профиль
+                </button>
+            </div>
+            
+            <!-- Содержимое профиля -->
+            <div>
+                <!-- Вкладки (теперь 5 вкладок) -->
+                <div class="tabs-container">
+                    <!-- Иконки вкладок -->
+                    <div class="grid grid-cols-5 gap-2 p-4 border-b">
+                        <button class="tab-button active py-3 px-4 rounded-md flex flex-col items-center justify-center gap-2 bg-gray-100" data-tab="orders">
+                            <i class="fas fa-shopping-bag text-lg"></i>
+                            <span class="hidden sm:inline text-sm">Заказы</span>
+                        </button>
+                        <button class="tab-button py-3 px-4 rounded-md flex flex-col items-center justify-center gap-2" data-tab="favorites">
+                            <i class="fas fa-heart text-lg"></i>
+                            <span class="hidden sm:inline text-sm">Избранное</span>
+                        </button>
+                        <button class="tab-button py-3 px-4 rounded-md flex flex-col items-center justify-center gap-2" data-tab="my-clothes">
+                            <i class="fas fa-tshirt text-lg"></i>
+                            <span class="hidden sm:inline text-sm">Моя одежда</span>
+                        </button>
+                        <button class="tab-button py-3 px-4 rounded-md flex flex-col items-center justify-center gap-2" data-tab="moderation">
+                            <i class="fas fa-check-circle text-lg"></i>
+                            <span class="hidden sm:inline text-sm">Модерация</span>
+                        </button>
+                        <button class="tab-button py-3 px-4 rounded-md flex flex-col items-center justify-center gap-2" data-tab="settings">
+                            <i class="fas fa-cog text-lg"></i>
+                            <span class="hidden sm:inline text-sm">Настройки</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Содержимое вкладок (отделено только линией) -->
+                    <div class="p-8">
+                        <div class="tab-content active" id="orders">
+                            <h3 class="text-xl font-semibold mb-4">История заказов</h3>
+                            <div class="space-y-4">
+                                <div class="p-4 border rounded-md">
+                                    <p class="font-medium text-lg">Заказ #1234</p>
+                                    <p class="text-gray-500">Статус: В обработке</p>
+                                    <p class="text-gray-500">Дата: 15.03.2023</p>
+                                </div>
+                                <div class="p-4 border rounded-md">
+                                    <p class="font-medium text-lg">Заказ #1233</p>
+                                    <p class="text-gray-500">Статус: Доставлен</p>
+                                    <p class="text-gray-500">Дата: 02.03.2023</p>
+                                </div>
+                                <div class="p-4 border rounded-md">
+                                    <p class="font-medium text-lg">Заказ #1232</p>
+                                    <p class="text-gray-500">Статус: Доставлен</p>
+                                    <p class="text-gray-500">Дата: 25.02.2023</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content hidden" id="favorites">
+                            <h3 class="text-xl font-semibold mb-4">Избранные товары</h3>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                                <div class="flex flex-col justify-self-center items-start overflow-hidden ">
+                                    <img class="w-[240px] h-[350px] bg-gray-100" src="{{ item.picture }}" alt="item">
+                                    <div class="text-[18px]" style="font-family: Microsoft Sans Serif;" >
+                                        <p>{{item.price}}₸</p><p class="text-[15px]">{{item.name}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Вкладка "Моя одежда" для продавцов -->
+                        <div class="tab-content hidden" id="my-clothes">
+                            <h3 class="text-xl font-semibold mb-4">Моя одежда</h3>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                                <!-- Кнопка "Добавить еще" со знаком плюс -->
+                                <div class="bg-white rounded-md overflow-hidden border-2 border-dashed border-gray-300 flex flex-col items-center justify-center h-64 cursor-pointer hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-plus text-4xl text-gray-400 mb-2"></i>
+                                    <p class="text-gray-500 font-medium">Добавить еще</p>
+                                </div>
+                                
+                                <!-- Существующие товары -->
+                                <div class="flex flex-col justify-self-center items-start overflow-hidden ">
+                                    <img class="w-[240px] h-[350px] bg-gray-100" src="{{ item.picture }}" alt="item">
+                                    <div class="text-[18px]" style="font-family: Microsoft Sans Serif;" >
+                                        <p>{{item.price}}₸</p><p class="text-[15px]">{{item.name}}</p>
+                                    </div>
+                            </div>
+                        </div>
+                        </div>
+                        
+                        <!-- Вкладка "Модерация" для админов -->
+                        <div class="tab-content hidden" id="moderation">
+                            <h3 class="text-xl font-semibold mb-4">Модерация товаров</h3>
+                            <div class="flex flex-col justify-self-start items-start overflow-hidden ">
+                                <img class="w-[240px] h-[350px] bg-gray-100" src="{{ item.picture }}" alt="item">
+                                <div class="text-[18px]" style="font-family: Microsoft Sans Serif;" >
+                                    <p>{{item.price}}₸</p><p class="text-[15px]">{{item.name}}</p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="tab-content hidden" id="settings">
+                            <h3 class="text-xl font-semibold mb-4">Настройки профиля</h3>
+                            <div class="space-y-6">
+                                <div class="flex justify-between items-center p-4 border rounded-md">
+                                    <span class="text-lg">Уведомления</span>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" value="" class="sr-only peer" checked>
+                                        <div class="w-14 h-7 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </label>
+                                </div>
+                                <div class="p-4 border rounded-md">
+                                    <p class="font-medium text-lg">Язык</p>
+                                    <select class="mt-2 block w-full p-3 border rounded-md">
+                                        <option selected>Русский</option>
+                                        <option>English</option>
+                                    </select>
+                                </div>
+                                <div class="p-4 border rounded-md">
+                                    <p class="font-medium text-lg">Валюта</p>
+                                    <select class="mt-2 block w-full p-3 border rounded-md">
+                                        <option selected>RUB (₽)</option>
+                                        <option>USD ($)</option>
+                                        <option>EUR (€)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Простой скрипт для работы вкладок
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Удаляем активный класс со всех кнопок и контента
+                    tabButtons.forEach(btn => btn.classList.remove('active', 'bg-gray-100'));
+                    tabContents.forEach(content => content.classList.add('hidden'));
+                    
+                    // Добавляем активный класс к нажатой кнопке
+                    button.classList.add('active', 'bg-gray-100');
+                    
+                    // Показываем соответствующий контент
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.remove('hidden');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
