@@ -7,3 +7,4 @@ static/output.css
 db.sqlite3
 .idea/
 .pytest_cache/
+.env
