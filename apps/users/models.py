@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from apps.products.models import Product
 # Create your models here.
 
 
@@ -28,6 +29,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_manager = models.BooleanField(default=False)
+    likes = models.ManyToManyField(Product, blank=True, related_name='likes')
+
 
     objects = UserManager()
 

@@ -96,6 +96,12 @@
                             <h3 class="text-xl font-semibold mb-4">Моя одежда</h3>
                             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
                                 <!-- Кнопка "Добавить еще" со знаком плюс -->
+                                <a href="{% url 'products:home' %}">
+                                    <div class="bg-white rounded-md overflow-hidden border-2 border-dashed border-gray-300 flex flex-col items-center justify-center h-64 cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <i class="fas fa-plus text-4xl text-gray-400 mb-2"></i>
+                                        <p class="text-gray-500 font-medium">Стать продавцом</p>
+                                    </div>
+                                </a>
                                 <div class="bg-white rounded-md overflow-hidden border-2 border-dashed border-gray-300 flex flex-col items-center justify-center h-64 cursor-pointer hover:bg-gray-50 transition-colors">
                                     <i class="fas fa-plus text-4xl text-gray-400 mb-2"></i>
                                     <p class="text-gray-500 font-medium">Добавить еще</p>
@@ -164,14 +170,11 @@
             
             tabButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                    // Удаляем активный класс со всех кнопок и контента
                     tabButtons.forEach(btn => btn.classList.remove('active', 'bg-gray-100'));
                     tabContents.forEach(content => content.classList.add('hidden'));
                     
-                    // Добавляем активный класс к нажатой кнопке
                     button.classList.add('active', 'bg-gray-100');
                     
-                    // Показываем соответствующий контент
                     const tabId = button.getAttribute('data-tab');
                     document.getElementById(tabId).classList.remove('hidden');
                     document.getElementById(tabId).classList.add('active');
