@@ -16,8 +16,8 @@ def signup_view(request):
         if form.is_valid():
             user = form.save()
             print(user)
-            login(request, user)  # Automatically log in the user after signup
-            return redirect("products:home")  # Redirect to home or dashboard
+            login(request, user)
+            return redirect("products:home")
     else:
         form = SignupForm()
 

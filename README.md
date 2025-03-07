@@ -41,9 +41,10 @@ DATABASE_URL=postgres://user:password@localhost:5432/dbname
 python manage.py migrate
 ```
 
-### 4. Create a Superuser
+### 4. Add tailwindcss
 ```bash
-python manage.py createsuperuser
+npm install tailwindcss @tailwindcss/cli
+npx @tailwindcss/cli -i ./static/input.css  -o ./static/output.css --minify
 ```
 Follow the instructions to set up an admin account.
 
