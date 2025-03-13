@@ -11,7 +11,7 @@
     <link href='https://fonts.googleapis.com/css?family=Alata' rel='stylesheet'>
 </head>
 <body>
-    <header class="w-full h-[105px]"> 
+    <header class="w-full h-[105px] relative"> 
         <div class="flex justify-between items-center h-full pl-[104px] pr-[104px]"> 
           <div class="text-[32px] font-{Arial}" style="font-family: Alata;"><a href="{% url 'products:home' %}">Vivid</a></div>
           <div class="flex flex-row items-center">
@@ -35,10 +35,81 @@
         </div>
       <div class="w-[90%] h-[1px] bg-gradient-to-r from-[#FFFF] via-[#E2E2E2] to-[#ffff] m-auto" ></div>
       </header>
-      <footer class="flex flex-row items-center w-full h-[74px] gap-10 text-[24px] pl-[104px] " style="font-family: Microsoft Sans Serif;">
-        <button class="text-[#717171] hover:text-black font">Man</button>
-          <button class="text-[#717171] hover:text-black">Woman</button>
+
+      <footer class="flex flex-row items-center w-full h-[74px] gap-10 text-[24px] pl-[104px]  " style="font-family: Microsoft Sans Serif;">
+        <button id="openModalButtonMan" class="text-[#717171] hover:text-black font">Man</button>
+        <button id="openModalButtonWoman" class="text-[#717171] hover:text-black">Woman</button>
       </footer>
-      <div class="w-[100%] h-[1px] bg-[#E2E2E2] m-auto" ></div>
+      <section id="modal" class="absolute w-full h-[500px] flex-row mt-5 gap-10 bg-white flex z-999 hidden">
+        <div class="flex flex-col gap-5 text-[20px] pl-[104px] ">
+          <p>Clothes</p><p>Accessories</p><p>Shoes</p><p>Parfums</p>
+        </div>
+        <div class=" w-[5px] h-[500px]"></div>
+       <div class="flex flex-row gap-15">
+        <div>
+          <span class="text-[20px]" >Clothes</span>
+          <div class="flex flex-col text-[18px] gap-1" >
+            <a href="" class="text-[#717171] hover:text-[#000000]">T-Shirts</a>
+            <a href=""class="text-[#717171] hover:text-[#000000]">Polo Shirts</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Shirts</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Jeans</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Trousers</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Sweatshirts & Hoodies</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Sweaters</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Cardigans</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Joggers</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Chinos</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Turtlenecks</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Blazers & Jackets</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Tank Tops</a>
+          </div>
+        </div>
+        <div>
+          <span class="text-[20px]" >Outerwear</span>
+          <div class="flex flex-col text-[18px] gap-1" >
+            <a href="" class="text-[#717171] hover:text-[#000000]">View All</a>
+            <a href=""class="text-[#717171] hover:text-[#000000]">Blazers</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Jackets</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Bombers</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Trousers</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Leather Jackets</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Denim Jackets</a>
+            <a href="" class="text-[#717171] hover:text-[#000000]" >Vests</a>
+          </div>
+        </div>
+        <div>
+          <span class="text-[20px]" >Other Sections:</span>
+          <div class="flex flex-col text-[18px] gap-1" >
+            <a href="" class="text-[#717171] hover:text-[#000000]">Homewear</a>
+            <a href=""class="text-[#717171] hover:text-[#000000]">Underwear</a>      
+          </div>
+        </div>
+       </div>
+      </section>
+      <script>
+        const slider = document.getElementById('button');
+        const modal = document.getElementById('modal');
+        const openModalButtonMan = document.getElementById('openModalButtonMan');
+        const openModalButtonWoman = document.getElementById('openModalButtonWoman');
+       
+        function openModal(){
+         modal.style.display='flex';
+         slider.classList.add('hidden');
+        }
+        function closeModal(){
+         modal.style.display='none';
+         slider.classList.remove('hidden');
+        }
+        openModalButtonMan.addEventListener('mouseover',openModal);
+        openModalButtonWoman.addEventListener('mouseover',openModal);
+       
+        document.addEventListener('mouseout', (event) => {
+           if (event.target === modal) {
+               closeModal();
+           }
+       });
+       
+        </script>
+
 </body>
 </html>

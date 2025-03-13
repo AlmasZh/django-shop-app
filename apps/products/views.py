@@ -15,3 +15,9 @@ def personal(request):
     return render(request,'products/personal.html')
 def itempage(request):
     return render(request,'products/itempage.html')
+def girlclothes(request):
+    return render(request,'products/Girlclothes.html')
+def questionnaire(request):
+    return render(request,'products/questionnaire.html')
+def clothesadd(request):
+    return render(request,'products/clothesadd.html')

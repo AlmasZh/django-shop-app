@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Product Form</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              DEFAULT: "#0f172a",
+              foreground: "#f8fafc",
+            },
+            muted: {
+              DEFAULT: "#64748b",
+              foreground: "#94a3b8",
+            },
+            card: {
+              DEFAULT: "#ffffff",
+              foreground: "#0f172a",
+            },
+            destructive: {
+              DEFAULT: "#ef4444",
+              foreground: "#f8fafc",
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .form-label {
+        @apply block text-sm font-medium text-gray-700 mb-1;
+      }
+      .form-input {
+        @apply w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+      }
+      .form-select {
+        @apply w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white;
+      }
+      .form-textarea {
+        @apply w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+      }
+      .form-checkbox {
+        @apply h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500;
+      }
+      .form-description {
+        @apply mt-1 text-sm text-gray-500;
+      }
+      .form-error {
+        @apply mt-1 text-sm text-red-600 hidden;
+      }
+      .btn-primary {
+        @apply w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed;
+      }
+      .card {
+        @apply bg-white shadow rounded-lg overflow-hidden;
+      }
+      .file-input-label {
+        @apply flex justify-center w-full px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer hover:border-blue-500 transition-colors;
+      }
+      .file-input {
+        @apply sr-only;
+      }
+    }
+  </style>
+</head>
+<body>
+    {% include "products/header.html" %}
+  <div class="container mx-auto py-10 px-4">
+    <div class="card max-w-5xl mx-auto">
+      <div class="px-6 py-5 border-b border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-900">Add New Product</h2>
+        <p class="mt-1 text-sm text-gray-500">
+          Fill in the details to add a new product to your inventory.
+        </p>
+      </div>
+      
+      <div class="px-6 py-5">
+        <form id="productForm" class="space-y-8">
+          <!-- Two-column layout -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Left Column: Product Images -->
+            <div class="space-y-6">
+              <div>
+                <label class="form-label">Product Images</label>
+                <div class="mt-1">
+                  <label for="productImages" class="file-input-label">
+                    <div class="space-y-1 text-center">
+                      <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      <div class="flex text-sm text-gray-600 justify-center">
+                        <span class="relative bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                          Upload images
+                        </span>
+                        <p class="pl-1">or drag and drop</p>
+                      </div>
+                      <p class="text-xs text-gray-500">
+                        PNG, JPG, GIF up to 10MB
+                      </p>
+                    </div>
+                    <input id="productImages" name="productImages" type="file" class="file-input" accept="image/*" multiple>
+                  </label>
+                </div>
+                <div id="imagePreviewContainer" class="mt-4 grid grid-cols-2 gap-4"></div>
+                <div id="productImagesError" class="form-error">Please upload at least one product image.</div>
+              </div>
+            </div>
+            
+            <!-- Right Column: Product Details -->
+            <div class="space-y-6">
+              <!-- Brand Name -->
+              <div>
+                <label for="brandName" class="form-label">Brand Name</label>
+                <input type="text" id="brandName" name="brandName" placeholder="Enter brand name" class="form-input" required>
+                <div id="brandNameError" class="form-error">Brand name must be at least 2 characters.</div>
+              </div>
+              
+              <!-- Price -->
+              <div>
+                <label for="price" class="form-label">Price</label>
+                <input type="number" id="price" name="price" placeholder="0.00" step="0.01" class="form-input" required>
+                <div id="priceError" class="form-error">Price is required.</div>
+              </div>
+              
+              <!-- Product Type -->
+              <div>
+                <label for="productType" class="form-label">Product Type</label>
+                <select id="productType" name="productType" class="form-select" required>
+                  <option value="" disabled selected>Select product type</option>
+                  <option value="tshirt">T-shirt</option>
+                  <option value="jeans">Jeans</option>
+                  <option value="dress">Dress</option>
+                  <option value="jacket">Jacket</option>
+                  <option value="shoes">Shoes</option>
+                  <option value="accessories">Accessories</option>
+                  <option value="perfume">Perfume</option>
+                </select>
+                <div id="productTypeError" class="form-error">Please select a product type.</div>
+              </div>
+              
+              <!-- Color -->
+              <div>
+                <label for="color" class="form-label">Color</label>
+                <select id="color" name="color" class="form-select" required>
+                  <option value="" disabled selected>Select color</option>
+                  <option value="black">Black</option>
+                  <option value="white">White</option>
+                  <option value="red">Red</option>
+                  <option value="blue">Blue</option>
+                  <option value="green">Green</option>
+                  <option value="yellow">Yellow</option>
+                  <option value="purple">Purple</option>
+                  <option value="pink">Pink</option>
+                  <option value="gray">Gray</option>
+                  <option value="brown">Brown</option>
+                </select>
+                <div id="colorError" class="form-error">Please select a color.</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Sizes (Full Width) -->
+          <div>
+            <div class="mb-4">
+              <label class="form-label">Available Sizes</label>
+              <p class="form-description">Select all available sizes for this product.</p>
+            </div>
+            <div class="grid grid-cols-3 gap-4 sm:grid-cols-6">
+              <div class="flex items-start">
+                <input type="checkbox" id="size-xs" name="sizes" value="xs" class="form-checkbox mt-1">
+                <label for="size-xs" class="ml-3 text-sm text-gray-700">XS</label>
+              </div>
+              <div class="flex items-start">
+                <input type="checkbox" id="size-s" name="sizes" value="s" class="form-checkbox mt-1">
+                <label for="size-s" class="ml-3 text-sm text-gray-700">S</label>
+              </div>
+              <div class="flex items-start">
+                <input type="checkbox" id="size-m" name="sizes" value="m" class="form-checkbox mt-1">
+                <label for="size-m" class="ml-3 text-sm text-gray-700">M</label>
+              </div>
+              <div class="flex items-start">
+                <input type="checkbox" id="size-l" name="sizes" value="l" class="form-checkbox mt-1">
+                <label for="size-l" class="ml-3 text-sm text-gray-700">L</label>
+              </div>
+              <div class="flex items-start">
+                <input type="checkbox" id="size-xl" name="sizes" value="xl" class="form-checkbox mt-1">
+                <label for="size-xl" class="ml-3 text-sm text-gray-700">XL</label>
+              </div>
+              <div class="flex items-start">
+                <input type="checkbox" id="size-xxl" name="sizes" value="xxl" class="form-checkbox mt-1">
+                <label for="size-xxl" class="ml-3 text-sm text-gray-700">XXL</label>
+              </div>
+            </div>
+            <div id="sizesError" class="form-error mt-2">Please select at least one size.</div>
+          </div>
+          
+          <!-- Material Information (Full Width) -->
+          <div>
+            <label for="materialInfo" class="form-label">Material Information</label>
+            <textarea id="materialInfo" name="materialInfo" rows="3" class="form-textarea" 
+              placeholder="Enter material details (e.g., 100% cotton, polyester blend, etc.)"></textarea>
+            <p class="form-description">Include details like fabric composition, care instructions, etc.</p>
+          </div>
+          
+          <!-- Brand Information (Full Width) -->
+          <div>
+            <label for="brandInfo" class="form-label">Brand Information</label>
+            <textarea id="brandInfo" name="brandInfo" rows="3" class="form-textarea" 
+              placeholder="Enter additional brand information"></textarea>
+            <p class="form-description">Add any additional information about the brand or product.</p>
+          </div>
+          
+          <!-- Submit Button -->
+          <button type="submit" id="submitButton" class="btn-primary">
+            Add Product
+          </button>
+          
+          <!-- Loading State (Hidden by default) -->
+          <button type="button" id="loadingButton" class="btn-primary hidden" disabled>
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Adding Product...
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('productForm');
+      const submitButton = document.getElementById('submitButton');
+      const loadingButton = document.getElementById('loadingButton');
+      const imageInput = document.getElementById('productImages');
+      const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+      const selectedFiles = [];
+      
+      // Handle image selection and preview
+      imageInput.addEventListener('change', function(event) {
+        // Clear previous previews
+        imagePreviewContainer.innerHTML = '';
+        
+        const files = event.target.files;
+        
+        if (files.length > 0) {
+          Array.from(files).forEach(file => {
+            if (file.type.startsWith('image/')) {
+              selectedFiles.push(file);
+              
+              // Create preview element
+              const previewWrapper = document.createElement('div');
+              previewWrapper.className = 'relative group';
+              
+              const preview = document.createElement('div');
+              preview.className = 'aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200';
+              
+              const img = document.createElement('img');
+              img.className = 'h-40 w-full object-cover object-center';
+              img.alt = 'Product image preview';
+              
+              // Read the file and set the image source
+              const reader = new FileReader();
+              reader.onload = function(e) {
+                img.src = e.target.result;
+              };
+              reader.readAsDataURL(file);
+              
+              // Create remove button
+              const removeBtn = document.createElement('button');
+              removeBtn.className = 'absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 m-1 opacity-0 group-hover:opacity-100 transition-opacity';
+              removeBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              `;
+              
+              // Handle remove button click
+              removeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                previewWrapper.remove();
+                const index = selectedFiles.indexOf(file);
+                if (index > -1) {
+                  selectedFiles.splice(index, 1);
+                }
+              });
+              
+              preview.appendChild(img);
+              previewWrapper.appendChild(preview);
+              previewWrapper.appendChild(removeBtn);
+              imagePreviewContainer.appendChild(previewWrapper);
+            }
+          });
+        }
+      });
+      
+      // Support drag and drop
+      const dropZone = document.querySelector('.file-input-label');
+      
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+      });
+      
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, highlight, false);
+      });
+      
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, unhighlight, false);
+      });
+      
+      function highlight() {
+        dropZone.classList.add('border-blue-500', 'bg-blue-50');
+      }
+      
+      function unhighlight() {
+        dropZone.classList.remove('border-blue-500', 'bg-blue-50');
+      }
+      
+      dropZone.addEventListener('drop', handleDrop, false);
+      
+      function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        imageInput.files = files;
+        
+        // Trigger the change event manually
+        const event = new Event('change');
+        imageInput.dispatchEvent(event);
+      }
+      
+      // Form validation
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        // Reset error messages
+        document.querySelectorAll('.form-error').forEach(el => {
+          el.classList.add('hidden');
+        });
+        
+        let isValid = true;
+        
+        // Validate product images
+        if (selectedFiles.length === 0) {
+          document.getElementById('productImagesError').classList.remove('hidden');
+          isValid = false;
+        }
+        
+        // Validate brand name
+        const brandName = document.getElementById('brandName').value;
+        if (brandName.length < 2) {
+          document.getElementById('brandNameError').classList.remove('hidden');
+          isValid = false;
+        }
+        
+        // Validate product type
+        const productType = document.getElementById('productType').value;
+        if (!productType) {
+          document.getElementById('productTypeError').classList.remove('hidden');
+          isValid = false;
+        }
+        
+        // Validate price
+        const price = document.getElementById('price').value;
+        if (!price) {
+          document.getElementById('priceError').classList.remove('hidden');
+          isValid = false;
+        }
+        
+        // Validate color
+        const color = document.getElementById('color').value;
+        if (!color) {
+          document.getElementById('colorError').classList.remove('hidden');
+          isValid = false;
+        }
+        
+        // Validate sizes (at least one must be selected)
+        const sizes = Array.from(document.querySelectorAll('input[name="sizes"]:checked')).map(el => el.value);
+        if (sizes.length === 0) {
+          document.getElementById('sizesError').classList.remove('hidden');
+          isValid = false;
+        }
+        
+        if (isValid) {
+          // Show loading state
+          submitButton.classList.add('hidden');
+          loadingButton.classList.remove('hidden');
+          
+          // Create FormData object to handle file uploads
+          const formData = new FormData();
+          
+          // Add text fields
+          formData.append('brandName', brandName);
+          formData.append('productType', productType);
+          formData.append('price', price);
+          formData.append('color', color);
+          
+          // Add sizes
+          sizes.forEach(size => {
+            formData.append('sizes[]', size);
+          });
+          
+          // Add text areas
+          formData.append('materialInfo', document.getElementById('materialInfo').value);
+          formData.append('brandInfo', document.getElementById('brandInfo').value);
+          
+          // Add images
+          selectedFiles.forEach((file, index) => {
+            formData.append(`productImages[${index}]`, file);
+          });
+          
+          // Log form data (for demonstration)
+          console.log('Form data entries:');
+          for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value instanceof File ? value.name : value}`);
+          }
+          
+          // Simulate API call
+          setTimeout(() => {
+            // Hide loading state
+            submitButton.classList.remove('hidden');
+            loadingButton.classList.add('hidden');
+            
+            // Show success message
+            alert('Product added successfully!');
+            
+            // Reset form and previews
+            form.reset();
+            imagePreviewContainer.innerHTML = '';
+            selectedFiles.length = 0; // Clear the array
+          }, 1500);
+          
+          // In a real application, you would send the formData to your server:
+          /*
+          fetch('/api/products', {
+            method: 'POST',
+            body: formData,
+          })
+          .then(response => response.json())
+          .then(data => {
+            submitButton.classList.remove('hidden');
+            loadingButton.classList.add('hidden');
+            alert('Product added successfully!');
+            form.reset();
+            imagePreviewContainer.innerHTML = '';
+            selectedFiles.length = 0;
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            submitButton.classList.remove('hidden');
+            loadingButton.classList.add('hidden');
+            alert('Error adding product. Please try again.');
+          });
+          */
+        }
+      });
+    });
+  </script>
+</body>
+</html>
