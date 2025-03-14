@@ -4,10 +4,23 @@ from apps.products.models import Product
 
 # Create your models here.
 class Order(models.Model):
+    DELIVERY_STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('processing', 'Processing'),
+        ('shipped', 'Shipped'),
+        ('delivered', 'Delivered'),
+        ('cancelled', 'Cancelled'),
+    ]
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='orders')
     ordered = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    payment = models.ForeignKey(
+        'payments.Payment', on_delete=models.SET_NULL, blank=True, null=True)
+    billing_address = models.ForeignKey(
+        'payments.BillingAddress', on_delete=models.SET_NULL, blank=True, null=True)
+    delivery_status = models.CharField(max_length=20, choices=DELIVERY_STATUS_CHOICES, default='pending')
+    
 
     class Meta:
         ordering = ('-created',)
@@ -23,11 +36,10 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_items')
-    price = models.IntegerField()
     quantity = models.SmallIntegerField(default=1)
 
     def __str__(self):
         return str(self.id)
 
     def get_cost(self):
-        return self.price * self.quantity
+        return self.product.price * self.quantity

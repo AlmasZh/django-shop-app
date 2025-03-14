@@ -17,6 +17,16 @@ This is a Django-based e-commerce shop application that provides functionality f
 - Order processing and payment integration
 - API endpoints for frontend integration
 
+## Fixtures
+- Create a superuser
+```bash
+python manage.py createsuperuser
+```
+- Load fixtures
+```bash
+python manage.py loaddata fixtures.json
+```
+
 ## Installation
 
 ### 1. Create a Virtual Environment & Install Dependencies

@@ -1,0 +1,354 @@
+[
+{
+    "model": "users.customuser",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$oJKLaLCc02zV1U2ZFUwCaE$2qShuIhoFRLWSPvgczCwC7pw0ci0LcGQ/KP1mVDQoZ4=",
+        "last_login": "2025-03-03T11:59:26.505Z",
+        "is_superuser": false,
+        "email": "almas.zh22@gmail.com",
+        "phone_number": null,
+        "first_name": "Almas",
+        "last_name": "Zhakanov",
+        "is_active": true,
+        "is_staff": false,
+        "is_manager": false,
+        "groups": [],
+        "user_permissions": [],
+        "likes": []
+    }
+},
+{
+    "model": "users.customuser",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$Z9CgSXC1MBObZJjQk1vjmX$Q9lu4mJByQjAJp3nrf1FttNV6xHDViJN1Y6PI2cIwuY=",
+        "last_login": null,
+        "is_superuser": false,
+        "email": "shhertr@gmail.com",
+        "phone_number": null,
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_staff": false,
+        "is_manager": false,
+        "groups": [],
+        "user_permissions": [],
+        "likes": []
+    }
+},
+{
+    "model": "users.customuser",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$pwdKuk79pYUwQnIq2dWDPW$ZHt3hMRAd6uhIrDwymGnQ7I83TfQ8JPrph5HAOZJid4=",
+        "last_login": null,
+        "is_superuser": false,
+        "email": "almas@gmail.com",
+        "phone_number": null,
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_staff": false,
+        "is_manager": false,
+        "groups": [],
+        "user_permissions": [],
+        "likes": []
+    }
+},
+{
+    "model": "users.customuser",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$3LB3FncmOFfeVwQMNSmDMx$CfvHzBhnb6ELajow7bbq3TYd9bkeMa6ElmD2YvnshV0=",
+        "last_login": "2025-03-03T13:12:23.013Z",
+        "is_superuser": false,
+        "email": "admin@gmail.comom",
+        "phone_number": null,
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_staff": true,
+        "is_manager": false,
+        "groups": [],
+        "user_permissions": [],
+        "likes": []
+    }
+},
+{
+    "model": "users.customuser",
+    "pk": 5,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$y5ZbGSzpZ7Wtkl3loIAWPa$GK7WJeTdBd0y0qHGbsEn3lewK2tyI/1SAWRK9Do1hZY=",
+        "last_login": "2025-03-14T04:05:22.765Z",
+        "is_superuser": true,
+        "email": "main@gmail.com",
+        "phone_number": null,
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_staff": true,
+        "is_manager": false,
+        "groups": [],
+        "user_permissions": [],
+        "likes": []
+    }
+},
+{
+    "model": "users.customuser",
+    "pk": 6,
+    "fields": {
+        "password": "1234",
+        "last_login": null,
+        "is_superuser": false,
+        "email": "john@example.com",
+        "phone_number": null,
+        "first_name": "John",
+        "last_name": "Doe",
+        "is_active": true,
+        "is_staff": false,
+        "is_manager": false,
+        "groups": [],
+        "user_permissions": [],
+        "likes": [
+            3
+        ]
+    }
+},
+{
+    "model": "users.customuser",
+    "pk": 7,
+    "fields": {
+        "password": "1234",
+        "last_login": null,
+        "is_superuser": false,
+        "email": "alice@example.com",
+        "phone_number": null,
+        "first_name": "Alice",
+        "last_name": "Smith",
+        "is_active": true,
+        "is_staff": false,
+        "is_manager": false,
+        "groups": [],
+        "user_permissions": [],
+        "likes": []
+    }
+},
+{
+    "model": "users.customuser",
+    "pk": 8,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$TTRRJhb4DWY1UtCLaXn300$mVU8BCBKosdxT7wFqWX3myqT3SuJjv/DyhzuPm5mzYw=",
+        "last_login": "2025-03-07T09:07:08.766Z",
+        "is_superuser": false,
+        "email": "hi@gmail.com",
+        "phone_number": null,
+        "first_name": "Almas",
+        "last_name": "Zhakanov",
+        "is_active": true,
+        "is_staff": false,
+        "is_manager": false,
+        "groups": [],
+        "user_permissions": [],
+        "likes": []
+    }
+},
+{
+    "model": "products.category",
+    "pk": 1,
+    "fields": {
+        "title": "T-shirt",
+        "sub_category": null,
+        "is_sub": false,
+        "slug": "t-shirt"
+    }
+},
+{
+    "model": "products.category",
+    "pk": 2,
+    "fields": {
+        "title": "Shoes",
+        "sub_category": null,
+        "is_sub": false,
+        "slug": "shoes"
+    }
+},
+{
+    "model": "products.category",
+    "pk": 3,
+    "fields": {
+        "title": "Jeans",
+        "sub_category": null,
+        "is_sub": false,
+        "slug": "jeans"
+    }
+},
+{
+    "model": "products.category",
+    "pk": 4,
+    "fields": {
+        "title": "Jackets",
+        "sub_category": null,
+        "is_sub": false,
+        "slug": "jackets"
+    }
+},
+{
+    "model": "products.category",
+    "pk": 5,
+    "fields": {
+        "title": "Watches",
+        "sub_category": null,
+        "is_sub": false,
+        "slug": "watches"
+    }
+},
+{
+    "model": "products.category",
+    "pk": 6,
+    "fields": {
+        "title": "Dresses",
+        "sub_category": null,
+        "is_sub": false,
+        "slug": "dresses"
+    }
+},
+{
+    "model": "products.category",
+    "pk": 7,
+    "fields": {
+        "title": "Sweaters",
+        "sub_category": null,
+        "is_sub": false,
+        "slug": "sweaters"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 1,
+    "fields": {
+        "category": 1,
+        "image": "products/футболка2.png",
+        "title": "Cotton T-Shirt",
+        "description": "Comfortable cotton T-shirt",
+        "price": "10000.00",
+        "date_created": "2025-03-07T04:48:50.586Z",
+        "slug": "cotton-t-shirt"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 2,
+    "fields": {
+        "category": 1,
+        "image": "products/футболка2_PYEJAcs.png",
+        "title": "Graphic T-Shirt",
+        "description": "Stylish graphic print T-shirt",
+        "price": "24.99",
+        "date_created": "2025-03-07T04:49:36.365Z",
+        "slug": "graphic-t-shirt"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 3,
+    "fields": {
+        "category": 2,
+        "image": "products/Без_имени-13-восстановлено.png",
+        "title": "Running Shoes",
+        "description": "Lightweight running shoes",
+        "price": "20000.00",
+        "date_created": "2025-03-07T04:50:21.316Z",
+        "slug": "running-shoes"
+    }
+},
+{
+    "model": "payments.billingaddress",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "street_address": "Almaty",
+        "apartment_address": "Almaty",
+        "country": "Kazakhstan",
+        "state": "Almaty",
+        "city": "Almaty",
+        "zip": "989234",
+        "address_type": "B"
+    }
+},
+{
+    "model": "payments.payment",
+    "pk": 1,
+    "fields": {
+        "stripe_charge_id": "23",
+        "user": 1,
+        "amount": 4.0,
+        "timestamp": "2025-03-14T05:16:06.631Z",
+        "status": "pending"
+    }
+},
+{
+    "model": "payments.payment",
+    "pk": 2,
+    "fields": {
+        "stripe_charge_id": "15",
+        "user": 3,
+        "amount": 2.0,
+        "timestamp": "2025-03-14T05:16:28.571Z",
+        "status": "completed"
+    }
+},
+{
+    "model": "orders.order",
+    "pk": 1,
+    "fields": {
+        "user": 6,
+        "ordered": false,
+        "created": "2025-03-07T04:58:01.826Z",
+        "updated": "2025-03-07T04:58:01.826Z",
+        "payment": null,
+        "billing_address": null,
+        "delivery_status": "pending"
+    }
+},
+{
+    "model": "orders.order",
+    "pk": 2,
+    "fields": {
+        "user": 7,
+        "ordered": true,
+        "created": "2025-03-07T04:58:09.075Z",
+        "updated": "2025-03-07T04:58:09.075Z",
+        "payment": null,
+        "billing_address": null,
+        "delivery_status": "pending"
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 1,
+    "fields": {
+        "order": 1,
+        "product": 1,
+        "quantity": 2
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 2,
+    "fields": {
+        "order": 1,
+        "product": 3,
+        "quantity": 1
+    }
+},
+{
+    "model": "orders.orderitem",
+    "pk": 3,
+    "fields": {
+        "order": 2,
+        "product": 1,
+        "quantity": 3
+    }
+}
+]
