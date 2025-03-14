@@ -24,9 +24,12 @@ python manage.py createsuperuser
 ```
 - Load fixtures
 ```bash
-python manage.py loaddata fixtures.json
+python manage.py loaddata my_data.json
 ```
-
+- Create a new fixture
+```bash
+python manage.py dumpdata users products payments orders --indent 4 > my_data.json
+```
 ## Installation
 
 ### 1. Create a Virtual Environment & Install Dependencies
