@@ -86,13 +86,13 @@ WSGI_APPLICATION = 'shopApp.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 
-DATABASESS = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'shop',
-        'USER': 'admin',
-        'PASSWORD': 'passwd123',
-        'HOST': 'postgresql',
+        'USER': 'almas',
+        'PASSWORD': '',
+        'HOST': 'localhost',
         'PORT': '5432',
         "TEST": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -101,7 +101,7 @@ DATABASESS = {
     }
 }
 
-DATABASES = {
+DATABASESS = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',

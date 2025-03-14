@@ -30,6 +30,10 @@ python manage.py loaddata my_data.json
 ```bash
 python manage.py dumpdata users products payments orders --indent 4 > my_data.json
 ```
+
+# Admin
+email: main@gmail.com
+password: admin
 ## Installation
 
 ### 1. Create a Virtual Environment & Install Dependencies
