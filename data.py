@@ -10,12 +10,27 @@ import uuid
 # Set up Django environment
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'shopApp.settings')
 django.setup()
-
 from django.template.defaultfilters import slugify
 from apps.products.models import Category, Product, ProductImage
 
 # Initialize Faker
 fake = Faker()
+
+# Define lists for random attributes
+SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL']
+COLORS = [
+    'Red', 'Blue', 'Green', 'Yellow', 'Black', 'White', 'Gray', 
+    'Navy', 'Purple', 'Pink', 'Orange', 'Brown', 'Beige'
+]
+SEASONS = ['Spring', 'Summer', 'Autumn', 'Winter']
+PATTERNS = [
+    'Solid', 'Striped', 'Checkered', 'Polka Dot', 
+    'Floral', 'Geometric', 'Camouflage', 'Plaid'
+]
+COUNTRIES = [
+    'USA', 'China', 'Italy', 'Vietnam', 'Bangladesh', 
+    'India', 'Turkey', 'Germany', 'Portugal', 'Cambodia'
+]
 
 def create_categories():
     main_categories = [
@@ -70,7 +85,7 @@ def create_dummy_image(product_title):
     return django_file, filename
 
 def create_products(categories, num_products=300):
-    """Create sample products with multiple images"""
+    """Create sample products with multiple images and random attributes"""
     for _ in range(num_products):
         # Choose a random category
         category = random.choice(categories)
@@ -83,13 +98,19 @@ def create_products(categories, num_products=300):
         while Product.objects.filter(slug=unique_slug).exists():
             unique_slug = f'{unique_slug}-{random.randint(1, 1000)}'
         
-        # Create product
+        # Create product with random attributes
         product = Product.objects.create(
             category=category,
             title=product_title,
             description=fake.paragraph(nb_sentences=3),
             price=round(random.uniform(10.00, 500.00), 2),
-            slug=unique_slug
+            slug=unique_slug,
+            # Add random attributes
+            size=random.choice(SIZES),
+            color=random.choice(COLORS),
+            season=random.choice(SEASONS),
+            pattern=random.choice(PATTERNS),
+            origin_country=random.choice(COUNTRIES)
         )
         
         # Create multiple images for each product

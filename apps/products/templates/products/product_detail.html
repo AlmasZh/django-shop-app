@@ -24,38 +24,6 @@
             </div>
         </div>
 
-        {% comment %} <div class="lg:w-2/3 relative">
-            <div class="image-gallery-container relative overflow-hidden rounded-lg shadow-md">
-                <div id="image-container" class="relative w-full">
-                    {% for image in product_images %}
-                        <img 
-                            class="product-image w-full h-[500px] md:h-[650px] object-cover absolute top-0 left-0 transition-opacity duration-500 {% if not forloop.first %}active{% endif %}" 
-                            src="{{ image.image.url }}" 
-                            alt="{{ product.title }}"
-                        >
-                    {% endfor %}
-                </div>
-                
-                {% if product_images|length > 1 %}
-                <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                    {% for image in product_images %}
-                        <button 
-                            class="thumbnail-btn w-2 h-2 rounded-full bg-gray-300 hover:bg-gray-600 transition-colors"
-                            data-index="{{ forloop.counter0 }}"
-                        ></button>
-                    {% endfor %}
-                </div>
-
-                <button id="prev-image" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 rounded-full shadow-lg flex items-center justify-center z-10 hover:bg-white transition-colors">
-                    <i class="fas fa-chevron-left text-gray-700"></i>
-                </button>
-                <button id="next-image" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 rounded-full shadow-lg flex items-center justify-center z-10 hover:bg-white transition-colors">
-                    <i class="fas fa-chevron-right text-gray-700"></i>
-                </button>
-                {% endif %}
-            </div>
-        </div> {% endcomment %}
-
         <!-- Product Information -->
         <div class="lg:w-1/3 space-y-6">
             <div>
@@ -64,47 +32,37 @@
                 <p class="text-2xl font-semibold text-gray-900">{{ product.price|floatformat:0 }} ₸</p>
             </div>
 
-            <form method="post" id="add-to-cart-form" class="space-y-4">
+            <!-- Action Buttons -->
+            <form method="post" action="{% url 'cart:add_to_cart' product.slug %}" class="flex space-x-4">
                 {% csrf_token %}
-                {{ form.hidden_field }}
-
-                <!-- Color Selection -->
-                <div class="relative">
-                    <label class="block mb-2 text-sm font-medium text-gray-700">Color</label>
-                    <div class="relative">
-                        <select id="id_color" name="color" class="w-full p-3 border rounded-md appearance-none">
-                            {% for color in form.color.field.choices %}
-                                <option value="{{ color.0 }}">{{ color.1 }}</option>
-                            {% endfor %}
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Size Selection -->
-                <div class="relative">
-                    <label class="block mb-2 text-sm font-medium text-gray-700">Size</label>
-                    <div class="relative">
-                        <select id="id_size" name="size" class="w-full p-3 border rounded-md appearance-none">
-                            {% for size in form.size.field.choices %}
-                                <option value="{{ size.0 }}">{{ size.1 }}</option>
-                            {% endfor %}
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="flex space-x-4">
-                    <button type="submit" class="flex-1 bg-black text-white py-3 px-6 rounded-md hover:bg-gray-800 transition-colors">
-                        Add to Cart
+                <div class="flex items-center space-x-2">
+                    <label for="quantity" class="sr-only">Quantity</label>
+                    <input 
+                        type="number" 
+                        name="quantity" 
+                        id="quantity" 
+                        value="1" 
+                        min="1" 
+                        class="w-20 border rounded-md px-2 py-1"
+                    >
+                    <button 
+                        type="submit" 
+                        class="flex items-center justify-center w-12 h-12 border rounded-md hover:bg-gray-50 transition-colors"
+                    >
+                        <span class="sr-only">Add to Cart</span>
+                        <i class="fas fa-shopping-cart"></i>
                     </button>
-                    <a href="{% url 'products:add_to_wishlist' product.slug %}" class="w-12 h-12 border rounded-md flex items-center justify-center hover:bg-gray-50 transition-colors">
-                        <i class="far fa-heart"></i>
+                    <a href="{% url "users:toggle_like" product.id %}">
+                        <button 
+                            type="button" 
+                            class="w-12 h-12 border rounded-md flex items-center justify-center hover:bg-gray-50 transition-colors"
+                            >
+                            {% if product in liked_products %}
+                                <i class="fas fa-heart text-[red]"></i>
+                            {% else %}
+                                <i class="far fa-heart"></i>
+                            {% endif %}
+                        </button>
                     </a>
                 </div>
             </form>

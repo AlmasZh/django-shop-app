@@ -7,7 +7,6 @@ from apps.users.forms import LoginForm, RegistrationForm
 from apps.products.forms import ProductFilterForm
 from apps.products.models import Product, ProductImage, Category
 from apps.cart.models import Cart, CartItem
-from apps.cart.forms import AddToCartForm
 
 from apps.products.models import Product, Category
 # from apps import QuantityForm
@@ -56,49 +55,13 @@ def products_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
     product_images = ProductImage.objects.filter(product=product)
     
-    if request.method == 'POST':
-        # Ensure user is logged in
-        if not request.user.is_authenticated:
-            return redirect('products:register')  # Redirect to login page
-        
-        form = AddToCartForm(request.POST, product=product)
-        if form.is_valid():
-            # Get or create user's cart
-            cart, created = Cart.objects.get_or_create(user=request.user)
-            
-            # Check if item already in cart
-            cart_item, item_created = CartItem.objects.get_or_create(
-                cart=cart, 
-                product=product,
-                defaults={
-                    'quantity': form.cleaned_data['quantity'],
-                    'size': form.cleaned_data['size'],
-                    'color': form.cleaned_data['color']
-                }
-            )
-            
-            # If item already exists, update quantity
-            if not item_created:
-                cart_item.quantity += form.cleaned_data['quantity']
-                cart_item.save()
-            
-            return redirect('cart:cart_detail')  # Redirect to cart page
-    else:
-        form = AddToCartForm(product=product)
-    
     context = {
         'product': product,
         'product_images': product_images,
-        'form': form
+        'liked_products': request.user.likes.all() if request.user.is_authenticated else [],
     }
     return render(request, 'products/product_detail.html', context)
 
-@login_required
-def add_to_wishlist(request, slug):
-    product = get_object_or_404(Product, slug=slug)
-    # Implement wishlist logic here
-    # This is a placeholder - you'll need to create a Wishlist model
-    return redirect('products:product_detail', slug=slug)
 
 
 def girlclothes(request):

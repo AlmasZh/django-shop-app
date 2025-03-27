@@ -9,7 +9,6 @@ urlpatterns = [
     path('categories/',views.product_list, name="categories"),
     path('register/',views.register, name='register'),
     path('products_detail/<str:slug>', views.products_detail, name='products_detail'),
-    path('add_to_wishlist/<str:slug>', views.add_to_wishlist, name='add_to_wishlist'),
     path('girlclothes/',views.girlclothes,name='girlclothes'),
     path('questionnaire/',views.questionnaire,name='questionnaire'),
     path('clothesadd/',views.clothesadd,name='clothesadd'),
