@@ -1,12 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-</head>
-<body>
-	Hello World
-	{% block content %}{% endblock %}
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<script>
+			tailwind.config = {
+				theme: {
+					extend: {
+						colors: {
+							primary: "#3b82f6",
+							muted: "#f3f4f6",
+							"muted-foreground": "#6b7280",
+						},
+					},
+				},
+			};
+		</script>
+
+		<style>
+			.tab-content {
+				display: none;
+			}
+			.tab-content.active {
+				display: block;
+			}
+			.tabs-trigger.active {
+				background-color: #ec85fe;
+				color: white;
+			}
+		</style>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	</head>
+	<body>
+		{% block content %}{% endblock %}
+	</body>
 </html>
