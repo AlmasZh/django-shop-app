@@ -51,7 +51,7 @@
                 <a href="{% url 'products:categories' %}"><img src="{%static 'Photo/Screenshot_5.png'%}" class="w-full h-full alt="accessories"></a>
               </div>
               <div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden">
-                <a href="{% url 'products:categories' %}"><img src="{%static 'Photo/Screenshot_6.png'%}" class="w-full h-full alt="Shose"></a>
+                <a href="{% url 'products:categories' %}"><img src="{%static 'Photo/Screenshot_6.png'%}" class="w-full h-full" alt="Shose"></a>
               </div>
               <a href="{% url 'products:categories' %}"><div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-[#D9D9D9] text-[35px] overflow-hidden">
                 <span>See</span><span>More</span>
@@ -66,7 +66,7 @@
       <span class="pl-[120px] text-[18px]" style="font-family: Microsoft Sans Serif;">Popular</span>
       <section class="flex flex-col justify-center items-center mb-100 pl-[120px] pr-[104px] ">
         <div class="flex flex-row gap-5 w-full justify-start">
-            <a href="{% url 'products:itempage' %}"><div class="flex flex-col justify-self-center items-start overflow-hidden ">
+            <a href="{% url 'products:products_detail' 'slug' %}"><div class="flex flex-col justify-self-center items-start overflow-hidden ">
             <img class="w-[240px] h-[350px]" src="{%static 'Photo/Screenshot_9.png'%}" alt="item">
                 <div class="text-[18px]" style="font-family: Microsoft Sans Serif;" >
                     <p>7 310 ₸</p><p class="text-[15px]">T-Shirt</p>

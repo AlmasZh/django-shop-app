@@ -1,0 +1,249 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+{% include "products/header.html" %}
+<div class="container mx-auto px-4 py-8 mt-5">
+    <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Image Gallery -->
+        <div class="lg:w-2/3 relative">
+            <div class="flex gap-4">
+                <button id="prev-image" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center z-10">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button id="next-image" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center z-10">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div id="image-container" class="w-full flex flex-row justify-center gap-2 overflow-hidden">
+                    {% for image in product_images %}
+                        <img class="product-image w-[450px] h-[650px] object-cover bg-amber-300 {% if forloop.first %}active{% endif %}" 
+                             src="{{ image.image.url }}" 
+                             alt="{{ product.title }}">
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        {% comment %} <div class="lg:w-2/3 relative">
+            <div class="image-gallery-container relative overflow-hidden rounded-lg shadow-md">
+                <div id="image-container" class="relative w-full">
+                    {% for image in product_images %}
+                        <img 
+                            class="product-image w-full h-[500px] md:h-[650px] object-cover absolute top-0 left-0 transition-opacity duration-500 {% if not forloop.first %}active{% endif %}" 
+                            src="{{ image.image.url }}" 
+                            alt="{{ product.title }}"
+                        >
+                    {% endfor %}
+                </div>
+                
+                {% if product_images|length > 1 %}
+                <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                    {% for image in product_images %}
+                        <button 
+                            class="thumbnail-btn w-2 h-2 rounded-full bg-gray-300 hover:bg-gray-600 transition-colors"
+                            data-index="{{ forloop.counter0 }}"
+                        ></button>
+                    {% endfor %}
+                </div>
+
+                <button id="prev-image" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 rounded-full shadow-lg flex items-center justify-center z-10 hover:bg-white transition-colors">
+                    <i class="fas fa-chevron-left text-gray-700"></i>
+                </button>
+                <button id="next-image" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 rounded-full shadow-lg flex items-center justify-center z-10 hover:bg-white transition-colors">
+                    <i class="fas fa-chevron-right text-gray-700"></i>
+                </button>
+                {% endif %}
+            </div>
+        </div> {% endcomment %}
+
+        <!-- Product Information -->
+        <div class="lg:w-1/3 space-y-6">
+            <div>
+                <h1 class="text-3xl font-bold mb-2">{{ product.title }}</h1>
+                <p class="text-gray-600 mb-4">{{ product.category.title }}</p>
+                <p class="text-2xl font-semibold text-gray-900">{{ product.price|floatformat:0 }} ₸</p>
+            </div>
+
+            <form method="post" id="add-to-cart-form" class="space-y-4">
+                {% csrf_token %}
+                {{ form.hidden_field }}
+
+                <!-- Color Selection -->
+                <div class="relative">
+                    <label class="block mb-2 text-sm font-medium text-gray-700">Color</label>
+                    <div class="relative">
+                        <select id="id_color" name="color" class="w-full p-3 border rounded-md appearance-none">
+                            {% for color in form.color.field.choices %}
+                                <option value="{{ color.0 }}">{{ color.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Size Selection -->
+                <div class="relative">
+                    <label class="block mb-2 text-sm font-medium text-gray-700">Size</label>
+                    <div class="relative">
+                        <select id="id_size" name="size" class="w-full p-3 border rounded-md appearance-none">
+                            {% for size in form.size.field.choices %}
+                                <option value="{{ size.0 }}">{{ size.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex space-x-4">
+                    <button type="submit" class="flex-1 bg-black text-white py-3 px-6 rounded-md hover:bg-gray-800 transition-colors">
+                        Add to Cart
+                    </button>
+                    <a href="{% url 'products:add_to_wishlist' product.slug %}" class="w-12 h-12 border rounded-md flex items-center justify-center hover:bg-gray-50 transition-colors">
+                        <i class="far fa-heart"></i>
+                    </a>
+                </div>
+            </form>
+
+            <!-- Product Details -->
+            <div class="border rounded-md p-4">
+                <h2 class="font-medium mb-4 text-lg">Product Information</h2>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-600">Composition</span>
+                        <span>100% Cotton</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-600">Lining</span>
+                        <span>No Lining</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-600">Season</span>
+                        <span>{{ product.season|default:'Multi' }}</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-600">Model Size</span>
+                        <span>{{ product.size|default:'L' }}</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-600">Color</span>
+                        <span>{{ product.color|default:'Beige' }}</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-600">Pattern</span>
+                        <span>{{ product.pattern|default:'Solid' }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Origin</span>
+                        <span>{{ product.origin_country|default:'Uzbekistan' }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Brand and Description Section -->
+    <div class="mt-12">
+        <div class="border-b mb-6">
+            <div class="flex gap-8">
+                <button class="description-tab py-4 border-b-2 border-black font-medium" data-tab="description">
+                    About the Brand
+                </button>
+                <button class="description-tab py-4 text-gray-500" data-tab="reviews">
+                    Reviews ({{ reviews.count|default:0 }})
+                </button>
+            </div>
+        </div>
+        
+        <div id="description-content" class="block">
+            <p class="text-gray-600">
+                {{ product.description|default:"Vivid is all about comfort and style for everyday wear. The brand offers high-quality, versatile clothing designed for an active lifestyle. With a wide range of essentials and statement pieces, it's easy to create the perfect look for any occasion. Vivid – freedom in every detail." }}
+            </p>
+        </div>
+        
+        <div id="reviews-content" class="hidden">
+            <!-- Reviews will be dynamically loaded or statically rendered -->
+            <p class="text-gray-500">No reviews available.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('.product-image');
+    const prevButton = document.getElementById('prev-image');
+    const nextButton = document.getElementById('next-image');
+    const thumbnailButtons = document.querySelectorAll('.thumbnail-btn');
+    let currentImageIndex = 0;
+
+    function showImage(index) {
+        // Hide all images
+        images.forEach((img, i) => {
+            img.style.opacity = i === index ? '1' : '0';
+        });
+        
+        // Update thumbnail buttons
+        thumbnailButtons.forEach((btn, i) => {
+            btn.classList.toggle('bg-gray-600', i === index);
+            btn.classList.toggle('bg-gray-300', i !== index);
+        });
+        
+        // Ensure index wraps around
+        currentImageIndex = (index + images.length) % images.length;
+    }
+
+    // Navigation button event listeners
+    {% if product_images|length > 1 %}
+    prevButton.addEventListener('click', () => {
+        showImage(currentImageIndex - 1);
+    });
+
+    nextButton.addEventListener('click', () => {
+        showImage(currentImageIndex + 1);
+    });
+
+    // Thumbnail button event listeners
+    thumbnailButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const index = parseInt(btn.dataset.index);
+            showImage(index);
+        });
+    });
+    {% endif %}
+
+    // Description/Reviews Tab Switching
+    const descriptionTabs = document.querySelectorAll('.description-tab');
+    const descriptionContent = document.getElementById('description-content');
+    const reviewsContent = document.getElementById('reviews-content');
+
+    descriptionTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Reset tab styles
+            descriptionTabs.forEach(t => {
+                t.classList.remove('border-b-2', 'border-black', 'font-medium');
+                t.classList.add('text-gray-500');
+            });
+
+            // Style active tab
+            this.classList.add('border-b-2', 'border-black', 'font-medium');
+            this.classList.remove('text-gray-500');
+
+            // Toggle content
+            if (this.dataset.tab === 'description') {
+                descriptionContent.classList.remove('hidden');
+                reviewsContent.classList.add('hidden');
+            } else {
+                descriptionContent.classList.add('hidden');
+                reviewsContent.classList.remove('hidden');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

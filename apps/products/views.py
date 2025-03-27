@@ -4,6 +4,10 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from apps.users.forms import LoginForm, RegistrationForm
+from apps.products.forms import ProductFilterForm
+from apps.products.models import Product, ProductImage, Category
+from apps.cart.models import Cart, CartItem
+from apps.cart.forms import AddToCartForm
 
 from apps.products.models import Product, Category
 # from apps import QuantityForm
@@ -48,8 +52,54 @@ def register(request):
 def personal(request):
     return render(request,'products/personal.html')
 
-def itempage(request):
-    return render(request,'products/itempage.html')
+def products_detail(request, slug):
+    product = get_object_or_404(Product, slug=slug)
+    product_images = ProductImage.objects.filter(product=product)
+    
+    if request.method == 'POST':
+        # Ensure user is logged in
+        if not request.user.is_authenticated:
+            return redirect('products:register')  # Redirect to login page
+        
+        form = AddToCartForm(request.POST, product=product)
+        if form.is_valid():
+            # Get or create user's cart
+            cart, created = Cart.objects.get_or_create(user=request.user)
+            
+            # Check if item already in cart
+            cart_item, item_created = CartItem.objects.get_or_create(
+                cart=cart, 
+                product=product,
+                defaults={
+                    'quantity': form.cleaned_data['quantity'],
+                    'size': form.cleaned_data['size'],
+                    'color': form.cleaned_data['color']
+                }
+            )
+            
+            # If item already exists, update quantity
+            if not item_created:
+                cart_item.quantity += form.cleaned_data['quantity']
+                cart_item.save()
+            
+            return redirect('cart:cart_detail')  # Redirect to cart page
+    else:
+        form = AddToCartForm(product=product)
+    
+    context = {
+        'product': product,
+        'product_images': product_images,
+        'form': form
+    }
+    return render(request, 'products/product_detail.html', context)
+
+@login_required
+def add_to_wishlist(request, slug):
+    product = get_object_or_404(Product, slug=slug)
+    # Implement wishlist logic here
+    # This is a placeholder - you'll need to create a Wishlist model
+    return redirect('products:product_detail', slug=slug)
+
 
 def girlclothes(request):
     return render(request,'products/Girlclothes.html')
@@ -60,38 +110,16 @@ def questionnaire(request):
 def clothesadd(request):
     return render(request,'products/clothesadd.html')
 
-def paginat(request, list_objects):
-	p = Paginator(list_objects, 20)
-	page_number = request.GET.get('page')
-	try:
-		page_obj = p.get_page(page_number)
-	except PageNotAnInteger:
-		page_obj = p.page(1)
-	except EmptyPage:
-		page_obj = p.page(p.num_pages)
-	return page_obj
-
-
-def home_page(request):
-	products = Product.objects.all()
-	context = {'products': paginat(request ,products)}
-	return render(request, 'home_page.html', context)
-
-
-# def product_detail(request, slug):
-# 	# form = QuantityForm()
-# 	product = get_object_or_404(Product, slug=slug)
-# 	related_products = Product.objects.filter(category=product.category).all()[:5]
-# 	context = {
-# 		'title':product.title,
-# 		'product':product,
-# 		'form':form,
-# 		'favorites':'favorites',
-# 		'related_products':related_products
-# 	}
-# 	if request.user.likes.filter(id=product.id).first():
-# 		context['favorites'] = 'remove'
-# 	return render(request, 'product_detail.html', context)
+# def paginat(request, list_objects):
+# 	p = Paginator(list_objects, 20)
+# 	page_number = request.GET.get('page')
+# 	try:
+# 		page_obj = p.get_page(page_number)
+# 	except PageNotAnInteger:
+# 		page_obj = p.page(1)
+# 	except EmptyPage:
+# 		page_obj = p.page(p.num_pages)
+# 	return page_obj
 
 
 @login_required
@@ -115,25 +143,71 @@ def favorites(request):
 	return render(request, 'favorites.html', context)
 
 
-def search(request):
-	query = request.GET.get('q')
-	products = Product.objects.filter(title__icontains=query).all()
-	context = {'products': paginat(request ,products)}
-	return render(request, 'home_page.html', context)
+# def search(request):
+# 	query = request.GET.get('q')
+# 	products = Product.objects.filter(title__icontains=query).all()
+# 	context = {'products': paginat(request ,products)}
+# 	return render(request, 'home_page.html', context)
 
 
-def filter_by_category(request, slug):
-	"""when user clicks on parent category
-	we want to show all products in its sub-categories too
-	"""
-	result = []
-	category = Category.objects.filter(slug=slug).first()
-	[result.append(product) \
-		for product in Product.objects.filter(category=category.id).all()]
-	if not category.is_sub:
-		sub_categories = category.sub_categories.all()
-		for category in sub_categories:
-			[result.append(product) \
-				for product in Product.objects.filter(category=category).all()]
-	context = {'products': paginat(request ,result)}
-	return render(request, 'home_page.html', context)
+# def filter_by_category(request, slug):
+# 	"""when user clicks on parent category
+# 	we want to show all products in its sub-categories too
+# 	"""
+# 	result = []
+# 	category = Category.objects.filter(slug=slug).first()
+# 	[result.append(product) \
+# 		for product in Product.objects.filter(category=category.id).all()]
+# 	if not category.is_sub:
+# 		sub_categories = category.sub_categories.all()
+# 		for category in sub_categories:
+# 			[result.append(product) \
+# 				for product in Product.objects.filter(category=category).all()]
+# 	context = {'products': paginat(request ,result)}
+# 	return render(request, 'home_page.html', context)
+
+def product_list(request):
+    # Base queryset of all products
+    products = Product.objects.all()
+    
+    # Initialize filter form
+    filter_form = ProductFilterForm(request.GET)
+    
+    # Apply filters if form is valid
+    if filter_form.is_valid():
+        # Category filter
+        if filter_form.cleaned_data['category']:
+            products = products.filter(category=filter_form.cleaned_data['category'])
+        
+        # Price ordering
+        if filter_form.cleaned_data['price_order'] == 'low':
+            products = products.order_by('price')
+        elif filter_form.cleaned_data['price_order'] == 'high':
+            products = products.order_by('-price')
+        
+        # Discount filter
+        if filter_form.cleaned_data['discount_only']:
+            products = products.filter(discount_price__isnull=False)
+    
+    # Pagination
+    paginator = Paginator(products, 30)  # 30 items per page
+    
+    # Get the current page number
+    page = request.GET.get('page', 1)
+    
+    try:
+        # Try to get the specific page
+        paginated_products = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        paginated_products = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range, deliver last page of results
+        paginated_products = paginator.page(paginator.num_pages)
+    
+    context = {
+        'products': paginated_products,
+        'filter_form': filter_form,
+        'categories': Category.objects.all(),
+    }
+    return render(request, 'products/product_list.html', context)
