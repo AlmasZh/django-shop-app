@@ -2,7 +2,6 @@ from django.db import models
 from django.urls import reverse
 from django.template.defaultfilters import slugify
 
-
 class Category(models.Model):
     title = models.CharField(max_length=200, unique=True)
     sub_category = models.ForeignKey('self', on_delete=models.CASCADE, related_name='sub_categories', null=True, blank=True)
@@ -20,9 +19,11 @@ class Category(models.Model):
         return super().save(*args, **kwargs)
 
 class Product(models.Model):
+    user = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE, related_name='products', null=True, blank=True)  # Allow nullable user
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
 
     title = models.CharField(max_length=250)
+    brand_name = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     season = models.CharField(max_length=100, null=True, blank=True)

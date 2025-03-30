@@ -36,7 +36,7 @@
             <form method="post" action="{% url 'cart:add_to_cart' product.slug %}" class="flex space-x-4">
                 {% csrf_token %}
                 <div class="flex items-center space-x-2">
-                    <label for="quantity" class="sr-only">Quantity</label>
+                    {% comment %} <label for="quantity" class="sr-only">Quantity</label>
                     <input 
                         type="number" 
                         name="quantity" 
@@ -44,7 +44,7 @@
                         value="1" 
                         min="1" 
                         class="w-20 border rounded-md px-2 py-1"
-                    >
+                    > {% endcomment %}
                     <button 
                         type="submit" 
                         class="flex items-center justify-center w-12 h-12 border rounded-md hover:bg-gray-50 transition-colors"

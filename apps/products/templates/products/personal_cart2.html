@@ -1,0 +1,190 @@
+{% extends "products/personal.html" %}
+{% block content %}
+<div class="tab-content" id="cart">
+    <div class="flex flex-col lg:flex-row gap-6">
+        <!-- Left side - Cart items -->
+        <div class="flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <h1 class="text-2xl font-bold">Корзина <span class="text-gray-500 font-normal" id="items-count">3 товара</span></h1>
+          </div>
+          
+          <div class="flex items-center gap-4 mb-4">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" id="selectAll" class="h-4 w-4 rounded border-gray-300" onchange="toggleAllItems()">
+              <label for="selectAll" class="text-sm">Выбрать все</label>
+            </div>
+            <div class="flex items-center gap-1 text-gray-500">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+              </svg>
+              <span id="selected-count">0</span>
+            </div>
+            <div class="flex items-center gap-1 text-gray-500">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                <path d="M12 5v14M5 12h14"></path>
+              </svg>
+              <span id="total-count">3</span>
+            </div>
+          </div>
+          
+          <!-- Cart items -->
+          <div class="space-y-6" id="cart-items">
+            <!-- Item 1 -->
+            <div class="flex gap-4 pb-6 border-b" data-item-id="1" data-price="7740" data-original-price="7740">
+              <input type="checkbox" class="mt-1 h-4 w-4 rounded border-gray-300 item-checkbox" onchange="updateTotals()">
+              <div class="w-24 h-32 bg-gray-100 overflow-hidden">
+                <img src="/placeholder.svg?height=128&width=96" alt="Футболка Sela" class="object-cover w-full h-full">
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between">
+                  <div>
+                    <h3 class="font-medium">Футболка Sela</h3>
+                    <p class="text-sm text-gray-600">44/46 RUS (XS INT) • Бежевый</p>
+                  </div>
+                  <div class="flex items-start gap-2">
+                    <div class="text-right font-medium item-total-price" style="font-family: Microsoft Sans Serif;">7 740 ₸</div>
+                    <button class="text-gray-400 hover:text-red-500" onclick="removeItem(this.closest('[data-item-id]'))">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                        <path d="M3 6h18"></path>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="flex justify-end mt-4">
+                  <div class="flex items-center border rounded-md">
+                    <button class="px-3 py-1 text-gray-500" onclick="decreaseQuantity(this.closest('[data-item-id]'))">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                        <path d="M5 12h14"></path>
+                      </svg>
+                    </button>
+                    <span class="px-3 py-1 item-quantity">1</span>
+                    <button class="px-3 py-1 text-gray-500" onclick="increaseQuantity(this.closest('[data-item-id]'))">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                        <path d="M12 5v14M5 12h14"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Item 2 -->
+            <div class="flex gap-4 pb-6 border-b" data-item-id="2" data-price="62900" data-original-price="62900">
+              <input type="checkbox" class="mt-1 h-4 w-4 rounded border-gray-300 item-checkbox" onchange="updateTotals()">
+              <div class="w-24 h-32 bg-gray-100 overflow-hidden">
+                <img src="/placeholder.svg?height=128&width=96" alt="Кеды Vans" class="object-cover w-full h-full">
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between">
+                  <div>
+                    <h3 class="font-medium">Кеды Vans</h3>
+                    <p class="text-sm text-gray-600">43,5 RUS (M10,5/W12 US) • Черный</p>
+                  </div>
+                  <div class="flex items-start gap-2">
+                    <div class="text-right font-medium item-total-price" style="font-family: Microsoft Sans Serif;">62 900 ₸</div>
+                    <button class="text-gray-400 hover:text-red-500" onclick="removeItem(this.closest('[data-item-id]'))">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                        <path d="M3 6h18"></path>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="flex justify-end mt-4">
+                  <div class="flex items-center border rounded-md">
+                    <button class="px-3 py-1 text-gray-500" onclick="decreaseQuantity(this.closest('[data-item-id]'))">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                        <path d="M5 12h14"></path>
+                      </svg>
+                    </button>
+                    <span class="px-3 py-1 item-quantity">1</span>
+                    <button class="px-3 py-1 text-gray-500" onclick="increaseQuantity(this.closest('[data-item-id]'))">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                        <path d="M12 5v14M5 12h14"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Item 3 -->
+            <div class="flex gap-4 pb-6 border-b" data-item-id="3" data-price="9230" data-original-price="18470">
+              <input type="checkbox" class="mt-1 h-4 w-4 rounded border-gray-300 item-checkbox" onchange="updateTotals()">
+              <div class="w-24 h-32 bg-gray-100 overflow-hidden">
+                <img src="/placeholder.svg?height=128&width=96" alt="Кроссовки Demix" class="object-cover w-full h-full">
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between">
+                  <div>
+                    <h3 class="font-medium">Кроссовки Demix</h3>
+                    <p class="text-sm text-gray-600">42 RUS • Синий</p>
+                  </div>
+                  <div class="flex items-start gap-2">
+                    <div class="flex flex-col items-end">
+                      <div class="line-through text-gray-500 text-sm">18 470 ₸</div>
+                      <div class="text-right font-medium text-red-500 flex items-center">
+                        <span class="item-total-price" style="font-family: Microsoft Sans Serif;">9 230 ₸</span>
+                        <span class="ml-2 bg-red-500 text-white text-xs px-1 rounded">-50%</span>
+                      </div>
+                    </div>
+                    <button class="text-gray-400 hover:text-red-500" onclick="removeItem(this.closest('[data-item-id]'))">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                        <path d="M3 6h18"></path>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="flex justify-end mt-4">
+                  <div class="flex items-center border rounded-md">
+                    <button class="px-3 py-1 text-gray-500" onclick="decreaseQuantity(this.closest('[data-item-id]'))">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                        <path d="M5 12h14"></path>
+                      </svg>
+                    </button>
+                    <span class="px-3 py-1 item-quantity">1</span>
+                    <button class="px-3 py-1 text-gray-500" onclick="increaseQuantity(this.closest('[data-item-id]'))">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                        <path d="M12 5v14M5 12h14"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right side - Order summary -->
+        <div class="w-full lg:w-80 shrink-0">
+          <div class="border rounded-lg p-4">
+            <h2 class="text-lg font-medium mb-4">Сумма заказа</h2>
+            
+            <div class="space-y-2 mb-4">
+              <div class="flex justify-between">
+                <span id="summary-items-count">0 товаров</span>
+                <span id="summary-subtotal" style="font-family: Microsoft Sans Serif;">0 ₸</span>
+              </div>
+            </div>
+            
+            <div class="flex justify-between font-bold text-lg pt-3 border-t mb-1">
+              <span>Итого</span>
+              <span id="summary-total" style="font-family: Microsoft Sans Serif;">0 ₸</span>
+            </div>
+            <p class="text-xs text-gray-500 mb-4">Без учета возможной стоимости доставки</p>
+            
+            <button class="w-full bg-black text-white hover:bg-gray-800 rounded py-3 mb-4 px-4" id="checkout-button">
+              Перейти к оформлению
+              <span class="text-sm font-normal ml-1" id="checkout-count">0 товаров</span>
+            </button>
+          </div>
+        </div>
+      </div>
+</div>
+{% endblock %}

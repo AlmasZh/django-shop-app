@@ -1,0 +1,49 @@
+{% extends "products/personal.html" %}
+{% block content %}
+<!-- Вкладка "Моя одежда" для продавцов -->
+<div>
+    <h3 class="text-xl font-semibold mb-4">Моя одежда</h3>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+        <!-- Кнопка "Добавить еще" со знаком плюс -->
+        {% if user.is_manager and not user.is_staff %}
+        <a href="{% url 'products:questionnaire' %}">
+            <div class="bg-white rounded-md overflow-hidden border-2 border-dashed border-gray-300 flex flex-col items-center justify-center h-64 cursor-pointer hover:bg-gray-50 transition-colors">
+                <i class="fas fa-plus text-4xl text-gray-400 mb-2"></i>
+                <p class="text-gray-500 font-medium">Стать продавцом</p>
+            </div>
+        </a>
+        {% else %}
+        <a href="{% url 'products:add_product' %}">
+            <div class="bg-white rounded-md overflow-hidden border-2 border-dashed border-gray-300 flex flex-col items-center justify-center h-64 cursor-pointer hover:bg-gray-50 transition-colors">
+                <i class="fas fa-plus text-4xl text-gray-400 mb-2"></i>
+                <p class="text-gray-500 font-medium">Добавить еще</p>
+            </div>
+        </a>
+        {% endif %}
+
+        <!-- Существующие товары -->
+        {% for item in user_products %}
+        <a href="{% url "products:products_detail" item.slug %}">
+
+            <div class="flex flex-col justify-self-center items-start overflow-hidden">
+                {% if item.images %}
+                <img class="w-[240px] h-[350px] object-cover bg-gray-100" src="{{ item.images.0.url }}" alt="{{ item.title }}">
+                {% else %}
+                <div class="w-[240px] h-[350px] bg-gray-100 flex items-center justify-center text-gray-500">
+                    Нет изображения
+                </div>
+                {% endif %}
+                <div class="text-[18px]" style="font-family: Microsoft Sans Serif;">
+                    <p>{{ item.price }}₸</p>
+                    <p class="text-[15px]">{{ item.name }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center text-gray-500 py-8">
+                У вас пока нет добавленных товаров
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

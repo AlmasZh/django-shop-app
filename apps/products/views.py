@@ -6,7 +6,11 @@ from django.contrib.auth import authenticate, login
 from apps.users.forms import LoginForm, RegistrationForm
 from apps.products.forms import ProductFilterForm
 from apps.products.models import Product, ProductImage, Category
+from apps.users.forms import UserProfileUpdateForm
 from apps.cart.models import Cart, CartItem
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from .forms import ProductForm
+from apps.cart.forms import CartUpdateForm
 
 from apps.products.models import Product, Category
 # from apps import QuantityForm
@@ -70,10 +74,36 @@ def girlclothes(request):
 def questionnaire(request):
     return render(request,'products/questionnaire.html')
 
-def clothesadd(request):
-    return render(request,'products/clothesadd.html')
+def add_product(request):
+    """
+    View function to handle product creation.
+    
+    This view allows authenticated users to add new products to the system.
+    """
+    if request.method == 'POST':
+        # Pass the current user to the form during initialization
+        form = ProductForm(request.POST, request.FILES, user=request.user)
+        
+        if form.is_valid():
+            try:
+                # Save the product with the current user
+                product = form.save()
+                
+                messages.success(request, f'Product "{product.title}" was successfully added.')
+                return redirect('products:personal_my_products')
+            
+            except ValueError as e:
+                messages.error(request, str(e))
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    
+    else:
+        form = ProductForm()
+    return render(request, 'products/add_product.html', {
+        'form': form,
+        'categories': Category.objects.all()
+    })
 
-# def paginat(request, list_objects):
 # 	p = Paginator(list_objects, 20)
 # 	page_number = request.GET.get('page')
 # 	try:
@@ -174,3 +204,73 @@ def product_list(request):
         'categories': Category.objects.all(),
     }
     return render(request, 'products/product_list.html', context)
+
+
+def personal_orders(request):
+    return render(request, 'products/personal_orders.html')
+
+def personal_likes(request):
+    favorite_products = request.user.likes.all()
+    return render(request, 'products/personal_likes.html', {
+        'favorite_products': favorite_products
+    })
+
+def personal_cart(request):
+    cart = Cart.objects.get_or_create(user=request.user)[0]
+    
+    if request.method == 'POST':
+        form = CartUpdateForm(request.POST)
+        if form.is_valid():
+            product_id = form.cleaned_data['product_id']
+            quantity = form.cleaned_data['quantity']
+            remove = form.cleaned_data['remove']
+            
+            product = Product.objects.get(id=product_id)
+            
+            if remove:
+                CartItem.objects.filter(cart=cart, product=product).delete()
+            else:
+                cart_item, created = CartItem.objects.get_or_create(
+                    cart=cart, 
+                    product=product
+                )
+                cart_item.quantity = quantity
+                cart_item.save()
+            
+            return redirect('products:personal_cart')
+    
+    cart_items = cart.items.all()
+    total_price = cart.total_price()
+    
+    return render(request, 'products/personal_cart.html', {
+        'cart_items': cart_items,
+        'total_price': total_price,
+        'cart_update_form': CartUpdateForm()
+    })
+    return render(request, 'products/personal_cart.html')
+
+def personal_my_products(request): 
+    user_products = Product.objects.filter(user=request.user)
+    return render(request, 'products/personal_my_products.html', {
+        'user_products': user_products,
+        # 'user': request.user
+    })
+
+def personal_moderation(request):
+    return render(request, 'products/personal_moderation.html')
+
+def personal_update(request):
+    user = request.user  # Get the currently logged-in user
+    
+    if request.method == "POST":
+        form = UserProfileUpdateForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your profile has been updated successfully.")
+            return redirect("products:personal_orders")  # Redirect to the user's profile page
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = UserProfileUpdateForm(instance=user)
+
+    return render(request, "products/personal_update.html", {"form": form})

@@ -1,0 +1,131 @@
+{% extends "products/personal.html" %}
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex flex-col lg:flex-row gap-6">
+        <!-- Left side - Cart items -->
+        <div class="flex-1">
+            <h1 class="text-2xl font-bold mb-4">
+                Корзина 
+                <span class="text-gray-500 font-normal">
+                    {{ cart_items.count }} товара
+                </span>
+            </h1>
+            
+            {% if cart_items %}
+                {% for item in cart_items %}
+                <div class="flex gap-4 pb-6 border-b mb-4">
+                    <div class="w-24 h-32 bg-gray-100 overflow-hidden">
+                        {% with image=item.product.get_main_image %}
+                            {% if image %}
+                                <img src="{{ image.image.url }}" alt="{{ item.product.title }}" class="object-cover w-full h-full">
+                            {% else %}
+                                <div class="w-full h-full flex items-center justify-center text-gray-400">No Image</div>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                    
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <div>
+                                <h3 class="font-medium">{{ item.product.title }}</h3>
+                                <p class="text-sm text-gray-600">
+                                    {{ item.product.size }} • {{ item.product.color }}
+                                </p>
+                            </div>
+                            
+                            <div class="flex items-start gap-2">
+                                <div class="text-right font-medium">
+                                    {{ item.total_price }} ₸
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between mt-4">
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ cart_update_form.product_id }}
+                                {{ cart_update_form.remove }}
+                                
+                                <div class="flex items-center border rounded-md">
+                                    <button 
+                                        type="submit" 
+                                        name="quantity" 
+                                        value="{{ item.quantity|add:"-1" }}"
+                                        class="px-3 py-1 text-gray-500"
+                                    >
+                                        -
+                                    </button>
+                                    
+                                    <span class="px-3 py-1">
+                                        {{ item.quantity }}
+                                    </span>
+                                    
+                                    <button 
+                                        type="submit" 
+                                        name="quantity" 
+                                        value="{{ item.quantity|add:"1" }}"
+                                        class="px-3 py-1 text-gray-500"
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                                
+                                <input 
+                                    type="hidden" 
+                                    name="product_id" 
+                                    value="{{ item.product.id }}"
+                                >
+                                
+                                <button 
+                                    type="submit" 
+                                    name="remove" 
+                                    value="1" 
+                                    class="ml-2 text-red-500 hover:text-red-700"
+                                >
+                                    Удалить
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center text-gray-500">Ваша корзина пуста</p>
+            {% endif %}
+        </div>
+        
+        <!-- Right side - Order summary -->
+        <div class="w-full lg:w-80 shrink-0">
+            <div class="border rounded-lg p-4">
+                <h2 class="text-lg font-medium mb-4">Сумма заказа</h2>
+                
+                <div class="space-y-2 mb-4">
+                    <div class="flex justify-between">
+                        <span>{{ cart_items.count }} товаров</span>
+                        <span>{{ total_price }} ₸</span>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between font-bold text-lg pt-3 border-t mb-1">
+                    <span>Итого</span>
+                    <span>{{ total_price }} ₸</span>
+                </div>
+                
+                <p class="text-xs text-gray-500 mb-4">
+                    Без учета возможной стоимости доставки
+                </p>
+                
+                <a 
+                    {% comment %} href="{% url 'checkout:process' %}"  {% endcomment %}
+                    class="w-full bg-black text-white hover:bg-gray-800 rounded py-3 mb-4 px-4 text-center inline-block"
+                >
+                    Перейти к оформлению
+                    <span class="text-sm font-normal ml-1">
+                        {{ cart_items.count }} товаров
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

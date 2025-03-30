@@ -1,0 +1,24 @@
+{% extends "products/personal.html" %}
+{% block content %}
+<div class="p-8">
+    <div class="tab-content active" id="orders">
+        <h3 class="text-xl font-semibold mb-4">История заказов</h3>
+        <div class="space-y-4">
+            <div class="p-4 border rounded-md">
+                <p class="font-medium text-lg">Заказ #1234</p>
+                <p class="text-gray-500">Статус: В обработке</p>
+                <p class="text-gray-500">Дата: 15.03.2023</p>
+            </div>
+            <div class="p-4 border rounded-md">
+                <p class="font-medium text-lg">Заказ #1233</p>
+                <p class="text-gray-500">Статус: Доставлен</p>
+                <p class="text-gray-500">Дата: 02.03.2023</p>
+            </div>
+            <div class="p-4 border rounded-md">
+                <p class="font-medium text-lg">Заказ #1232</p>
+                <p class="text-gray-500">Статус: Доставлен</p>
+                <p class="text-gray-500">Дата: 25.02.2023</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

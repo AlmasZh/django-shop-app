@@ -1,0 +1,49 @@
+{% extends "products/personal.html" %}
+{% block content %}
+<div class="container mx-auto px-4">
+    <h3 class="text-xl font-semibold mb-4">Избранные товары</h3>
+    
+    {% if favorite_products %}
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+        {% for item in favorite_products %}
+        <div class="relative flex flex-col group">
+            <a href="{{ item.get_absolute_url }}" class="block">
+                <div class="relative">
+                    {% with main_image=item.get_main_image %}
+                        {% if main_image %}
+                            <img class="w-full h-[350px] object-cover bg-gray-100" src="{{ main_image.image.url }}" alt="{{ item.title }}">
+                        {% else %}
+                            <div class="w-full h-[350px] bg-gray-200 flex items-center justify-center">
+                                No Image
+                            </div>
+                            {% endif %}
+                        {% endwith %}
+                    
+                    <form method="post" action="{% url 'users:toggle_like' product_id=item.id %}" class="absolute top-2 right-2">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-white/70 rounded-full p-2 hover:bg-white transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" 
+                                 fill="{% if item in request.user.likes.all %}currentColor{% else %}none{% endif %}" 
+                                 viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </a>
+            
+            <div class="mt-2">
+                <p class="text-lg font-medium">{{ item.title }}</p>
+                <p class="text-base text-gray-600">{{ item.base_price }}₸</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-10 text-gray-500">
+        У вас пока нет избранных товаров
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

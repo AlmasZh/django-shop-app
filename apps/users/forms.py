@@ -91,3 +91,37 @@ class RegistrationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+class UserProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'phone_number', 'email']
+        widgets = {
+            'first_name': forms.TextInput(attrs={
+                'class': 'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500',
+                'placeholder': 'First Name'
+            }),
+            'last_name': forms.TextInput(attrs={
+                'class': 'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500',
+                'placeholder': 'Last Name'
+            }),
+            'phone_number': forms.TextInput(attrs={
+                'class': 'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500',
+                'placeholder': 'Phone Number',
+                'type': 'tel'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500',
+                'placeholder': 'Email Address'
+            })
+        }
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        user = self.instance
+        
+        # Check if email is already taken by another user
+        if CustomUser.objects.exclude(pk=user.pk).filter(email=email).exists():
+            raise forms.ValidationError("This email is already in use.")
+        
+        return email
