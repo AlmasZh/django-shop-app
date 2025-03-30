@@ -1,17 +1,6 @@
+{% extends "top_bar.html" %}
 {% load static %}
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-        <title>Vivid</title>
-        <link rel="stylesheet" href="{% static "output.css" %}" />
-        <script src="https://kit.fontawesome.com/1dceec0453.js" crossorigin="anonymous"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-    <link href='https://fonts.googleapis.com/css?family=Alata' rel='stylesheet'>
-    
-</head>
-<body>
-  {% include "products/header.html" %}
+{% block topbar %}
   <div class="Man-categories">
   <section class="w-full h-[500px] flex justify-center items-center mt-20 z-[10]">
     <div class="flex gap-4">
@@ -55,5 +44,4 @@
     </div>
   </section>
 </div>
-</body>
-</html>
+{% endblock  %}

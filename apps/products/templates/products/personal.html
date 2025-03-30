@@ -1,15 +1,7 @@
+{% extends "top_bar.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Профиль пользователя</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-</head>
-<body class="bg-white">
-    {% include "products/header.html" %}
+{% block title %}Профиль пользователя{% endblock  %}
+{% block topbar %}
     <div class="container mx-auto p-6">
         <!-- Панель без рамки -->
         <div class="bg-white rounded-lg w-full max-w-6xl mx-auto">
@@ -69,12 +61,11 @@
                         </a>
                         
                     </div>
-                    {% block content %}{% endblock %}
+                    {% block personal %}{% endblock %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 <script src="{%static 'js/personal.js'%}"></script>
-</body>
-</html>
+{% endblock  %}
