@@ -1,30 +1,33 @@
-{% extends 'products/base.html' %}
+{% extends 'top_bar.html' %}
 {% load static %}
 
-{% block content %}
-{% include "products/header.html" %}
+{% block topbar %}
 <div class="container mx-auto px-4 py-8 mt-5">
     <div class="flex flex-col lg:flex-row gap-8">
-        <!-- Image Gallery -->
-        <div class="lg:w-2/3 relative">
-            <div class="flex gap-4">
-                <button id="prev-image" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center z-10">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button id="next-image" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center z-10">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-                <div id="image-container" class="w-full flex flex-row justify-center gap-2 overflow-hidden">
-                    {% for image in product_images %}
-                        <img class="product-image w-[450px] h-[650px] object-cover bg-amber-300 {% if forloop.first %}active{% endif %}" 
-                             src="{{ image.image.url }}" 
-                             alt="{{ product.title }}">
-                    {% endfor %}
-                </div>
-            </div>
+<!-- Image Gallery -->
+<div class="lg:w-2/3 relative">
+    <!-- Wrapper to control visible area -->
+    <div class="w-[450px] overflow-hidden mx-auto">
+        <div id="image-container" class="flex flex-row gap-2 transition-transform duration-300 ease-in-out">
+            {% for image in product_images %}
+                <img class="product-image w-[450px] h-[650px] object-cover bg-amber-300" 
+                     src="{{ image.image.url }}" 
+                     alt="{{ product.title }}">
+            {% endfor %}
         </div>
+    </div>
+    <button id="prev-image" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center z-10">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <button id="next-image" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center z-10">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+</div>
 
-        <!-- Product Information -->
+<!-- Modal for full-size image view -->
+<div id="image-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+    <img id="modal-image" src="" alt="Full size image" class="max-w-full max-h-full">
+</div>        <!-- Product Information -->
         <div class="lg:w-1/3 space-y-6">
             <div>
                 <h1 class="text-3xl font-bold mb-2">{{ product.title }}</h1>
@@ -76,8 +79,8 @@
                         <span>100% Cotton</span>
                     </div>
                     <div class="flex justify-between border-b pb-2">
-                        <span class="text-gray-600">Lining</span>
-                        <span>No Lining</span>
+                        <span class="text-gray-600">Gender</span>
+                        <span>{{ product.get_gender_display }}</span>
                     </div>
                     <div class="flex justify-between border-b pb-2">
                         <span class="text-gray-600">Season</span>
@@ -129,79 +132,56 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block extra_js %}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const images = document.querySelectorAll('.product-image');
-    const prevButton = document.getElementById('prev-image');
-    const nextButton = document.getElementById('next-image');
-    const thumbnailButtons = document.querySelectorAll('.thumbnail-btn');
-    let currentImageIndex = 0;
-
-    function showImage(index) {
-        // Hide all images
-        images.forEach((img, i) => {
-            img.style.opacity = i === index ? '1' : '0';
+    document.addEventListener('DOMContentLoaded', function() {
+        // Carousel functionality
+        const container = document.getElementById('image-container');
+        const images = document.querySelectorAll('.product-image');
+        if (images.length === 0) return; // Exit if no images
+    
+        let currentIndex = 0;
+        const step = images.length > 1 ? images[1].offsetLeft - images[0].offsetLeft : 0; // Distance between images (width + gap)
+    
+        const prevButton = document.getElementById('prev-image');
+        const nextButton = document.getElementById('next-image');
+    
+        function updateTransform() {
+            container.style.transform = `translateX(-${currentIndex * step}px)`;
+        }
+    
+        prevButton.addEventListener('click', function() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateTransform();
+            }
         });
-        
-        // Update thumbnail buttons
-        thumbnailButtons.forEach((btn, i) => {
-            btn.classList.toggle('bg-gray-600', i === index);
-            btn.classList.toggle('bg-gray-300', i !== index);
+    
+        nextButton.addEventListener('click', function() {
+            if (currentIndex < images.length - 1) {
+                currentIndex++;
+                updateTransform();
+            }
         });
-        
-        // Ensure index wraps around
-        currentImageIndex = (index + images.length) % images.length;
-    }
-
-    // Navigation button event listeners
-    {% if product_images|length > 1 %}
-    prevButton.addEventListener('click', () => {
-        showImage(currentImageIndex - 1);
-    });
-
-    nextButton.addEventListener('click', () => {
-        showImage(currentImageIndex + 1);
-    });
-
-    // Thumbnail button event listeners
-    thumbnailButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const index = parseInt(btn.dataset.index);
-            showImage(index);
-        });
-    });
-    {% endif %}
-
-    // Description/Reviews Tab Switching
-    const descriptionTabs = document.querySelectorAll('.description-tab');
-    const descriptionContent = document.getElementById('description-content');
-    const reviewsContent = document.getElementById('reviews-content');
-
-    descriptionTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            // Reset tab styles
-            descriptionTabs.forEach(t => {
-                t.classList.remove('border-b-2', 'border-black', 'font-medium');
-                t.classList.add('text-gray-500');
+    
+        // Initialize position
+        updateTransform();
+    
+        // Image view modal functionality
+        images.forEach(function(image) {
+            image.addEventListener('click', function() {
+                const modal = document.getElementById('image-modal');
+                const modalImage = document.getElementById('modal-image');
+                modalImage.src = this.src;
+                modal.classList.remove('hidden');
             });
-
-            // Style active tab
-            this.classList.add('border-b-2', 'border-black', 'font-medium');
-            this.classList.remove('text-gray-500');
-
-            // Toggle content
-            if (this.dataset.tab === 'description') {
-                descriptionContent.classList.remove('hidden');
-                reviewsContent.classList.add('hidden');
-            } else {
-                descriptionContent.classList.add('hidden');
-                reviewsContent.classList.remove('hidden');
+        });
+    
+        // Close modal when clicking outside the image
+        document.getElementById('image-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
             }
         });
     });
-});
 </script>
 {% endblock %}

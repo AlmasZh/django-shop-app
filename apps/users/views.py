@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 from django.http import HttpResponse
 from apps.products.models import Product
 from .forms import UserProfileUpdateForm
@@ -10,6 +11,11 @@ from django.contrib import messages
 # Create your views here.
 def index(request):
     return render(request, 'users/index.html')
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return redirect('products:home')
 
 @login_required
 def update_profile(request):

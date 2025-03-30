@@ -18,6 +18,7 @@ fake = Faker()
 
 # Define lists for random attributes
 SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL']
+GENDER = ['men', 'women', 'unisex']
 COLORS = [
     'Red', 'Blue', 'Green', 'Yellow', 'Black', 'White', 'Gray', 
     'Navy', 'Purple', 'Pink', 'Orange', 'Brown', 'Beige'
@@ -107,6 +108,7 @@ def create_products(categories, num_products=300):
             slug=unique_slug,
             # Add random attributes
             size=random.choice(SIZES),
+            gender=random.choice(GENDER),
             color=random.choice(COLORS),
             season=random.choice(SEASONS),
             pattern=random.choice(PATTERNS),

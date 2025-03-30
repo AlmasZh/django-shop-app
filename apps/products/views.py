@@ -27,6 +27,8 @@ def categories(request):
 def register(request):
     register_form = RegistrationForm()
     form = LoginForm()
+    if request.user.is_authenticated:
+        return redirect('products:personal_orders')
 
     if request.method == 'POST':
         print(request.POST)

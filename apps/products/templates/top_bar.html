@@ -31,7 +31,7 @@
 						/>
 					</svg>
 				</a>
-				<a onclick="openFavoritesTab()" href="{% url 'products:personal_likes' %}">
+				<a href="{% url 'products:personal_likes' %}">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
@@ -47,7 +47,7 @@
 						/>
 					</svg>
 				</a>
-				<a href="">
+				<a href="{% url "products:personal_cart" %}">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
