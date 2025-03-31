@@ -170,53 +170,44 @@ def product_list(request):
     
     # Apply filters if form is valid
     if filter_form.is_valid():
-        # Category filter
         if filter_form.cleaned_data['category']:
             products = products.filter(category=filter_form.cleaned_data['category'])
-        
-        # Gender filter: use form's gender if provided, otherwise use URL filter
         if filter_form.cleaned_data['gender']:
             products = products.filter(gender=filter_form.cleaned_data['gender'])
-
-        # Additional filters from form
         if filter_form.cleaned_data['color']:
             products = products.filter(color=filter_form.cleaned_data['color'])
         if filter_form.cleaned_data['size']:
             products = products.filter(size=filter_form.cleaned_data['size'])
-
-        # Price ordering
         if filter_form.cleaned_data['price_order'] == 'low':
             products = products.order_by('price')
         elif filter_form.cleaned_data['price_order'] == 'high':
             products = products.order_by('-price')
-        
-        # Discount filter
         if filter_form.cleaned_data['discount_only']:
             products = products.filter(discount_price__isnull=False)
     
     # Pagination
-    paginator = Paginator(products, 30)  # 30 items per page
-    
-    # Get the current page number
+    paginator = Paginator(products, 30)
     page = request.GET.get('page', 1)
-    
     try:
-        # Try to get the specific page
         paginated_products = paginator.page(page)
     except PageNotAnInteger:
-        # If page is not an integer, deliver first page
         paginated_products = paginator.page(1)
     except EmptyPage:
-        # If page is out of range, deliver last page of results
         paginated_products = paginator.page(paginator.num_pages)
+    
+    # Create query string without 'page'
+    query_params = request.GET.copy()
+    if 'page' in query_params:
+        del query_params['page']
+    query_string = query_params.urlencode()
     
     context = {
         'products': paginated_products,
         'filter_form': filter_form,
         'categories': Category.objects.all(),
+        'query_string': query_string,
     }
     return render(request, 'products/product_list.html', context)
-
 
 def personal_orders(request):
     return render(request, 'products/personal_orders.html')

@@ -55,12 +55,12 @@
                 <!-- Pagination -->
                 <div class="flex justify-center items-center space-x-2 mt-8">
                     {% if products.has_previous %}
-                        <a href="?page=1{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" 
-                           class="px-3 py-2 bg-white border rounded-md hover:bg-gray-100">
+                        <a href="?{% if query_string %}{{ query_string }}&{% endif %}page=1" 
+                        class="px-3 py-2 bg-white border rounded-md hover:bg-gray-100">
                             <i class="fas fa-angle-double-left"></i>
                         </a>
-                        <a href="?page={{ products.previous_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" 
-                           class="px-3 py-2 bg-white border rounded-md hover:bg-gray-100">
+                        <a href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ products.previous_page_number }}" 
+                        class="px-3 py-2 bg-white border rounded-md hover:bg-gray-100">
                             <i class="fas fa-angle-left"></i>
                         </a>
                     {% endif %}
@@ -69,18 +69,18 @@
                         {% if products.number == num %}
                             <span class="px-4 py-2 bg-indigo-600 text-white rounded-md">{{ num }}</span>
                         {% elif num > products.number|add:"-3" and num < products.number|add:"3" %}
-                            <a href="?page={{ num }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" 
-                               class="px-4 py-2 bg-white border rounded-md hover:bg-gray-100">{{ num }}</a>
+                            <a href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ num }}" 
+                            class="px-4 py-2 bg-white border rounded-md hover:bg-gray-100">{{ num }}</a>
                         {% endif %}
                     {% endfor %}
 
                     {% if products.has_next %}
-                        <a href="?page={{ products.next_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" 
-                           class="px-3 py-2 bg-white border rounded-md hover:bg-gray-100">
+                        <a href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ products.next_page_number }}" 
+                        class="px-3 py-2 bg-white border rounded-md hover:bg-gray-100">
                             <i class="fas fa-angle-right"></i>
                         </a>
-                        <a href="?page={{ products.paginator.num_pages }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" 
-                           class="px-3 py-2 bg-white border rounded-md hover:bg-gray-100">
+                        <a href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ products.paginator.num_pages }}" 
+                        class="px-3 py-2 bg-white border rounded-md hover:bg-gray-100">
                             <i class="fas fa-angle-double-right"></i>
                         </a>
                     {% endif %}
