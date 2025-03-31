@@ -5,8 +5,9 @@
     <h3 class="text-xl font-semibold mb-4">Моя одежда</h3>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
         <!-- Кнопка "Добавить еще" со знаком плюс -->
-        {% if user.is_manager and not user.is_staff %}
-        <a href="{% url 'products:questionnaire' %}">
+        {% comment %} {% if user.is_manager and not user.is_staff %} {% endcomment %}
+        {% if not user.is_manager and not user.is_staff %}
+        <a href="{% url 'users:seller_application' %}">
             <div class="bg-white rounded-md overflow-hidden border-2 border-dashed border-gray-300 flex flex-col items-center justify-center h-64 cursor-pointer hover:bg-gray-50 transition-colors">
                 <i class="fas fa-plus text-4xl text-gray-400 mb-2"></i>
                 <p class="text-gray-500 font-medium">Стать продавцом</p>

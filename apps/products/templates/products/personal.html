@@ -60,12 +60,14 @@
                                 <span class="sm:inline text-sm">My clothes</span>
                             </button>
                         </a>
+                        {% if user.is_staff %}
                         <a href="{% url "products:personal_moderation" %}">
                             <button class="py-3 px-4 rounded-md flex flex-col items-center justify-center gap-2">
                                 <i class="fas fa-check-circle text-lg"></i>
                                 <span class="sm:inline text-sm">Moderation</span>
                             </button>
                         </a>
+                        {% endif %}
                         
                     </div>
                     {% block personal %}{% endblock %}
@@ -74,5 +76,5 @@
             </div>
         </div>
     </div>
-<script src="{%static 'js/personal.js'%}"></script>
+{% comment %} <script src="{%static 'js/personal.js'%}"></script> {% endcomment %}
 {% endblock  %}

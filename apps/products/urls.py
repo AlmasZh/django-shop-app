@@ -9,8 +9,7 @@ urlpatterns = [
     path('shop/',views.product_list, name="shop"),
     path('register/',views.register, name='register'),
     path('products_detail/<str:slug>', views.products_detail, name='products_detail'),
-    path('girlclothes/',views.girlclothes,name='girlclothes'),
-    path('questionnaire/',views.questionnaire,name='questionnaire'),
+    path('girlclothes/',views.girlclothes, name='girlclothes'),
     path('add_product/',views.add_product, name='add_product'),
 
     path('personal/update', views.personal_update, name="personal_update"),
@@ -23,6 +22,7 @@ urlpatterns = [
     # path('personal/my_products/<int:product_id>/edit', views.personal_my_products_edit, name="personal_my_products_edit"),
     # path('personal/my_products/<int:product_id>/delete', views.personal_my_products_delete, name="personal_my_products_delete"),
     path('personal/moderation.html', views.personal_moderation, name="personal_moderation"),
+    path('personal/moderation/<int:application_id>/<str:action>', views.update_application_status, name="update_application_status"),
 ]
 
 

@@ -1,5 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from apps.users.models import SellerApplication
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -23,6 +27,12 @@ def manclothes(request):
 
 def categories(request):
     return render(request,'products/categories.html')
+
+def girlclothes(request):
+    return render(request,'products/Girlclothes.html')
+
+def personal(request):
+    return render(request,'products/personal.html')
 
 def register(request):
     register_form = RegistrationForm()
@@ -54,9 +64,6 @@ def register(request):
                     return redirect('products:home')  # Redirect to home page after login
     return render(request, 'products/Register.html', {'form': form, 'register_form': register_form})
 
-def personal(request):
-    return render(request,'products/personal.html')
-
 def products_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
     product_images = ProductImage.objects.filter(product=product)
@@ -68,11 +75,6 @@ def products_detail(request, slug):
     }
     return render(request, 'products/product_detail.html', context)
 
-def girlclothes(request):
-    return render(request,'products/Girlclothes.html')
-
-def questionnaire(request):
-    return render(request,'products/questionnaire.html')
 
 def add_product(request):
     if request.method == 'POST':
@@ -216,9 +218,6 @@ def personal_my_products(request):
         'user_products': user_products,
     })
 
-def personal_moderation(request):
-    return render(request, 'products/personal_moderation.html')
-
 def personal_update(request):
     user = request.user  # Get the currently logged-in user
     
@@ -234,3 +233,32 @@ def personal_update(request):
         form = UserProfileUpdateForm(instance=user)
 
     return render(request, "products/personal_update.html", {"form": form})
+
+##
+
+def is_admin(user):
+    return user.is_staff or user.is_manager
+
+@login_required
+@user_passes_test(is_admin)
+def personal_moderation(request):
+    applications = SellerApplication.objects.all().select_related('user')
+    return render(request, 'products/personal_moderation.html', {'applications': applications})
+
+@login_required
+@user_passes_test(is_admin)
+def update_application_status(request, application_id, action):
+    if request.method != 'POST':
+        try:
+            application = SellerApplication.objects.get(id=application_id)
+            if action == 'approve':
+                application.status = 'approved'
+            elif action == 'reject':
+                application.status = 'rejected'
+            else:
+                return messages.error(request, 'Invalid action')
+            application.save()
+            messages.success(request, 'Application status updated successfully')
+            return redirect('products:personal_moderation') 
+        except SellerApplication.DoesNotExist:
+            return messages.error(request, 'Application not found')

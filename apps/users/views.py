@@ -2,11 +2,10 @@ from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from django.http import HttpResponse
 from apps.products.models import Product
-from .forms import UserProfileUpdateForm
+from .forms import UserProfileUpdateForm, SellerApplicationForm
 from django.contrib import messages
-
+from .models import SellerApplication
 
 # Create your views here.
 def index(request):
@@ -43,3 +42,22 @@ def toggle_like(request, product_id):
     # return HttpResponse()
     return redirect('products:products_detail', slug=product.slug)
 
+@login_required
+def seller_application(request):
+    if request.method == 'POST':
+        form = SellerApplicationForm(request.POST)
+        if form.is_valid():
+            application = form.save(commit=False)
+            if request.user.is_manager or request.user.is_staff:
+                messages.error(request, 'You are already a seller!')
+                return redirect('products:personal_my_products')
+            if SellerApplication.objects.filter(user=request.user).exists():
+                messages.error(request, 'You have already applied to be a seller!')
+                return redirect('products:personal_my_products')
+            application.user = request.user
+            application.save()
+            return redirect('products:personal_my_products')  # Define this URL later
+    else:
+        form = SellerApplicationForm(user=request.user)
+    
+    return render(request, 'users/seller_application.html', {'form': form})

@@ -40,4 +40,16 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
     def __str__(self):
         return self.email
-    
+
+class SellerApplication(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    description = models.TextField()
+    status = models.CharField(
+        max_length=20,
+        choices=[('pending', 'Pending'), ('approved', 'Approved'), ('rejected', 'Rejected')],
+        default='pending'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"

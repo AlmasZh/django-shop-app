@@ -5,3 +5,4 @@ Pillow
 djangorestframework
 pytest-django
 django-environ
+faker

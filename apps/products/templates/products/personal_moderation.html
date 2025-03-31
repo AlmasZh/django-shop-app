@@ -1,6 +1,5 @@
 {% extends "products/personal.html" %}
 {% block personal %}
-<!-- Вкладка "Модерация" для админов -->
 <div>
     <div class="bg-white border rounded-lg shadow-sm">
         <div class="px-6 py-4 border-b">
@@ -18,194 +17,178 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for application in applications %}
                     <tr class="border-b hover:bg-gray-50">
                         <td class="p-4">
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-medium">
-                                    AD
+                                    {{ application.user.first_name|first }}{{ application.user.last_name|first }}
                                 </div>
                                 <div>
-                                    <div class="font-medium">Aubakir Dias</div>
-                                    <div class="text-sm text-gray-500">dias.aubakirov6@gmail.com</div>
+                                    <div class="font-medium">{{ application.user.first_name }} {{ application.user.last_name }}</div>
+                                    <div class="text-sm text-gray-500">{{ application.user.email }}</div>
                                 </div>
                             </div>
                         </td>
-                        <td class="p-4">+87478301987</td>
-                        <td class="p-4">2025-03-10</td>
+                        <td class="p-4">{{ application.user.phone_number }}</td>
+                        <td class="p-4">{{ application.created_at|date:"Y-m-d" }}</td>
                         <td class="p-4">
-                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">
-                                Rejected
-                            </span>
-                        </td>
-                        <td class="p-4">
-                            <div class="flex justify-end">
-                                <button class="p-1 hover:bg-gray-100 rounded-full view-application" data-id="1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="p-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-medium">
-                                    ZhA
-                                </div>
-                                <div>
-                                    <div class="font-medium">Zhakanov Almaz</div>
-                                    <div class="text-sm text-gray-500">Almas.Zhakanov@gmail.com</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="p-4">+880035353555</td>
-                        <td class="p-4">2025-03-11</td>
-                        <td class="p-4">
-                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">
-                                Pending
+                            <span class="px-2 py-1 text-xs font-medium rounded-full 
+                                {% if application.status == 'rejected' %}bg-red-100 text-red-800{% endif %}
+                                {% if application.status == 'pending' %}bg-yellow-100 text-yellow-800{% endif %}
+                                {% if application.status == 'approved' %}bg-green-100 text-green-800{% endif %}">
+                                {{ application.status|capfirst }}
                             </span>
                         </td>
                         <td class="p-4">
                             <div class="flex justify-end gap-1">
-                                <button class="p-1 hover:bg-gray-100 rounded-full view-application" data-id="2">
+                                <button class="p-1 hover:bg-gray-100 rounded-full view-application" data-id="{{ application.id }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
                                 </button>
-                                <button class="p-1 hover:bg-green-50 rounded-full text-green-600 approve-application" data-id="2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                </button>
-                                <button class="p-1 hover:bg-red-50 rounded-full text-red-600 reject-application" data-id="2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                                </button>
+                                {% if application.status == 'pending' %}
+                                <a href="{% url "products:update_application_status" application.id 'approve' %}">
+                                    <button class="p-1 hover:bg-green-50 rounded-full text-green-600 approve-application" data-id="{{ application.id }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </button>
+                                </a>
+                                <a href="{% url "products:update_application_status" application.id 'reject' %}">
+                                    <button class="p-1 hover:bg-red-50 rounded-full text-red-600 reject-application" data-id="{{ application.id }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    </button>
+                                </a>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="p-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-medium">
-                                    TN
+
+
+                    <!-- Application Modal -->
+                    <div id="application-modal-{{application.id}}" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden modal opacity-0 transition-opacity duration-300">
+                        <div class="bg-white rounded-lg shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-4">
+                                    <h3 class="text-lg font-semibold">Application Details</h3>
+                                    <button class="text-gray-500 hover:text-gray-700 close-modal" data-id="{{ application.id }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M18 6 6 18"></path>
+                                            <path d="m6 6 12 12"></path>
+                                        </svg>
+                                    </button>
                                 </div>
-                                <div>
-                                    <div class="font-medium">Tolymbek Nurtai</div>
-                                    <div class="text-sm text-gray-500">david.chen@example.com</div>
+                                <div class="space-y-4">
+                                    <div class="flex flex-col items-center gap-2 mb-4">
+                                        <div class="w-20 h-20 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl font-medium">
+                                            {{ application.user.first_name|first }}{{ application.user.last_name|first }}
+                                        </div>
+                                        <h3 class="text-xl font-semibold">{{application.user.first_name}} {{application.user.last_name}}</h3>
+                                        <span class="px-2 py-1 text-xs font-medium rounded-full 
+                                            {% if application.status == 'rejected' %}bg-red-100 text-red-800{% endif %}
+                                            {% if application.status == 'pending' %}bg-yellow-100 text-yellow-800{% endif %}
+                                            {% if application.status == 'approved' %}bg-green-100 text-green-800{% endif %}">
+                                            {{ application.status|capfirst }}
+                                        </span>
+                                    </div>
+                            
+                                    <div class="space-y-2">
+                                        <label class="text-sm font-medium">Email</label>
+                                        <div class="p-2 bg-gray-100 rounded-md">{{application.user.email}}</div>
+                                    </div>
+                                    
+                                    <div class="space-y-2">
+                                        <label class="text-sm font-medium">Phone</label>
+                                        <div class="p-2 bg-gray-100 rounded-md">{{application.user.phone_number}}</div>
+                                    </div>
+                                    
+                                    <div class="space-y-2">
+                                        <label class="text-sm font-medium">Store Description</label>
+                                        <div class="p-2 bg-gray-100 rounded-md whitespace-pre-wrap">
+                                            {{application.description}}
+                                        </div>
+                                    </div>
+                            
+                                </div>
+                                <div class="flex flex-col sm:flex-row gap-2 mt-6">
+                                    {% if application.status == 'pending' %}
+                                    <a href="{% url 'products:update_application_status' application.id 'approve' %}" class="w-full">
+                                        <button class="w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded-md font-medium">
+                                            Approve
+                                        </button>
+                                    </a>
+                                    <a href="{% url 'products:update_application_status' application.id 'reject' %}" class="w-full">
+                                        <button class="w-full py-2 px-4 bg-red-600 hover:bg-red-700 text-white rounded-md font-medium">
+                                            Reject
+                                        </button>
+                                    </a>
+                                    {% endif %}
                                 </div>
                             </div>
-                        </td>
-                        <td class="p-4">+774712309</td>
-                        <td class="p-4">2025-03-12</td>
-                        <td class="p-4">
-                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">
-                                Pending
-                            </span>
-                        </td>
-                        <td class="p-4">
-                            <div class="flex justify-end gap-1">
-                                <button class="p-1 hover:bg-gray-100 rounded-full view-application" data-id="3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                                </button>
-                                <button class="p-1 hover:bg-green-50 rounded-full text-green-600 approve-application" data-id="3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                </button>
-                                <button class="p-1 hover:bg-red-50 rounded-full text-red-600 reject-application" data-id="3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                                </button>
-                            </div>
-                        </td>
+                        </div>
+                    </div>
+                    <!-- End Application Modal -->
+
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="p-4 text-center text-gray-500">No applications found</td>
                     </tr>
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="p-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-medium">
-                                    SG
-                                </div>
-                                <div>
-                                    <div class="font-medium">Satoru Gojo</div>
-                                    <div class="text-sm text-gray-500">Satoru@gmail.com</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="p-4">+1 (555) 234-5678</td>
-                        <td class="p-4">2025-03-13</td>
-                        <td class="p-4">
-                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">
-                                Pending
-                            </span>
-                        </td>
-                        <td class="p-4">
-                            <div class="flex justify-end gap-1">
-                                <button class="p-1 hover:bg-gray-100 rounded-full view-application" data-id="4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                                </button>
-                                <button class="p-1 hover:bg-green-50 rounded-full text-green-600 approve-application" data-id="4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                </button>
-                                <button class="p-1 hover:bg-red-50 rounded-full text-red-600 reject-application" data-id="4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-gray-50">
-                        <td class="p-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-medium">
-                                    DT
-                                </div>
-                                <div>
-                                    <div class="font-medium">Donald Trump</div>
-                                    <div class="text-sm text-gray-500">american.president@gmail.com</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="p-4">+1 (555) 876-5432</td>
-                        <td class="p-4">2025-03-14</td>
-                        <td class="p-4">
-                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">
-                                Pending
-                            </span>
-                        </td>
-                        <td class="p-4">
-                            <div class="flex justify-end gap-1">
-                                <button class="p-1 hover:bg-gray-100 rounded-full view-application" data-id="5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                                </button>
-                                <button class="p-1 hover:bg-green-50 rounded-full text-green-600 approve-application" data-id="5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                </button>
-                                <button class="p-1 hover:bg-red-50 rounded-full text-red-600 reject-application" data-id="5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Modal for application details -->
-    <div id="application-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden modal opacity-0">
-        <div class="bg-white rounded-lg shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div class="p-6">
-                <div class="flex justify-between items-start mb-4">
-                    <h3 class="text-lg font-semibold">Application Details</h3>
-                    <button id="close-modal" class="text-gray-500 hover:text-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 6 6 18"></path>
-                            <path d="m6 6 12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-                
-                <div id="modal-content" class="space-y-4">
-                    <!-- Modal content will be populated by JavaScript -->
-                </div>
-                
-                <div class="flex flex-col sm:flex-row gap-2 mt-6" id="modal-actions">
-                    <!-- Modal actions will be populated by JavaScript -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div> 
+</div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all view application buttons
+        const viewButtons = document.querySelectorAll('.view-application');
+        const closeButtons = document.querySelectorAll('.close-modal');
+        
+        // Open modal when view button is clicked
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const applicationId = this.getAttribute('data-id');
+                const modal = document.getElementById(`application-modal-${applicationId}`);
+                
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    // Add a small delay before showing for smooth animation
+                    setTimeout(() => {
+                        modal.classList.remove('opacity-0');
+                    }, 10);
+                }
+            });
+        });
+        
+        // Close modal when close button is clicked
+        closeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const applicationId = this.getAttribute('data-id');
+                const modal = document.getElementById(`application-modal-${applicationId}`);
+                
+                if (modal) {
+                    closeModal(modal);
+                }
+            });
+        });
+        
+        // Close modal when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal(this);
+                }
+            });
+        });
+        
+        function closeModal(modal) {
+            // First fade out
+            modal.classList.add('opacity-0');
+            // Then hide after transition
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300); // Match this with the CSS transition time
+        }
+    });
+</script>
 {% endblock %}

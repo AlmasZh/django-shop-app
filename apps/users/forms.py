@@ -1,6 +1,7 @@
 from django import forms
 from apps.users.models import CustomUser
 from django.core.exceptions import ValidationError
+from .models import SellerApplication
 from django.contrib.auth import authenticate
 
 style = 'w-full px-3 py-1 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500'
@@ -125,3 +126,20 @@ class UserProfileUpdateForm(forms.ModelForm):
             raise forms.ValidationError("This email is already in use.")
         
         return email
+
+class SellerApplicationForm(forms.ModelForm):
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user  # Store the user if needed
+    
+    class Meta:
+        model = SellerApplication
+        fields = ['description']
+        widgets = {
+            'description': forms.Textarea(attrs={
+                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[120px]',
+                'placeholder': 'Tell us about your store: what categories of clothes do you sell, what are the features?'
+            }),
+        }
+    
+    
