@@ -174,6 +174,16 @@ def product_list(request):
         if filter_form.cleaned_data['category']:
             products = products.filter(category=filter_form.cleaned_data['category'])
         
+        # Gender filter: use form's gender if provided, otherwise use URL filter
+        if filter_form.cleaned_data['gender']:
+            products = products.filter(gender=filter_form.cleaned_data['gender'])
+
+        # Additional filters from form
+        if filter_form.cleaned_data['color']:
+            products = products.filter(color=filter_form.cleaned_data['color'])
+        if filter_form.cleaned_data['size']:
+            products = products.filter(size=filter_form.cleaned_data['size'])
+
         # Price ordering
         if filter_form.cleaned_data['price_order'] == 'low':
             products = products.order_by('price')
@@ -249,7 +259,6 @@ def personal_cart(request):
         'total_price': total_price,
         'cart_update_form': CartUpdateForm()
     })
-    return render(request, 'products/personal_cart.html')
 
 def personal_my_products(request): 
     user_products = Product.objects.filter(user=request.user)

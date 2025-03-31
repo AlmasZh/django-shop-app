@@ -16,6 +16,15 @@ class ProductFilterForm(forms.Form):
         required=False, 
         empty_label="All Categories"
     )
+    gender = forms.ChoiceField(
+        choices=[
+            ('unisex', 'Unisex'),
+            ('men', 'Men'),
+            ('women', 'Women'),
+        ],
+        required=False
+    )
+
     color = forms.ChoiceField(
         choices=[
             ('', 'All Colors'),
@@ -28,10 +37,13 @@ class ProductFilterForm(forms.Form):
     size = forms.ChoiceField(
         choices=[
             ('', 'All Sizes'),
+            ('XS', 'Extra Small'),
             ('S', 'Small'),
             ('M', 'Medium'),
             ('L', 'Large'),
             ('XL', 'Extra Large'),
+            ('XXL', 'Double Extra Large'),
+            ('3XL', 'Triple Extra Large'),
         ],
         required=False
     )
