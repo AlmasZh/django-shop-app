@@ -6,7 +6,8 @@ class CartUpdateForm(forms.Form):
     product_id = forms.IntegerField(widget=forms.HiddenInput())
     quantity = forms.IntegerField(
         min_value=1, 
-        initial=1, 
+        initial=1,
+        required=False,
         widget=forms.NumberInput(attrs={
             'class': 'px-3 py-1 border rounded-md w-16 text-center'
         })
