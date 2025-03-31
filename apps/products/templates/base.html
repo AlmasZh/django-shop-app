@@ -1,46 +1,69 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>{% block title %}{% endblock  %}</title>
-		<script>
-			tailwind.config = {
-				theme: {
-					extend: {
-						colors: {
-							primary: "#3b82f6",
-							muted: "#f3f4f6",
-							"muted-foreground": "#6b7280",
-						},
-					},
-				},
-			};
-		</script>
-
-		<style>
-			.tab-content {
-				display: none;
-			}
-			.tab-content.active {
-				display: block;
-			}
-			.tabs-trigger.active {
-				background-color: #ec85fe;
-				color: white;
-			}
-		</style>
-		<script src="https://cdn.tailwindcss.com"></script>
-		<script src="https://kit.fontawesome.com/1dceec0453.js" crossorigin="anonymous"></script>
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-		<link href='https://fonts.googleapis.com/css?family=Alata' rel='stylesheet'>
-		<script src="https://kit.fontawesome.com/1dceec0453.js" crossorigin="anonymous"></script>
-    
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-		<link rel="stylesheet" href="{% static "output.css" %}" />
-	</head>
-	<body>
-		{% block content %}{% endblock %}
-	</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{% block title %}{% endblock %}</title>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: "#3b82f6",
+                            muted: "#f3f4f6",
+                            "muted-foreground": "#6b7280",
+                        },
+                    },
+                },
+            };
+        </script>
+        <style>
+            .tab-content {
+                display: none;
+            }
+            .tab-content.active {
+                display: block;
+            }
+            .tabs-trigger.active {
+                background-color: #ec85fe;
+                color: white;
+            }
+        </style>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://kit.fontawesome.com/1dceec0453.js" crossorigin="anonymous"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+        <link href='https://fonts.googleapis.com/css?family=Alata' rel='stylesheet'>
+        <script src="https://kit.fontawesome.com/1dceec0453.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="{% static "output.css" %}" />
+    </head>
+    <body>
+        {% block content %}{% endblock %}
+        {% if messages %}
+        <div class="fixed bottom-4 right-4 space-y-2">
+            {% for message in messages %}
+            <div class="toast p-4 rounded shadow-lg flex items-center justify-between max-w-xs {% if message.tags == 'success' %}bg-green-500 text-white{% elif message.tags == 'error' %}bg-red-500 text-white{% else %}bg-blue-500 text-white{% endif %} transition-opacity duration-300">
+                <span>{{ message }}</span>
+                <button class="ml-4 text-white hover:text-gray-200 focus:outline-none" aria-label="Close" onclick="this.parentElement.classList.add('opacity-0'); setTimeout(() => { this.parentElement.style.display='none'; }, 300);">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const toasts = document.querySelectorAll('.toast');
+                toasts.forEach(toast => {
+                    setTimeout(() => {
+                        toast.classList.add('opacity-0');
+                        setTimeout(() => {
+                            toast.style.display = 'none';
+                        }, 300);
+                    }, 4000);
+                });
+            });
+        </script>
+    </body>
 </html>

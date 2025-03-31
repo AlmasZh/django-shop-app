@@ -9,7 +9,7 @@ from apps.products.models import Product, ProductImage, Category
 from apps.users.forms import UserProfileUpdateForm
 from apps.cart.models import Cart, CartItem
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from .forms import ProductForm
+from .forms import ProductForm, ProductImageFormSet
 from apps.cart.forms import CartUpdateForm
 
 from apps.products.models import Product, Category
@@ -68,8 +68,6 @@ def products_detail(request, slug):
     }
     return render(request, 'products/product_detail.html', context)
 
-
-
 def girlclothes(request):
     return render(request,'products/Girlclothes.html')
 
@@ -77,45 +75,23 @@ def questionnaire(request):
     return render(request,'products/questionnaire.html')
 
 def add_product(request):
-    """
-    View function to handle product creation.
-    
-    This view allows authenticated users to add new products to the system.
-    """
     if request.method == 'POST':
-        # Pass the current user to the form during initialization
-        form = ProductForm(request.POST, request.FILES, user=request.user)
-        
-        if form.is_valid():
-            try:
-                # Save the product with the current user
-                product = form.save()
-                
-                messages.success(request, f'Product "{product.title}" was successfully added.')
-                return redirect('products:personal_my_products')
-            
-            except ValueError as e:
-                messages.error(request, str(e))
-        else:
-            messages.error(request, 'Please correct the errors below.')
-    
+        form = ProductForm(request.POST, user=request.user)
+        image_formset = ProductImageFormSet(request.POST, request.FILES)
+        if form.is_valid() and image_formset.is_valid():
+            product = form.save()  # Save the product first
+            image_formset.instance = product  # Link the formset to the saved product
+            image_formset.save()  # Save all images
+            print("slug: ", product.slug)
+            return redirect('products:products_detail', slug=product.slug)  # Adjust redirect as needed
     else:
-        form = ProductForm()
+        form = ProductForm(user=request.user)
+        image_formset = ProductImageFormSet()
+    
     return render(request, 'products/add_product.html', {
         'form': form,
-        'categories': Category.objects.all()
+        'image_formset': image_formset
     })
-
-# 	p = Paginator(list_objects, 20)
-# 	page_number = request.GET.get('page')
-# 	try:
-# 		page_obj = p.get_page(page_number)
-# 	except PageNotAnInteger:
-# 		page_obj = p.page(1)
-# 	except EmptyPage:
-# 		page_obj = p.page(p.num_pages)
-# 	return page_obj
-
 
 @login_required
 def add_to_favorites(request, product_id):
@@ -142,23 +118,6 @@ def favorites(request):
 # 	query = request.GET.get('q')
 # 	products = Product.objects.filter(title__icontains=query).all()
 # 	context = {'products': paginat(request ,products)}
-# 	return render(request, 'home_page.html', context)
-
-
-# def filter_by_category(request, slug):
-# 	"""when user clicks on parent category
-# 	we want to show all products in its sub-categories too
-# 	"""
-# 	result = []
-# 	category = Category.objects.filter(slug=slug).first()
-# 	[result.append(product) \
-# 		for product in Product.objects.filter(category=category.id).all()]
-# 	if not category.is_sub:
-# 		sub_categories = category.sub_categories.all()
-# 		for category in sub_categories:
-# 			[result.append(product) \
-# 				for product in Product.objects.filter(category=category).all()]
-# 	context = {'products': paginat(request ,result)}
 # 	return render(request, 'home_page.html', context)
 
 def product_list(request):
@@ -255,7 +214,6 @@ def personal_my_products(request):
     user_products = Product.objects.filter(user=request.user)
     return render(request, 'products/personal_my_products.html', {
         'user_products': user_products,
-        # 'user': request.user
     })
 
 def personal_moderation(request):

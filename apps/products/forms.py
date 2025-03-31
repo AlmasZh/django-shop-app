@@ -1,7 +1,7 @@
 from django import forms
 from .models import Category, Product
 from .models import ProductImage
-from django.core.validators import FileExtensionValidator
+from django.forms.models import inlineformset_factory
 
 
 class ProductFilterForm(forms.Form):
@@ -57,15 +57,6 @@ class ProductFilterForm(forms.Form):
     )
 
 class ProductForm(forms.ModelForm):
-    PRODUCT_TYPES = [
-        ('tshirt', 'T-shirt'),
-        ('jeans', 'Jeans'),
-        ('dress', 'Dress'),
-        ('jacket', 'Jacket'),
-        ('shoes', 'Shoes'),
-        ('accessories', 'Accessories'),
-        ('perfume', 'Perfume'),
-    ]
     COLORS = [
         ('black', 'Black'),
         ('white', 'White'),
@@ -87,33 +78,32 @@ class ProductForm(forms.ModelForm):
         ('xl', 'XL'),
         ('xxl', 'XXL'),
     ]
-    
-    # Fields remain the same as in your original code
+
     title = forms.CharField(
-        max_length=200, 
+        max_length=200,
         widget=forms.TextInput(attrs={
-            'class': 'form-input', 
-            'placeholder': 'Enter brand name',
-            'id': 'brandName',
+            'class': 'form-input',
+            'placeholder': 'Enter product title',
+            'id': 'title',
             'required': True
         })
     )
     price = forms.DecimalField(
-        max_digits=10, 
-        decimal_places=2, 
+        max_digits=10,
+        decimal_places=2,
         widget=forms.NumberInput(attrs={
-            'class': 'form-input', 
+            'class': 'form-input',
             'placeholder': '0.00',
             'step': '0.01',
             'id': 'price',
             'required': True
         })
     )
-    product_category = forms.ChoiceField(
-        choices=PRODUCT_TYPES,
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.filter(is_sub=False),  # Only top-level categories
         widget=forms.Select(attrs={
             'class': 'form-select',
-            'id': 'productType',
+            'id': 'category',
             'required': True
         })
     )
@@ -136,55 +126,48 @@ class ProductForm(forms.ModelForm):
     description = forms.CharField(
         required=False,
         widget=forms.Textarea(attrs={
-            'class': 'form-textarea', 
+            'class': 'form-textarea',
             'rows': '3',
             'placeholder': 'Enter material details (e.g., 100% cotton, polyester blend, etc.)',
             'id': 'description'
         })
     )
-    image = forms.ImageField(
-        widget=forms.FileInput(attrs={
-            'class': 'file-input', 
-            'accept': 'image/*', 
-            'id': 'productImages'
-        })
-    )
-    
+
     class Meta:
         model = Product
-        fields = ['title', 'price', 'product_category', 'color', 'size', 'description', 'image']
-    
+        fields = ['title', 'price', 'category', 'color', 'size', 'description']
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-    
+
     def save(self, commit=True):
-        # Ensure a category is set - you might want to modify this logic
-        try:
-            category = Category.objects.first()
-            if not category:
-                raise ValueError("No categories exist. Please create a category first.")
-        except Category.DoesNotExist:
-            raise ValueError("No categories exist. Please create a category first.")
-        
-        # Save the product
         product = super().save(commit=False)
-        product.category = category
-        
-        # Set the user if provided
         if self.user:
             product.user = self.user
-        
         if commit:
             product.save()
-        
-        # Handle single image upload
-        image = self.cleaned_data.get('image')
-        if image:
-            ProductImage.objects.create(
-                product=product, 
-                image=image,
-                is_main=True  # First image is set as main
-            )
-        
         return product
+
+class ProductImageForm(forms.ModelForm):
+    class Meta:
+        model = ProductImage
+        fields = ['image', 'is_main']
+        widgets = {
+            'image': forms.FileInput(attrs={
+                'class': 'file-input',
+                'accept': 'image/*',
+                'id': 'productImage'
+            }),
+            'is_main': forms.CheckboxInput(attrs={
+                'class': 'form-checkbox'
+            })
+        }
+
+ProductImageFormSet = inlineformset_factory(
+    Product,
+    ProductImage,
+    form=ProductImageForm,
+    extra=3,  # Number of empty image forms to display by default
+    can_delete=False  # No deletion for simplicity; add True if you want to allow it
+)
