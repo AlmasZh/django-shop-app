@@ -46,12 +46,13 @@ def toggle_like(request, product_id):
 def seller_application(request):
     if request.method == 'POST':
         form = SellerApplicationForm(request.POST)
+        seller_app = SellerApplication.objects.filter(user=request.user, status='PENDING').first()
         if form.is_valid():
             application = form.save(commit=False)
             if request.user.is_manager or request.user.is_staff:
                 messages.error(request, 'You are already a seller!')
                 return redirect('products:personal_my_products')
-            if SellerApplication.objects.filter(user=request.user).exists():
+            if seller_app:
                 messages.error(request, 'You have already applied to be a seller!')
                 return redirect('products:personal_my_products')
             application.user = request.user

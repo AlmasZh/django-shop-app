@@ -251,8 +251,11 @@ def update_application_status(request, application_id, action):
     if request.method != 'POST':
         try:
             application = SellerApplication.objects.get(id=application_id)
+            user = application.user
             if action == 'approve':
                 application.status = 'approved'
+                user.is_manager = True
+                user.save()
             elif action == 'reject':
                 application.status = 'rejected'
             else:
