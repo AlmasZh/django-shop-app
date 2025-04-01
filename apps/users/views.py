@@ -60,5 +60,5 @@ def seller_application(request):
             return redirect('products:personal_my_products')  # Define this URL later
     else:
         form = SellerApplicationForm(user=request.user)
-    
+    1
     return render(request, 'users/seller_application.html', {'form': form})

@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.template.defaultfilters import slugify
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Category(models.Model):
     title = models.CharField(max_length=200, unique=True)
@@ -58,6 +59,15 @@ class Product(models.Model):
     
     def get_main_image(self):
         return self.images.filter(is_main=True).first() or self.images.first()
+    
+    def get_average_rating(self):
+        reviews = self.reviews.all()
+        if reviews.exists():
+            return round(sum(review.rating for review in reviews) / reviews.count(), 1)
+        return 0.0
+
+    def get_review_count(self):
+        return self.reviews.count()
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -70,3 +80,50 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"{self.product.title} - {self.id}"
+
+
+class Review(models.Model):
+    RATING_CHOICES = [
+        (1, '1 - Poor'),
+        (2, '2 - Fair'),
+        (3, '3 - Average'),
+        (4, '4 - Good'),
+        (5, '5 - Excellent'),
+    ]
+
+    product = models.ForeignKey(
+        Product, 
+        on_delete=models.CASCADE, 
+        related_name='reviews'
+    )
+    user = models.ForeignKey(
+        'users.CustomUser', 
+        on_delete=models.CASCADE, 
+        related_name='reviews'
+    )
+    
+    rating = models.PositiveSmallIntegerField(
+        choices=RATING_CHOICES,
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
+    title = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True
+    )
+    comment = models.TextField()
+    is_approved = models.BooleanField(default=False)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('-created_at',)
+        # Ensure one user can only leave one review per product
+        unique_together = ('user', 'product')
+
+    def __str__(self):
+        return f"Review for {self.product.title} by {self.user.first_name} {self.user.last_name} - {self.rating} stars"
+
+    def get_rating_display(self):
+        return dict(self.RATING_CHOICES).get(self.rating)

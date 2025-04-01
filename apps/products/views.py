@@ -1,22 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
-from apps.users.models import SellerApplication
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from apps.users.forms import LoginForm, RegistrationForm
-from apps.products.forms import ProductFilterForm
-from apps.products.models import Product, ProductImage, Category
-from apps.users.forms import UserProfileUpdateForm
+from django.db import IntegrityError
+from apps.users.models import SellerApplication
+from apps.users.forms import UserProfileUpdateForm, LoginForm, RegistrationForm
 from apps.cart.models import Cart, CartItem
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from .forms import ProductForm, ProductImageFormSet
 from apps.cart.forms import CartUpdateForm
+from .forms import ProductForm, ProductImageFormSet, ReviewForm, ProductFilterForm
+from .models import Product, ProductImage, Category, Review
 
-from apps.products.models import Product, Category
 # from apps import QuantityForm
 
 def home(request):
@@ -64,16 +58,77 @@ def register(request):
                     return redirect('products:home')  # Redirect to home page after login
     return render(request, 'products/Register.html', {'form': form, 'register_form': register_form})
 
+# def products_detail(request, slug):
+#     product = get_object_or_404(Product, slug=slug)
+#     product_images = ProductImage.objects.filter(product=product)
+    
+#     context = {
+#         'product': product,
+#         'product_images': product_images,
+#         'liked_products': request.user.likes.all() if request.user.is_authenticated else [],
+#     }
+#     return render(request, 'products/product_detail.html', context)
+
 def products_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
     product_images = ProductImage.objects.filter(product=product)
+    reviews = Review.objects.filter(product=product)
     
+    # Review form handling
+    review_form = ReviewForm()
+    if request.method == 'POST' and request.user.is_authenticated:
+        review_form = ReviewForm(request.POST)
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.product = product
+            review.user = request.user
+            try:
+                review.save()
+            except IntegrityError:
+                messages.error(request, 'You have already reviewed this product.')
+            else:
+                messages.success(request, 'Your review has been submitted for approval.')
+            return redirect('products:products_detail', slug=slug)
+
     context = {
         'product': product,
         'product_images': product_images,
+        'reviews': reviews,
+        'review_form': review_form,
         'liked_products': request.user.likes.all() if request.user.is_authenticated else [],
     }
+    print(reviews)
     return render(request, 'products/product_detail.html', context)
+
+@login_required
+def review_delete(request, slug, review_id):
+    product = get_object_or_404(Product, slug=slug)
+    review = get_object_or_404(Review, id=review_id, user=request.user)
+    if request.method == 'POST':
+        review.delete()
+        messages.success(request, 'Review deleted successfully.')
+    return redirect('products:products_detail', slug=slug)
+
+@login_required
+def review_edit(request, slug, review_id):
+    product = get_object_or_404(Product, slug=slug)
+    review = get_object_or_404(Review, id=review_id, user=request.user)
+    
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Review updated successfully.')
+            return redirect('products:products_detail', slug=slug)
+    else:
+        form = ReviewForm(instance=review)
+    
+    context = {
+        'product': product,
+        'review_form': form,
+        'review': review,
+    }
+    return render(request, 'products/review_edit.html', context)
 
 
 def add_product(request):

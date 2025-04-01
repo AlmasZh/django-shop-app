@@ -108,30 +108,117 @@
     </div>
 
     <!-- Brand and Description Section -->
-    <div class="mt-12">
-        <div class="border-b mb-6">
-            <div class="flex gap-8">
-                <button class="description-tab py-4 border-b-2 border-black font-medium" data-tab="description">
-                    About the Brand
-                </button>
-                <button class="description-tab py-4 text-gray-500" data-tab="reviews">
-                    Reviews ({{ reviews.count|default:0 }})
-                </button>
-            </div>
-        </div>
-        
-        <div id="description-content" class="block">
-            <p class="text-gray-600">
-                {{ product.description|default:"Vivid is all about comfort and style for everyday wear. The brand offers high-quality, versatile clothing designed for an active lifestyle. With a wide range of essentials and statement pieces, it's easy to create the perfect look for any occasion. Vivid – freedom in every detail." }}
-            </p>
-        </div>
-        
-        <div id="reviews-content" class="hidden">
-            <!-- Reviews will be dynamically loaded or statically rendered -->
-            <p class="text-gray-500">No reviews available.</p>
+
+    <!-- Add this to your existing CSS in the template -->
+<style>
+    .star-rating .star { color: #ccc; }
+    .star-rating .filled { color: #ffd700; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .review-card { border: 1px solid #eee; padding: 1rem; margin-bottom: 1rem; border-radius: 5px; }
+</style>
+
+<!-- Updated review section -->
+<div class="mt-12">
+    <div class="border-b mb-6">
+        <div class="flex gap-8">
+            <button class="description-tab py-4 border-b-2 border-black font-medium" data-tab="description">
+                About the Brand
+            </button>
+            <button class="description-tab py-4 text-gray-500" data-tab="reviews">
+                Reviews ({{ product.get_review_count }})
+                {% if product.get_average_rating > 0 %}
+                    - {{ product.get_average_rating }}/5
+                {% endif %}
+            </button>
         </div>
     </div>
+
+    <div id="description-content" class="tab-content active">
+        <p class="text-gray-600">
+            {{ product.description|default:"Vivid is all about comfort and style for everyday wear. The brand offers high-quality, versatile clothing designed for an active lifestyle. With a wide range of essentials and statement pieces, it's easy to create the perfect look for any occasion. Vivid – freedom in every detail." }}
+        </p>
+    </div>
+
+    <div id="reviews-content" class="tab-content">
+        {% if reviews.exists %}
+            {% for review in reviews %}
+                <div class="review-card">
+                    <div class="flex justify-between items-center mb-2">
+                        <div>
+                            <h4 class="font-medium">{{ review.title|default:"Review" }}</h4>
+                            <div class="star-rating">
+                                {% for i in "12345"|make_list %}
+                                    <span class="star {% if forloop.counter <= review.rating %}filled{% endif %}">★</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="text-gray-500 text-sm">
+                            {{ review.user.username }} - {{ review.created_at|date:"M d, Y" }}
+                            {% if request.user == review.user %}
+                                <div class="mt-2">
+                                    <a href="{% url 'products:review_edit' product.slug review.id %}" class="text-blue-500 text-sm">Edit</a>
+                                    <form action="{% url 'products:review_delete' product.slug review.id %}" method="post" class="inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="text-red-500 text-sm ml-2" onclick="return confirm('Are you sure?')">Delete</button>
+                                    </form>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <p class="text-gray-600">{{ review.comment }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-gray-500">No reviews available yet.</p>
+        {% endif %}
+
+        {% if request.user.is_authenticated %}
+            <div class="mt-6">
+                <h3 class="font-medium mb-2">Write a Review</h3>
+                <form method="post" class="space-y-4">
+                    {% csrf_token %}
+                    {{ review_form.as_p }}
+                    <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
+                        Submit Review
+                    </button>
+                </form>
+            </div>
+        {% else %}
+            <p class="mt-4 text-gray-500">Please <a href="{% url 'login' %}" class="text-blue-500">log in</a> to write a review.</p>
+        {% endif %}
+    </div>
 </div>
+
+<!-- JavaScript for tab switching -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.description-tab');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active states
+                tabs.forEach(t => {
+                    t.classList.remove('border-b-2', 'border-black', 'font-medium');
+                    t.classList.add('text-gray-500');
+                });
+                contents.forEach(c => c.classList.remove('active'));
+
+                // Add active states to clicked tab
+                this.classList.add('border-b-2', 'border-black', 'font-medium');
+                this.classList.remove('text-gray-500');
+
+                // Show corresponding content
+                const contentId = this.getAttribute('data-tab') + '-content';
+                document.getElementById(contentId).classList.add('active');
+            });
+        });
+    });
+</script>
+
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Carousel functionality

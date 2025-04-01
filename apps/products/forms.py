@@ -1,6 +1,6 @@
 from django import forms
 from .models import Category, Product
-from .models import ProductImage
+from .models import ProductImage, Review
 from django.forms.models import inlineformset_factory
 
 
@@ -171,3 +171,15 @@ ProductImageFormSet = inlineformset_factory(
     extra=3,  # Number of empty image forms to display by default
     can_delete=False  # No deletion for simplicity; add True if you want to allow it
 )
+
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['rating', 'title', 'comment']
+        widgets = {
+            'rating': forms.Select(attrs={'class': 'w-full p-2 border rounded'}),
+            'title': forms.TextInput(attrs={'class': 'w-full p-2 border rounded', 'placeholder': 'Review Title'}),
+            'comment': forms.Textarea(attrs={'class': 'w-full p-2 border rounded', 'rows': 4, 'placeholder': 'Write your review here...'}),
+        }

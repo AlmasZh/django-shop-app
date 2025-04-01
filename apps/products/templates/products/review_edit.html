@@ -1,0 +1,21 @@
+{% extends "top_bar.html" %}
+{% block topbar %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-4">Edit Review for {{ product.title }}</h1>
+    
+    <form method="post" class="space-y-4 max-w-2xl">
+        {% csrf_token %}
+        {{ review_form.as_p }}
+        <div class="flex gap-4">
+            <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
+                Save Changes
+            </button>
+            <a href="{% url 'products:products_detail' product.slug %}" 
+               class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+{% endblock  %}
