@@ -62,3 +62,95 @@ def seller_application(request):
         form = SellerApplicationForm(user=request.user)
     1
     return render(request, 'users/seller_application.html', {'form': form})
+
+
+#### API Views ####
+
+
+
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+from .models import CustomUser
+from .serializers import CustomUserSerializer
+
+class UserListCreateView(APIView):
+    @swagger_auto_schema(
+        responses={200: CustomUserSerializer(many=True)},
+        operation_description="Retrieve list of all users"
+    )
+    def get(self, request):
+        users = CustomUser.objects.all()
+        serializer = CustomUserSerializer(users, many=True)
+        return Response(serializer.data)
+
+    @swagger_auto_schema(
+        request_body=CustomUserSerializer,
+        responses={
+            201: CustomUserSerializer(),
+            400: 'Bad Request'
+        },
+        operation_description="Create a new user"
+    )
+    def post(self, request):
+        serializer = CustomUserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserDetailView(APIView):
+    def get_object(self, pk):
+        try:
+            return CustomUser.objects.get(pk=pk)
+        except CustomUser.DoesNotExist:
+            return None
+
+    @swagger_auto_schema(
+        responses={
+            200: CustomUserSerializer(),
+            404: 'Not Found'
+        },
+        operation_description="Retrieve a specific user"
+    )
+    def get(self, request, pk):
+        user = self.get_object(pk)
+        if user is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = CustomUserSerializer(user)
+        return Response(serializer.data)
+
+    @swagger_auto_schema(
+        request_body=CustomUserSerializer,
+        responses={
+            200: CustomUserSerializer(),
+            400: 'Bad Request',
+            404: 'Not Found'
+        },
+        operation_description="Update a specific user"
+    )
+    def put(self, request, pk):
+        user = self.get_object(pk)
+        if user is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = CustomUserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @swagger_auto_schema(
+        responses={
+            204: 'No Content',
+            404: 'Not Found'
+        },
+        operation_description="Delete a specific user"
+    )
+    def delete(self, request, pk):
+        user = self.get_object(pk)
+        if user is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

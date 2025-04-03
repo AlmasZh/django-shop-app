@@ -38,7 +38,8 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
-
+STRIPE_PUBLIC_KEY = "pk_test_51R9tUIRI1ZFDPB10n0eGVCfnb1EkP0oE3875Zcq4ekMbw11AM7JHI8fivQq036kG2zNAgXeC5T7kY6WS9SoEN8oE00WaKrXszG"
+STRIPE_SECRET_KEY = "sk_test_51R9tUIRI1ZFDPB10yGDfBTW8Ayi7Zc8G0hGjfWcaQ47YbK9Z24qeuKKLHeA3YeLoYgvyt566ky3RvG4L2Lx26GUH00jDSyPG8f"
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,6 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'drf_yasg',
     'apps.users',
     'apps.products',
     'apps.orders',

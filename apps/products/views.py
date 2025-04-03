@@ -383,3 +383,262 @@ def update_application_status(request, application_id, action):
             return redirect('products:personal_moderation') 
         except SellerApplication.DoesNotExist:
             return messages.error(request, 'Application not found')
+
+
+
+
+######## API Views ########
+
+
+
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+from .models import Category, Product
+from .serializers import CategorySerializer, ProductSerializer
+from .models import Review
+from .serializers import ReviewSerializer
+
+
+# Category Views
+class CategoryListCreateView(APIView):
+    @swagger_auto_schema(
+        responses={200: CategorySerializer(many=True)},
+        operation_description="Retrieve list of all categories"
+    )
+    def get(self, request):
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        return Response(serializer.data)
+
+    @swagger_auto_schema(
+        request_body=CategorySerializer,
+        responses={
+            201: CategorySerializer(),
+            400: 'Bad Request'
+        },
+        operation_description="Create a new category"
+    )
+    def post(self, request):
+        serializer = CategorySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CategoryDetailView(APIView):
+    def get_object(self, pk):
+        try:
+            return Category.objects.get(pk=pk)
+        except Category.DoesNotExist:
+            return None
+
+    @swagger_auto_schema(
+        responses={
+            200: CategorySerializer(),
+            404: 'Not Found'
+        },
+        operation_description="Retrieve a specific category"
+    )
+    def get(self, request, pk):
+        category = self.get_object(pk)
+        if category is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = CategorySerializer(category)
+        return Response(serializer.data)
+
+    @swagger_auto_schema(
+        request_body=CategorySerializer,
+        responses={
+            200: CategorySerializer(),
+            400: 'Bad Request',
+            404: 'Not Found'
+        },
+        operation_description="Update a specific category"
+    )
+    def put(self, request, pk):
+        category = self.get_object(pk)
+        if category is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = CategorySerializer(category, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @swagger_auto_schema(
+        responses={
+            204: 'No Content',
+            404: 'Not Found'
+        },
+        operation_description="Delete a specific category"
+    )
+    def delete(self, request, pk):
+        category = self.get_object(pk)
+        if category is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        category.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+# Product Views
+class ProductListCreateView(APIView):
+    @swagger_auto_schema(
+        responses={200: ProductSerializer(many=True)},
+        operation_description="Retrieve list of all products"
+    )
+    def get(self, request):
+        products = Product.objects.all()
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+
+    @swagger_auto_schema(
+        request_body=ProductSerializer,
+        responses={
+            201: ProductSerializer(),
+            400: 'Bad Request'
+        },
+        operation_description="Create a new product"
+    )
+    def post(self, request):
+        serializer = ProductSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ProductDetailView(APIView):
+    def get_object(self, pk):
+        try:
+            return Product.objects.get(pk=pk)
+        except Product.DoesNotExist:
+            return None
+
+    @swagger_auto_schema(
+        responses={
+            200: ProductSerializer(),
+            404: 'Not Found'
+        },
+        operation_description="Retrieve a specific product"
+    )
+    def get(self, request, pk):
+        product = self.get_object(pk)
+        if product is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = ProductSerializer(product)
+        return Response(serializer.data)
+
+    @swagger_auto_schema(
+        request_body=ProductSerializer,
+        responses={
+            200: ProductSerializer(),
+            400: 'Bad Request',
+            404: 'Not Found'
+        },
+        operation_description="Update a specific product"
+    )
+    def put(self, request, pk):
+        product = self.get_object(pk)
+        if product is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = ProductSerializer(product, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @swagger_auto_schema(
+        responses={
+            204: 'No Content',
+            404: 'Not Found'
+        },
+        operation_description="Delete a specific product"
+    )
+    def delete(self, request, pk):
+        product = self.get_object(pk)
+        if product is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+class ReviewListCreateView(APIView):
+    @swagger_auto_schema(
+        responses={200: ReviewSerializer(many=True)},
+        operation_description="Retrieve a list of all reviews ordered by creation date"
+    )
+    def get(self, request):
+        reviews = Review.objects.all()
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(serializer.data)
+
+    @swagger_auto_schema(
+        request_body=ReviewSerializer,
+        responses={
+            201: ReviewSerializer(),
+            400: 'Bad Request - Invalid data or duplicate review'
+        },
+        operation_description="Create a new review. Ensures unique user-product combination."
+    )
+    def post(self, request):
+        serializer = ReviewSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ReviewDetailView(APIView):
+    def get_object(self, pk):
+        try:
+            return Review.objects.get(pk=pk)
+        except Review.DoesNotExist:
+            return None
+
+    @swagger_auto_schema(
+        responses={
+            200: ReviewSerializer(),
+            404: 'Review not found'
+        },
+        operation_description="Retrieve a specific review by ID"
+    )
+    def get(self, request, pk):
+        review = self.get_object(pk)
+        if review is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = ReviewSerializer(review)
+        return Response(serializer.data)
+
+    @swagger_auto_schema(
+        request_body=ReviewSerializer,
+        responses={
+            200: ReviewSerializer(),
+            400: 'Bad Request - Invalid data',
+            404: 'Review not found'
+        },
+        operation_description="Update a specific review by ID"
+    )
+    def put(self, request, pk):
+        review = self.get_object(pk)
+        if review is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = ReviewSerializer(review, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @swagger_auto_schema(
+        responses={
+            204: 'Review deleted successfully',
+            404: 'Review not found'
+        },
+        operation_description="Delete a specific review by ID"
+    )
+    def delete(self, request, pk):
+        review = self.get_object(pk)
+        if review is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        review.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

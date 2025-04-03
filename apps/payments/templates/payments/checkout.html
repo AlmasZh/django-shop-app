@@ -1,0 +1,84 @@
+<!-- payments/templates/payments/checkout.html -->
+{% extends "products/personal.html" %}
+{% block personal %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-4">Оформление заказа</h1>
+
+    {% if messages %}
+        <div class="mb-4">
+            {% for message in messages %}
+                <div class="p-2 {% if message.tags == 'error' %}text-red-500{% else %}text-green-500{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form id="payment-form" method="post" class="flex flex-col gap-6">
+        {% csrf_token %}
+        
+        <div class="border rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-2">Billing Address</h2>
+            {{ billing_form.as_p }}
+        </div>
+
+        <div class="border rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-2">Shipping Address</h2>
+            {{ shipping_form.as_p }}
+        </div>
+
+        <div class="border rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-2">Payment Information</h2>
+            <div id="card-element" class="border p-2 rounded"></div>
+            <div id="card-errors" role="alert" class="text-red-500 mt-2"></div>
+        </div>
+
+        {% if order %}
+        <div class="text-lg font-bold">
+            Total: {{ order.get_total_price }} ₸
+        </div>
+        {% endif %}
+
+        <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">Pay Now</button>
+    </form>
+</div>
+
+<!-- Load Stripe.js -->
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    var stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
+    var elements = stripe.elements();
+    var card = elements.create('card', {
+        style: {
+            base: {
+                fontSize: '16px',
+                color: '#32325d',
+            },
+        },
+    });
+    card.mount('#card-element');
+
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        stripe.createToken(card).then(function(result) {
+            if (result.error) {
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error.message;
+            } else {
+                stripeTokenHandler(result.token);
+            }
+        });
+    });
+
+    function stripeTokenHandler(token) {
+        var form = document.getElementById('payment-form');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'stripeToken');
+        hiddenInput.setAttribute('value', token.id);
+        form.appendChild(hiddenInput);
+        form.submit();
+    }
+</script>
+{% endblock %}

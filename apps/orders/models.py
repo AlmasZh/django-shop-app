@@ -19,6 +19,9 @@ class Order(models.Model):
         'payments.Payment', on_delete=models.SET_NULL, blank=True, null=True)
     billing_address = models.ForeignKey(
         'payments.BillingAddress', on_delete=models.SET_NULL, blank=True, null=True)
+    shipping_address = models.ForeignKey(
+        'payments.BillingAddress', on_delete=models.SET_NULL, blank=True, null=True, related_name='shipping_orders'
+    )
     delivery_status = models.CharField(max_length=20, choices=DELIVERY_STATUS_CHOICES, default='pending')
     
 
