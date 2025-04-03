@@ -1,6 +1,7 @@
 from django.db import models
 from apps.users.models import CustomUser
 from apps.products.models import Product
+from decimal import Decimal
 
 # Create your models here.
 class Order(models.Model):

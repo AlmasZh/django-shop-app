@@ -1,0 +1,42 @@
+<!-- payments/templates/payments/order_create.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-4">Checkout</h1>
+
+    {% if messages %}
+        <div class="mb-4">
+            {% for message in messages %}
+                <div class="p-2 {% if message.tags == 'error' %}text-red-500{% else %}text-green-500{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-2">Order Summary</h2>
+        <ul>
+            {% for item in cart.items.all %}
+                <li>{{ item.product.title }} - {{ item.quantity }} x {{ item.product.price }} ₸</li>
+            {% endfor %}
+        </ul>
+        <p class="font-bold">Total: {{ cart.total_price }} ₸</p>
+    </div>
+
+    <form method="post" class="flex flex-col gap-6">
+        {% csrf_token %}
+        <div class="border rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-2">Billing Address</h2>
+            {{ billing_form.as_p }}
+        </div>
+        <div class="border rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-2">Shipping Address</h2>
+            {{ shipping_form.as_p }}
+        </div>
+        <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
+            Submit Order and Proceed to Payment
+        </button>
+    </form>
+</div>
+{% endblock %}

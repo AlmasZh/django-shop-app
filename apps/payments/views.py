@@ -2,17 +2,18 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from apps.cart.models import Cart
+from apps.orders.models import Order, OrderItem
+from .models import BillingAddress
 from .forms import BillingAddressForm
-from apps.orders.models import Order
-from .models import Payment
-import stripe
-from django.conf import settings
-
-# Replace with your actual Stripe secret key from settings
-stripe.api_key = settings.STRIPE_SECRET_KEY  # Ideally, use settings.STRIPE_SECRET_KEY
 
 @login_required
-def checkout_view(request):
+def order_create_view(request):
+    cart = Cart.objects.get(user=request.user)
+    if not cart.items.exists():
+        messages.error(request, 'Your cart is empty.')
+        return redirect('products:personal_cart')
+
     if request.method == 'POST':
         billing_form = BillingAddressForm(request.POST, prefix='billing')
         shipping_form = BillingAddressForm(request.POST, prefix='shipping')
@@ -20,67 +21,89 @@ def checkout_view(request):
             # Save billing address
             billing_address = billing_form.save(commit=False)
             billing_address.user = request.user
-            billing_address.address_type = 'B'  # Billing
+            billing_address.address_type = 'B'
             billing_address.save()
 
             # Save shipping address
             shipping_address = shipping_form.save(commit=False)
             shipping_address.user = request.user
-            shipping_address.address_type = 'S'  # Shipping
+            shipping_address.address_type = 'S'
             shipping_address.save()
 
-            try:
-                # Get the user's pending order
-                order = Order.objects.get(user=request.user, ordered=False)
-                order.billing_address = billing_address
-                order.shipping_address = shipping_address
-                order.save()
+            # Create new order
+            order = Order.objects.create(
+                user=request.user,
+                ordered=False,
+                delivery_status='pending',
+                billing_address=billing_address,
+                shipping_address=shipping_address
+            )
 
-                # Process payment with Stripe
-                stripe_token = request.POST.get('stripeToken')
-                if stripe_token:
-                    try:
-                        charge = stripe.Charge.create(
-                            amount=int(order.get_total_price * 100),  # Convert to cents
-                            currency='usd',  # Adjust currency as needed (e.g., 'kzt' for Kazakhstani Tenge)
-                            source=stripe_token,
-                            description=f'Charge for order {order.id}'
-                        )
-                        # Create payment record
-                        payment = Payment.objects.create(
-                            stripe_charge_id=charge.id,
-                            user=request.user,
-                            amount=order.get_total_price,
-                            status='completed'
-                        )
-                        # Update order
-                        order.payment = payment
-                        order.ordered = True
-                        order.save()
-                        messages.success(request, 'Your order was successfully placed!')
-                        return redirect('order_success')  # Define this URL later
-                    except stripe.error.StripeError as e:
-                        messages.error(request, f'Payment error: {str(e)}')
-                else:
-                    messages.error(request, 'Invalid payment information')
-            except Order.DoesNotExist:
-                messages.error(request, 'No pending order found.')
-        else:
-            messages.error(request, 'Please correct the errors in the form.')
+            # Copy cart items to order items
+            for cart_item in cart.items.all():
+                OrderItem.objects.create(
+                    order=order,
+                    product=cart_item.product,
+                    quantity=cart_item.quantity
+                )
+
+            # Clear the cart
+            cart.items.all().delete()
+
+            messages.success(request, 'Order created successfully! Proceed to payment.')
+            return redirect('payments:process_payment', order_id=order.id)
     else:
         billing_form = BillingAddressForm(prefix='billing')
         shipping_form = BillingAddressForm(prefix='shipping')
 
-    # Get the current order for display (e.g., total price)
-    try:
-        order = Order.objects.get(user=request.user, ordered=False)
-    except Order.DoesNotExist:
-        order = None
-
     context = {
         'billing_form': billing_form,
         'shipping_form': shipping_form,
+        'cart': cart,
+    }
+    return render(request, 'payments/order_create.html', context)
+
+
+# payments/views.py
+import stripe
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from apps.orders.models import Order
+from .models import Payment
+from django.contrib import messages
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+@login_required
+def payment_process_view(request, order_id):
+    order = Order.objects.get(id=order_id, user=request.user, ordered=False)
+    if request.method == 'POST':
+        token = request.POST.get('stripeToken')
+        amount_in_tigs = int(order.get_total_price * 100)
+        try:
+            charge = stripe.Charge.create(
+                amount=amount_in_tigs,  # In KZT (whole units)
+                currency='kzt',
+                description=f'Order {order.id}',
+                source=token,
+            )
+            Payment.objects.create(
+                order=order,
+                stripe_charge_id=charge.id,
+                amount=order.get_total_price
+            )
+            order.ordered = True
+            order.delivery_status = 'processing'
+            order.save()
+            messages.success(request, 'Payment successful!')
+            return redirect('payments:order_success')
+        except stripe.error.StripeError as e:
+            messages.error(request, f'Payment error: {str(e)}')
+            return redirect('payments:process_payment', order_id=order.id)
+    context = {
         'order': order,
         'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
     }
-    return render(request, 'payments/checkout.html', context)
+    return render(request, 'payments/payment_process.html', context)
