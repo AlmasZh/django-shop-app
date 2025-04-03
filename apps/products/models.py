@@ -19,7 +19,13 @@ class Category(models.Model):
         self.slug = slugify(self.title)
         return super().save(*args, **kwargs)
 
+
+class ProductManager(models.Manager):
+    def search(self, query):
+        return self.filter(title__icontains=query)
+
 class Product(models.Model):
+    objects = ProductManager()  # Add the custom manager
     GENDER_CHOICES = [
         ('men', 'Men'),
         ('women', 'Women'),
