@@ -8,6 +8,7 @@ from apps.users.models import SellerApplication
 from apps.users.forms import UserProfileUpdateForm, LoginForm, RegistrationForm
 from apps.cart.models import Cart, CartItem
 from apps.cart.forms import CartUpdateForm
+from apps.orders.models import Order
 from .forms import ProductForm, ProductImageFormSet, ReviewForm, ProductFilterForm
 from .models import Product, ProductImage, Category, Review
 
@@ -234,8 +235,60 @@ def product_list(request):
     return render(request, 'products/product_list.html', context)
 
 
+# def personal_orders(request):
+#     orders = Order.objects.filter(user=request.user).order_by('-created')
+#     return render(request, 'products/personal_orders.html', {'orders': orders})
+# def personal_orders(request):
+#     orders = Order.objects.filter(user=request.user)  # Adjust query as needed
+#     status_sequence = ['pending', 'processing', 'shipped', 'delivered']
+#     return render(request, 'products/personal_orders.html', {
+#         'orders': orders,
+#         'status_sequence': status_sequence,
+#     })
+
 def personal_orders(request):
-    return render(request, 'products/personal_orders.html')
+    if request.user.is_superuser or request.user.is_manager:
+        products = Product.objects.filter(user=request.user)
+        orders = Order.objects.all().prefetch_related('status_history')
+    else:
+        orders = Order.objects.filter(user=request.user).prefetch_related('status_history')
+    normal_sequence = ['pending', 'processing', 'shipped', 'delivered']
+    
+    for order in orders:
+        roadmap = []
+        if order.delivery_status != 'cancelled':
+            # Non-cancelled: Show full sequence with status markings
+            try:
+                current_index = normal_sequence.index(order.delivery_status)
+            except ValueError:
+                current_index = -1  # Fallback, though unlikely with valid statuses
+            for i, status in enumerate(normal_sequence):
+                history_entry = order.status_history.filter(status=status).first()
+                if i < current_index:
+                    step_class = 'completed'
+                elif i == current_index:
+                    step_class = 'current'
+                else:
+                    step_class = 'future'
+                roadmap.append({
+                    'status': status,
+                    'display': dict(Order.DELIVERY_STATUS_CHOICES)[status],
+                    'timestamp': history_entry.timestamp if history_entry else None,
+                    'step_class': step_class
+                })
+        else:
+            # Cancelled: Show only "Cancelled"
+            cancelled_entry = order.status_history.filter(status='cancelled').first()
+            roadmap.append({
+                'status': 'cancelled',
+                'display': 'Cancelled',
+                'timestamp': cancelled_entry.timestamp if cancelled_entry else order.updated,
+                'step_class': 'current'
+            })
+        order.roadmap = roadmap
+    
+    context = {'orders': orders}
+    return render(request, 'products/personal_orders.html', context)
 
 def personal_likes(request):
     favorite_products = request.user.likes.all()
@@ -282,6 +335,7 @@ def personal_my_products(request):
         'user_products': user_products,
     })
 
+@login_required
 def personal_update(request):
     user = request.user  # Get the currently logged-in user
     

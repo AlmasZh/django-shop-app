@@ -1,7 +1,6 @@
 from django.db import models
 from apps.users.models import CustomUser
 from apps.products.models import Product
-from decimal import Decimal
 
 # Create your models here.
 class Order(models.Model):
@@ -47,3 +46,12 @@ class OrderItem(models.Model):
 
     def get_cost(self):
         return self.product.price * self.quantity
+
+
+class OrderStatusHistory(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='status_history')
+    status = models.CharField(max_length=20, choices=Order.DELIVERY_STATUS_CHOICES)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def get_status_display(self):
+        return dict(Order.DELIVERY_STATUS_CHOICES)[self.status]

@@ -1,24 +1,61 @@
 {% extends "products/personal.html" %}
 {% block personal %}
-<div class="p-8">
+<div class="p-8 bg-gray-50 min-h-screen">
     <div class="tab-content active" id="orders">
-        <h3 class="text-xl font-semibold mb-4">История заказов</h3>
-        <div class="space-y-4">
-            <div class="p-4 border rounded-md">
-                <p class="font-medium text-lg">Заказ #1234</p>
-                <p class="text-gray-500">Статус: В обработке</p>
-                <p class="text-gray-500">Дата: 15.03.2023</p>
-            </div>
-            <div class="p-4 border rounded-md">
-                <p class="font-medium text-lg">Заказ #1233</p>
-                <p class="text-gray-500">Статус: Доставлен</p>
-                <p class="text-gray-500">Дата: 02.03.2023</p>
-            </div>
-            <div class="p-4 border rounded-md">
-                <p class="font-medium text-lg">Заказ #1232</p>
-                <p class="text-gray-500">Статус: Доставлен</p>
-                <p class="text-gray-500">Дата: 25.02.2023</p>
-            </div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-6">История заказов</h3>
+        <div class="space-y-6">
+            {% for order in orders %}
+    <div class="p-4 border rounded-md">
+        <!-- Order Details -->
+        <p class="font-medium text-lg">Order #{{ order.id }}</p>
+        <p class="text-gray-500">Status: {{ order.get_delivery_status_display }}</p>
+        <p class="text-gray-500">Date: {{ order.created|date:"d.m.Y" }}</p>
+
+        <!-- Delivery Roadmap -->
+        <div class="roadmap mt-4 flex space-x-4">
+            {% for step in order.roadmap %}
+                <div class="step {{ step.step_class }} text-center">
+                    <div class="w-10 h-10 mx-auto rounded-full flex items-center justify-center
+                        {% if step.step_class == 'completed' %}bg-green-500 text-white
+                        {% elif step.step_class == 'current' %}bg-blue-500 text-white
+                        {% else %}bg-gray-200 text-gray-500{% endif %}">
+                        <span class="text-sm font-medium">{{ forloop.counter }}</span>
+                    </div>
+                    <p class="mt-2 text-sm font-medium text-gray-700">{{ step.display }}</p>
+                    {% if step.timestamp %}
+                        <p class="text-xs text-gray-500">{{ step.timestamp|date:"d.m.Y H:i" }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Buttons -->
+        <div class="mt-4 space-x-2">
+            <!-- Pay Button for Regular Users -->
+            {% if request.user == order.user and order.delivery_status == 'pending' %}
+                <a href="{% url 'payments:process_payment' order.id %}" class="btn btn-primary inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Pay</a>
+            {% endif %}
+
+            <!-- Manager and Admin Buttons -->
+            {% if request.user.is_manager or request.user.is_staff %}
+                {% if order.delivery_status == 'processing' %}
+                    <form method="post" action="{% url 'orders:update_order_status' order.id %}" class="inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="new_status" value="shipped">
+                        <button type="submit" class="btn btn-primary inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Ship</button>
+                    </form>
+                {% elif order.delivery_status == 'shipped' %}
+                    <form method="post" action="{% url 'orders:update_order_status' order.id %}" class="inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="new_status" value="delivered">
+                        <button type="submit" class="btn btn-primary inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Mark as Delivered</button>
+                    </form>
+                {% endif %}
+            {% endif %}
         </div>
     </div>
+{% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}
