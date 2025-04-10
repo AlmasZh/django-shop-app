@@ -176,60 +176,6 @@ def favorites(request):
 	return render(request, 'favorites.html', context)
 
 
-# def search(request):
-# 	query = request.GET.get('q')
-# 	products = Product.objects.filter(title__icontains=query).all()
-# 	context = {'products': paginat(request ,products)}
-# 	return render(request, 'home_page.html', context)
-
-# def product_list(request):
-#     # Base queryset of all products
-#     products = Product.objects.all()
-    
-#     # Initialize filter form
-#     filter_form = ProductFilterForm(request.GET)
-    
-#     # Apply filters if form is valid
-#     if filter_form.is_valid():
-#         if filter_form.cleaned_data['category']:
-#             products = products.filter(category=filter_form.cleaned_data['category'])
-#         if filter_form.cleaned_data['gender']:
-#             products = products.filter(gender=filter_form.cleaned_data['gender'])
-#         if filter_form.cleaned_data['color']:
-#             products = products.filter(color=filter_form.cleaned_data['color'])
-#         if filter_form.cleaned_data['size']:
-#             products = products.filter(size=filter_form.cleaned_data['size'])
-#         if filter_form.cleaned_data['price_order'] == 'low':
-#             products = products.order_by('price')
-#         elif filter_form.cleaned_data['price_order'] == 'high':
-#             products = products.order_by('-price')
-#         if filter_form.cleaned_data['discount_only']:
-#             products = products.filter(discount_price__isnull=False)
-    
-#     # Pagination
-#     paginator = Paginator(products, 30)
-#     page = request.GET.get('page', 1)
-#     try:
-#         paginated_products = paginator.page(page)
-#     except PageNotAnInteger:
-#         paginated_products = paginator.page(1)
-#     except EmptyPage:
-#         paginated_products = paginator.page(paginator.num_pages)
-    
-#     # Create query string without 'page'
-#     query_params = request.GET.copy()
-#     if 'page' in query_params:
-#         del query_params['page']
-#     query_string = query_params.urlencode()
-    
-#     context = {
-#         'products': paginated_products,
-#         'filter_form': filter_form,
-#         'categories': Category.objects.all(),
-#         'query_string': query_string,
-#     }
-#     return render(request, 'products/product_list.html', context)
-
 def product_list(request):
     # Base queryset of all products
     products = Product.objects.all()
