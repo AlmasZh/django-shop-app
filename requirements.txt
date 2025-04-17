@@ -12,3 +12,4 @@ requests
 stripe
 tzdata
 gunicorn
+python-dotenv

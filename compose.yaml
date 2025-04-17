@@ -17,7 +17,11 @@ services:
     depends_on:
       postgresql:
         condition: service_healthy
+    environment:
+      - DATABASE_URL=postgres://admin:passwd123@postgresql:5432/shop
+      # - SECRET_KEY=your_secret_key
+      - DEBUG=False
     ports:
       - "8000:8000"
     command: >
-      sh -c "gunicorn shopApp.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+      sh -c "python manage.py migrate && python manage.py create_default_user && gunicorn shopApp.wsgi:application --bind 0.0.0.0:8000 --workers 3"
