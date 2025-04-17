@@ -11,3 +11,4 @@ pluggy
 requests
 stripe
 tzdata
+gunicorn
