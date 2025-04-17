@@ -1,8 +1,14 @@
 <!-- payments/templates/payments/order_create.html -->
 {% extends "base.html" %}
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-2xl font-bold mb-4">Checkout</h1>
+<div class="container mx-auto flex flex-col justify-between items-center">
+    <div class="flex flex-row bg-black w-full h-[50px] items-center mb-10">
+        <div class="flex flex-row justify-between items-center w-[85%]">
+        <h1 class="text-white text-[30px] pl-[200px] font-bold ">Checkout</h1>
+        <a href=""></a><h2 class="text-white text-[25px] pl-[200px] font-bold">Exit</h2>
+        </div>
+     </div>
+    
 
     {% if messages %}
         <div class="mb-4">
@@ -14,7 +20,7 @@
         </div>
     {% endif %}
 
-    <div class="mb-6">
+    <div class="mb-6 flex flex-col justify-start w-full pl-[230px]">
         <h2 class="text-xl font-semibold mb-2">Order Summary</h2>
         <ul>
             {% for item in cart.items.all %}
@@ -24,19 +30,59 @@
         <p class="font-bold">Total: {{ cart.total_price }} ₸</p>
     </div>
 
-    <form method="post" class="flex flex-col gap-6">
+    <form method="post" class="flex flex-col gap-6  w-[70%]">
         {% csrf_token %}
-        <div class="border rounded-lg p-4">
-            <h2 class="text-xl font-semibold mb-2">Billing Address</h2>
-            {{ billing_form.as_p }}
+        <div class="flex flex-row justify-between items-center w-full gap-2">
+        <div class="border rounded-lg p-4 flex flex-col w-[50%]">
+            <h2 class="text-xl font-semibold mb-4">Billing Address</h2> 
+            <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-1">
+                    <label for="{{ billing_form.street_address.label }}" class="text-black">{{ billing_form.street_address.label }}</label>
+                    {{ billing_form.street_address }}
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label for="{{ billing_form.street_address.label }}" class="text-black">{{ billing_form.city.label }}</label>
+                    {{ billing_form.city }}
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label for="{{ billing_form.street_address.label }}" class="text-black">{{ billing_form.zip.label }}</label>
+                    {{ billing_form.zip }}
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label for="{{ billing_form.street_address.label }}" class="text-black">{{ billing_form.country.label }}</label>
+                    {{ billing_form.country }}
+                </div>
+            </div>
+            
         </div>
-        <div class="border rounded-lg p-4">
-            <h2 class="text-xl font-semibold mb-2">Shipping Address</h2>
-            {{ shipping_form.as_p }}
+        <div class="border rounded-lg p-4 flex flex-col w-[50%]">
+            <h2 class="text-xl font-semibold mb-4">Shipping Address</h2>
+            <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-1">
+                    <label for="{{shipping_form.street_address.label}}">{{shipping_form.street_address.label}}</label>
+                    {{shipping_form.street_address}}
+                </div>  
+                <div class="flex flex-col gap-1">
+                    <label for="{{shipping_form.street_address.label}}">{{shipping_form.street_address.label}}</label>
+                    {{shipping_form.city}}
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label for="{{shipping_form.street_address.label}}">{{shipping_form.street_address.label}}</label>
+                    {{shipping_form.zip}}
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label for="{{shipping_form.street_address.label}}">{{shipping_form.street_address.label}}</label>
+                    {{shipping_form.country}}
+                </div>
+            </div>
         </div>
-        <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
+        </div>
+    
+        <button type="submit" class="bg-black text-white px-4 py-2 rounded-[5px] hover:bg-gray-800 h-[50px]">
             Submit Order and Proceed to Payment
         </button>
     </form>
+   
+
 </div>
 {% endblock %}

@@ -142,4 +142,68 @@
 		</div>
 	</div>
 </div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get all file inputs for images
+    const imageInputs = document.querySelectorAll('input[type="file"]');
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    
+    // Add event listeners to each file input
+    imageInputs.forEach(function(input, index) {
+      input.addEventListener('change', function(e) {
+        // Create a unique preview ID for this input
+        const previewId = `preview-${index}`;
+        
+        // Remove existing preview for this input if it exists
+        const existingPreview = document.getElementById(previewId);
+        if (existingPreview) {
+          existingPreview.remove();
+        }
+        
+        // Check if a file was selected
+        if (this.files && this.files[0]) {
+          const file = this.files[0];
+          
+          // Create preview element
+          const previewDiv = document.createElement('div');
+          previewDiv.id = previewId;
+          previewDiv.className = 'relative';
+          
+          // Create image element
+          const img = document.createElement('img');
+          img.className = 'h-32 w-full object-cover rounded-md';
+          img.alt = 'Product image preview';
+          
+          // Create remove button
+          const removeBtn = document.createElement('button');
+          removeBtn.type = 'button';
+          removeBtn.className = 'absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 m-1';
+          removeBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>';
+          
+          // Add event listener to remove button
+          removeBtn.addEventListener('click', function() {
+            // Clear the file input
+            input.value = '';
+            // Remove the preview
+            previewDiv.remove();
+          });
+          
+          // Set up FileReader to read the image
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            img.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+          
+          // Append elements to the preview div
+          previewDiv.appendChild(img);
+          previewDiv.appendChild(removeBtn);
+          
+          // Add the preview to the container
+          previewContainer.appendChild(previewDiv);
+        }
+      });
+    });
+  });
+</script>
 {% endblock %}

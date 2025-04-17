@@ -14,7 +14,10 @@ class ProductFilterForm(forms.Form):
     category = forms.ModelChoiceField(
         queryset=Category.objects.all(), 
         required=False, 
-        empty_label="All Categories"
+        empty_label="All Categories",
+        widget=forms.Select(attrs={
+            'class': '',
+        })
     )
     gender = forms.ChoiceField(
         choices=[

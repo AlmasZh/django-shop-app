@@ -35,37 +35,37 @@
 		<div class="flex flex-row w-full justify-between gap-2.5">
 			<div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden">
 				<a href="{% url 'products:shop' %}?gender=women">
-					<img src="{%static 'Photo/Screenshot_7.png'%}" class="w-full h-full" alt="T-shirt" />
+					<img src="{%static 'Photo/Woman_clothes_1.png'%}" class="w-full h-[311px]" alt="T-shirt" />
 				</a>
 			</div>
 			<div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden">
 				<a href="{% url 'products:shop' %}">
-					<img src="{%static 'Photo/Screenshot_1 copy.png'%}" class="w-full h-full" alt="accessories" />
+					<img src="{%static 'Photo/Woman_clothes_2.png'%}" class="w-full h-full" alt="accessories" />
 				</a>
 			</div>
 			<div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden">
 				<a href="{% url 'products:shop' %}">
-					<img src="{%static 'Photo/Screenshot_2.png'%}" class="w-full h-full" alt="Shose" />
+					<img src="{%static 'Photo/Woman_clothes_3.png'%}" class="w-full h-full" alt="Shose" />
 				</a>
 			</div>
 			<div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden">
-				<a href=""><img src="{%static 'Photo/Screenshot_3.png'%}" class="w-full h-full" alt="Parfume" /></a>
+				<a href=""><img src="{%static 'Photo/Woman_clothes_4.png'%}" class="w-full h-full" alt="Parfume" /></a>
 			</div>
 		</div>
 		<div class="flex flex-row w-full justify-between gap-2.5">
 			<div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden">
 				<a href="{% url 'products:shop' %}">
-					<img src="{%static 'Photo/Screenshot_4.png'%}" class="w-full h-full" alt="T-shirt" />
+					<img src="{%static 'Photo/Woman_clothes_5.png'%}" class="w-full h-full" alt="T-shirt" />
 				</a>
 			</div>
 			<div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden">
 				<a href="{% url 'products:shop' %}">
-					<img src="{%static 'Photo/Screenshot_5.png'%}" class="w-full h-full" alt="accessories" />
+					<img src="{%static 'Photo/Woman_clothes_6.png'%}" class="w-full h-full" alt="accessories" />
 				</a>
 			</div>
 			<div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden">
 				<a href="{% url 'products:shop' %}">
-					<img src="{%static 'Photo/Screenshot_6.png'%}" class="w-full h-full" alt="Shose" />
+					<img src="{%static 'Photo/Woman_clothes_7.png'%}" class="w-full h-full" alt="Shose" />
 				</a>
 			</div>
 			<a href="{% url 'products:shop' %}">
@@ -92,46 +92,6 @@
 	<div class="absolute flex flex-col pl-[3%] text-[25px] text-white font-bold">
 		<span>Sale of collections</span>
 		<span>From previous seasons</span>
-	</div>
-</section>
-<span class="pl-[120px] text-[18px]" style="font-family: Microsoft Sans Serif">Popular</span>
-<section class="flex flex-col justify-center items-center mb-100 pl-[120px] pr-[104px]">
-	<div class="flex flex-row gap-5 w-full justify-start">
-		<a href="{% url 'products:products_detail' 'slug' %}">
-			<div class="flex flex-col justify-self-center items-start overflow-hidden">
-				<img class="w-[240px] h-[350px]" src="{%static 'Photo/Screenshot_9.png'%}" alt="item" />
-				<div class="text-[18px]" style="font-family: Microsoft Sans Serif">
-					<p>7 310 ₸</p>
-					<p class="text-[15px]">T-Shirt</p>
-				</div>
-			</div>
-		</a>
-
-		<!--вообщем осы жер api жасалады-->
-		<div class="flex flex-col justify-self-center items-start overflow-hidden">
-			<img class="w-[240px] h-[350px]" src="{{ user.picture }}" alt="item" />
-			<div class="text-[18px]" style="font-family: Microsoft Sans Serif">
-				<p>{{item.price}}₸</p>
-				<p class="text-[15px]">{{item.name}}</p>
-			</div>
-		</div>
-	</div>
-
-	<div class="absolute flex flex-row justify-between items-center w-full" style="padding: 5% 5%">
-		<button class="w-[70px] h-[70px] shadow-lg bg-white rounded-[50px] flex justify-center items-center">
-			<svg class="w-[25px] h-[25px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-				<path
-					d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"
-				/>
-			</svg>
-		</button>
-		<button class="w-[70px] h-[70px] shadow-lg bg-white rounded-[50px] flex justify-center items-center">
-			<svg xmlns="http://www.w3.org/2000/svg" class="w-[25px] h-[25px]" viewBox="0 0 320 512">
-				<path
-					d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"
-				/>
-			</svg>
-		</button>
 	</div>
 </section>
 {% endblock %}

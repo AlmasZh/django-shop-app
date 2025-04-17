@@ -1,10 +1,11 @@
 {% extends "top_bar.html" %}
 {% load static %}
 {% block topbar %}
-<div class="bg-gray-50">
+{% load widget_tweaks %}
+<div class=" pl-20 pr-[120px]">
     
     <div class="container mx-auto px-4 py-8">
-        <div class="flex flex-col md:flex-row gap-8">
+        <div class="flex flex-col md:flex-row gap-4">
             <!-- Sidebar Categories -->
             <div class="w-full md:w-1/5">
                 <h2 class="text-xl font-semibold mb-4 text-gray-700">Categories</h2>
@@ -17,34 +18,37 @@
                 </div>
             </div>
             
-            <div class="w-full md:w-4/5">
+            <div class="w-full md:w-5/6">
                 <!-- Filter Form -->
                 <form method="get" class="mb-6 flex flex-wrap gap-4">
-                    <div class="flex-grow">
-                        {{ filter_form.category }}
+                    <div class=" ">
+                        
+                        {{ filter_form.category|add_class:"p-2  border-[2px] border-[#9F9F9F] rounded-[5px] focus:border-gray-800 hover:border-gray-800" }}
                     </div>
-                    <div class="flex-grow">
-                        {{ filter_form.price_order }}
+                    <div class="">
+                        {{ filter_form.price_order|add_class:"p-2  border-[2px] border-[#9F9F9F] rounded-[5px] focus:border-gray-800 hover:border-gray-800" }}
                     </div>
-                    <div class="flex-grow">
-                        {{ filter_form.size }}
+                    <div class="">
+                        {{ filter_form.size|add_class:"p-2  border-[2px] border-[#9F9F9F] rounded-[5px] focus:border-gray-800 hover:border-gray-800" }}
                     </div>
-                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-300">
+                    <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-black transition duration-300">
                         Apply Filters
                     </button>
                 </form>
                 
                 <!-- Product Grid -->
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class=" grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
                     {% for product in products %}
-                        <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="bg-white rounded-[2px] overflow-hidden hover:shadow-2xs transition duration-300 ">
                             <a href="{{ product.get_absolute_url }}" class="block">
                                 {% with product.get_main_image as main_image %}
-                                <img src="{{ main_image.image.url }}" alt="{{ product.title }}" 
-                                class="w-full h-64 object-cover">
+                                <div class="w-full  aspect-[5/7] overflow-hidden">
+                                    <img src="{{ main_image.image.url }}" alt="{{ product.title }}" 
+                                         class="w-full h-full object-cover items-center" >
+                                </div>
                                 {% endwith %}
-                                <div class="p-4">
-                                    <p class="text-lg font-semibold text-gray-900">{{ product.price }} ₸</p>
+                                <div class="">
+                                    <p class="text-[20px] text-gray-900">{{ product.price }} ₸</p>
                                     <p class="text-sm text-gray-600 truncate">{{ product.title }}</p>
                                 </div>
                             </a>
@@ -67,7 +71,7 @@
 
                     {% for num in products.paginator.page_range %}
                         {% if products.number == num %}
-                            <span class="px-4 py-2 bg-indigo-600 text-white rounded-md">{{ num }}</span>
+                            <span class="px-4 py-2 bg-gray-800 text-white rounded-md">{{ num }}</span>
                         {% elif num > products.number|add:"-3" and num < products.number|add:"3" %}
                             <a href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ num }}" 
                             class="px-4 py-2 bg-white border rounded-md hover:bg-gray-100">{{ num }}</a>
