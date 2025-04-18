@@ -6,3 +6,10 @@ djangorestframework
 pytest-django
 django-environ
 faker
+drf-yasg
+pluggy
+requests
+stripe
+tzdata
+gunicorn
+python-dotenv

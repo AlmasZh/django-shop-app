@@ -7,17 +7,21 @@ services:
       POSTGRES_DB: shop
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U admin -d shop"]
-      interval: 10s
+      interval: 4s
       # timeout: 5s
       retries: 5
-      start_period: 10s
+      start_period: 4s
   web:
     build: ./
     restart: on-failure
     depends_on:
       postgresql:
         condition: service_healthy
+    environment:
+      - DATABASE_URL=postgres://admin:passwd123@postgresql:5432/shop
+      # - SECRET_KEY=your_secret_key
+      - DEBUG=False
     ports:
       - "8000:8000"
     command: >
-      sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+      sh -c "python manage.py migrate && python manage.py create_default_user && gunicorn shopApp.wsgi:application --bind 0.0.0.0:8000 --workers 3"
