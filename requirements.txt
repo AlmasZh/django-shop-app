@@ -13,3 +13,4 @@ stripe
 tzdata
 gunicorn
 python-dotenv
+django-widget-tweaks
