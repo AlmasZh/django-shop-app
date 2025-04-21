@@ -13,6 +13,6 @@ class DjangoUser(HttpUser):
     def load_api(self):
         self.client.get("/shop/")
 
-    @task(1)
-    def submit_form(self):
-        self.client.post("/submit/", {"field1": "value1", "field2": "value2"})
+    # @task(1)
+    # def submit_form(self):
+    #     self.client.post("/submit/", {"field1": "value1", "field2": "value2"})

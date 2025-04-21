@@ -18,7 +18,7 @@ services:
       postgresql:
         condition: service_healthy
     environment:
-      - DATABASE_URL=postgres://admin:passwd123@postgresql:5432/shop
+      # - DATABASE_URL=postgres://admin:passwd123@postgresql:5432/shop
       # - SECRET_KEY=your_secret_key
       - DEBUG=False
     ports:
