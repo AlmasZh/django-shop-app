@@ -1,0 +1,360 @@
+[33mcommit d798243b186c08c7cd3082ff90ada03381dc7de7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: 300b870 d22dbbd
+Author: Dias <dias.aubakirov6@gmail.com>
+Date:   Fri Apr 18 10:53:56 2025 +0500
+
+    Merge branch 'main' of https://github.com/AlmasZh/django-shop-app
+
+[33mcommit 300b870a29fc6d2254aaf7af2c8a7d4a43150baf[m
+Author: Dias <dias.aubakirov6@gmail.com>
+Date:   Fri Apr 18 01:30:02 2025 +0500
+
+    Added new photos and updated templates/forms
+
+[33mcommit d22dbbdeee13a113d76b7aa39281bab80853cb84[m
+Author: Almas Zhakanov <almas.zh22@gmail.com>
+Date:   Thu Apr 17 23:34:55 2025 +0500
+
+    make many fields of billingadress nullable
+
+[33mcommit d81d99a12f91c1421153ca68af5f2216dfa78b4f[m
+Author: Almas Zhakanov <almas.zh22@gmail.com>
+Date:   Thu Apr 17 21:36:02 2025 +0500
+
+    make dockerfile and docker compose workable
+
+[33mcommit afa4d30d827b62f3dc0a4275f07cd9e02628b980[m
+Author: Almas Zhakanov <almas.zh22@gmail.com>
+Date:   Thu Apr 17 21:07:38 2025 +0500
+
+    add staticfiles into .gitignore
+
+[33mcommit da109d2ba75341e16170cc840234171533c3afb9[m
+Author: Almas Zhakanov <almas.zh22@gmail.com>
+Date:   Thu Apr 17 21:06:59 2025 +0500
+
+    make dockerfile and docker compose workable
+
+[33mcommit e3d75eb60c53ffa7a2c2ba51789ad8318780c232[m
+Author: Almas Zhakanov <almas.zh22@gmail.com>
+Date:   Thu Apr 17 19:03:52 2025 +0500
+
+    add dockerfile
+
+[33mcommit 6af901e135e3511f6101a1640026dcdfe5eee414[m
+Author: Almas Zhakanov <almas.zh22@gmail.com>
+Date:   Thu Apr 17 18:33:05 2025 +0500
+
+    add my own create_default_user command
+
+[33mcommit 2680b878b6d4fd9b62e1bc7b4972638ebdc4d17d[m
+Author: Almas Zhakanov <almas.zh22@gmail.com>
+Date:   Wed Apr 16 18:55:24 2025 +0500
+
+    add tests for all models
+
+[33mcommit 0bdd06e1018a513d4e3093b55e5f71b9b54c9ef3[m
+Author: Almas Zhakanov <almas.zh22@gmail.com>
+Date:   Thu Apr 10 19:22:59 2025 +0500
+
+    make orders workable
+
+[33mcommit 0571af286297221b287b43ac92c081c945045949[m
+Author: Almas Zhakanov <almas.zh22@gmail.com>
+Date:   Thu Apr 10 14:29:30 2025 +0500
+
+    remove uneccessary view functions
+
+[33mcommit 2059de00e761de06b2fcdfa6c015a05fb0f64522[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Fri Apr 4 01:36:07 2025 +0500
+
+    make payment workable
+
+[33mcommit 97467cbf9813262630e3abdf72d29918a412582d[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Fri Apr 4 01:00:37 2025 +0500
+
+    add unworkable stripe code
+
+[33mcommit 47f740cfe9a7bec2c2400cdb9b1e4abd5a46224c[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Thu Apr 3 23:35:05 2025 +0500
+
+    add search
+
+[33mcommit 21133a6c80c9dbf4d9022eb99369b5b31cad2e79[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Tue Apr 1 12:45:31 2025 +0500
+
+    add workable user reviews
+
+[33mcommit 52a31c952c2d28da328af318f287595dc9643c07[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Tue Apr 1 12:08:42 2025 +0500
+
+    fix: update user to manager when application is approved
+
+[33mcommit 20094721396581378ec4f61ad3d5ca494d9820c1[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 31 22:44:48 2025 +0500
+
+    fix: moderation page and its functionalities
+
+[33mcommit be045ef88591c3ca1854f9a0d861369929295eef[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 31 17:36:10 2025 +0500
+
+    fix: upload image; create product
+
+[33mcommit 06b9c2c42fc87866a8220ec5bf4b043f8ca7ba60[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 31 16:43:59 2025 +0500
+
+    fix: delete button in cart
+
+[33mcommit 023250dd4d53fc2d3278c1c7c18bd7e8059207b5[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 31 16:08:31 2025 +0500
+
+    make pagination for shop page workable
+
+[33mcommit 68046fdab628a5c2c86842f7fdbca235311aa721[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 31 16:00:44 2025 +0500
+
+    add workable categories filter
+
+[33mcommit c8ceeb12f0af7c24e5eac1aae8f6f9986d56fbb5[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Sun Mar 30 19:53:49 2025 +0500
+
+    add gender to products and main categories
+
+[33mcommit 839e73cf23fd03d7114d31b029d4bdd46c02c90a[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Sun Mar 30 17:09:52 2025 +0500
+
+    improve template's structure
+
+[33mcommit 6873c8f1acd768e80b27a6cb87fb8609f7edff0b[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Sun Mar 30 15:08:18 2025 +0500
+
+    add pagination; restructure personal page
+
+[33mcommit 8279857d012aadfad952588d611e3e4ac3d16fdd[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Fri Mar 28 02:34:21 2025 +0500
+
+    add workable like and cart buttons
+
+[33mcommit fb325b1d4136c0d5e8b798623b95412885bc1ce5[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Fri Mar 28 01:06:13 2025 +0500
+
+    add many changes; make produc_list workable; add carousel
+
+[33mcommit 69b58d0e0e127e0536a8ad4bb13650f26068ef30[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Thu Mar 27 20:52:37 2025 +0500
+
+    make user login signup workable
+
+[33mcommit dd8d8ddae9d7f2c452021b8c8deab8c90fb1a382[m
+Author: Dias <dias.aubakirov6@gmail.com>
+Date:   Thu Mar 27 19:51:50 2025 +0500
+
+     add cart page front
+
+[33mcommit 6493caf4340c6f89e9bc3e8b2207eabf826d992d[m
+Author: Dias <dias.aubakirov6@gmail.com>
+Date:   Mon Mar 24 15:21:41 2025 +0500
+
+    Обновлен header и index страницы
+
+[33mcommit 83ab8208c3def91f725016d010c6be5fb2a69d68[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Sun Mar 16 00:27:29 2025 +0500
+
+    remove static/output.css from .gitignore
+
+[33mcommit 902519b006ea851df641dadb2fdf21cc1a9b0f7f[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Fri Mar 14 10:35:07 2025 +0500
+
+    change settings to use postgresql
+
+[33mcommit a229460485e53137230f833db46a1ad5e1a007c0[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Fri Mar 14 10:31:18 2025 +0500
+
+    add how to make fixtures in readme.md
+
+[33mcommit f06fcd019cfeee881f35d5af6a6b54cf0382044f[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Fri Mar 14 10:29:26 2025 +0500
+
+    add fixtures
+
+[33mcommit b5ec09aca9702fd5a4a70ee2c45acb8ee855bdbd[m
+Author: Dias <dias.aubakirov6@gmail.com>
+Date:   Thu Mar 13 23:59:24 2025 +0500
+
+    add admin and seller page2
+
+[33mcommit 69072015023271b1a72cec1159ca77cfd9c5a502[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Fri Mar 7 23:28:15 2025 +0500
+
+    improve README.md
+
+[33mcommit 43e0b8214ce8135086120df2c92b6162ccfe9c9e[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Fri Mar 7 23:08:46 2025 +0500
+
+    add django-environ and README.md
+
+[33mcommit 24c921a3c8b766f33d014f91f2a29bc9db3603aa[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Fri Mar 7 13:40:17 2025 +0500
+
+    add changes to models and personal page
+
+[33mcommit ca1df4995ed5adbd021de3991698c5d240f60f9f[m
+Author: Dias <dias.aubakirov6@gmail.com>
+Date:   Fri Mar 7 03:39:37 2025 +0500
+
+    full html
+
+[33mcommit 392fc2c1f18f93836935c6cf330af3bbb13622d9[m
+Author: Dias <dias.aubakirov6@gmail.com>
+Date:   Thu Mar 6 04:21:06 2025 +0500
+
+    last save
+
+[33mcommit 659bd29e479ee46e911b704544b7c54379ce555d[m
+Author: Dias <dias.aubakirov6@gmail.com>
+Date:   Thu Mar 6 04:14:07 2025 +0500
+
+     main html file
+
+[33mcommit 8d8d18821147966b8eb5acaf31da0d771a0a169a[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Wed Mar 5 15:37:46 2025 +0500
+
+    add Order and OrderItem models
+
+[33mcommit dcb6e0d91f94208ef225edae891a0ae468bf6379[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Wed Mar 5 14:53:52 2025 +0500
+
+    add ER diagram for our project
+
+[33mcommit c2b810d34680c11aa8e9aecb57fbf9efa0eba116[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Wed Mar 5 14:44:53 2025 +0500
+
+    fix: orders is configured now
+
+[33mcommit 6a2b33713cb3eb02c5a67986cdd377b958b26607[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Wed Mar 5 14:00:34 2025 +0500
+
+    add .dockerignore file
+
+[33mcommit a1c01daa4e800e74053e6123dbe79cf918fc5076[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Wed Mar 5 13:40:02 2025 +0500
+
+    add orders app
+
+[33mcommit 9a9a8163302f7ce7788a92b81a9b8bee0a792bf6[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Wed Mar 5 11:42:01 2025 +0500
+
+    add models into admin panel
+
+[33mcommit d6b5b07c1c06eeef600e503acae6782846136db7[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 3 20:32:48 2025 +0500
+
+    fix: redirects
+
+[33mcommit 4beb4582dccd61cf395337978b97e8037ba97b82[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 3 15:24:45 2025 +0500
+
+    add permissions to User model; improve user's forms and views
+
+[33mcommit ec470ea704dd2bc3558c5a84f7c26290dd42fc85[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 3 13:00:37 2025 +0500
+
+    add Product and Category models
+
+[33mcommit 6ae32dab8727d958528a14835bee5b13a13faaf5[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 3 09:52:46 2025 +0500
+
+    add products app
+
+[33mcommit fe8c18a3366c490c72b2fe04120715a4ea4d3449[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 3 09:31:42 2025 +0500
+
+    add docker, docker-compose
+
+[33mcommit 8033c325963a5ee6aa7c86f8a97600636d9184ad[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Mon Mar 3 09:30:55 2025 +0500
+
+    add tests for user's model
+
+[33mcommit f04d9ad80ad795bf7331ffbe0c8c0eeb35213801[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Sun Mar 2 18:06:26 2025 +0500
+
+    change User model
+
+[33mcommit abb7924a238728b47fb2e5ee6e829e74ffec6305[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Sat Mar 1 22:13:00 2025 +0500
+
+    add signup page and its form in django
+
+[33mcommit 1413bab8048bd8c879d69098d4f5df659d665525[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Sat Mar 1 22:11:52 2025 +0500
+
+    add main page with tailwindcss
+
+[33mcommit 60cac57e94cb772a12297bf45821f0322277ee58[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Sat Mar 1 22:10:39 2025 +0500
+
+    add main page with tailwindcss
+
+[33mcommit 61989e30e8d022d7217e5a1182da97c5e03953de[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Wed Feb 26 17:09:17 2025 +0500
+
+    add users app and model
+
+[33mcommit d6c9f2105ba6e4c0974654bc1862999914e5dcd8[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Wed Feb 26 14:08:17 2025 +0500
+
+    change requrements.txt file so that it uses default library versions
+
+[33mcommit 17f4a615ac3bc12f0736a904b4609add5781ece8[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Sun Jan 26 19:27:17 2025 +0500
+
+    added django project
+
+[33mcommit 21e802ee62bdaf5f1f2a450b588185c3cb775ede[m
+Author: AlmasZh <almas.zh22@gmail.com>
+Date:   Sun Jan 26 14:55:45 2025 +0500
+
+    added .gitignore file

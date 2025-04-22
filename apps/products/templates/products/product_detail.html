@@ -2,26 +2,30 @@
 {% load static %}
 
 {% block topbar %}
-<div class="container mx-auto px-4 py-8 mt-5">
+<div class="container mx-auto px-[60px] py-8 mt-5">
     <div class="flex flex-col lg:flex-row gap-8">
 <!-- Image Gallery -->
 <div class="lg:w-2/3 relative">
-    <!-- Wrapper to control visible area -->
-    <div class="w-[450px] overflow-hidden mx-auto">
+    <!-- Контейнер с центрированием, если фото одно -->
+    <div id="slider-wrapper" class="overflow-hidden mx-auto {% if product_images|length == 1 %}w-[450px] flex justify-center{% else %}w-[908px]{% endif %}">
         <div id="image-container" class="flex flex-row gap-2 transition-transform duration-300 ease-in-out">
             {% for image in product_images %}
-                <img class="product-image w-[450px] h-[650px] object-cover bg-amber-300" 
+                <img class="product-image w-[450px] h-[650px] object-cover bg-amber-300 flex-shrink-0" 
                      src="{{ image.image.url }}" 
                      alt="{{ product.title }}">
             {% endfor %}
         </div>
     </div>
-    <button id="prev-image" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center z-10">
-        <i class="fas fa-chevron-left"></i>
-    </button>
-    <button id="next-image" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center z-10">
-        <i class="fas fa-chevron-right"></i>
-    </button>
+
+    <!-- Кнопки навигации (скрываем, если фото меньше 3) -->
+    {% if product_images|length > 2 %}
+        <button id="prev-image" class="absolute left-4 top-1/2 -translate-y-1/2 w-[60px] h-[60px] bg-white rounded-full shadow-lg flex items-center justify-center z-10">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button id="next-image" class="absolute right-4 top-1/2 -translate-y-1/2 w-[60px] h-[60px] bg-white rounded-full shadow-lg flex items-center justify-center z-10">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    {% endif %}
 </div>
 
 <!-- Modal for full-size image view -->
@@ -100,7 +104,7 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600">Origin</span>
-                        <span>{{ product.origin_country|default:'Uzbekistan' }}</span>
+                        <span>{{ product.origin_country|default:'Kazakhstan' }}</span>
                     </div>
                 </div>
             </div>
@@ -221,53 +225,85 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Carousel functionality
         const container = document.getElementById('image-container');
         const images = document.querySelectorAll('.product-image');
-        if (images.length === 0) return; // Exit if no images
-    
-        let currentIndex = 0;
-        const step = images.length > 1 ? images[1].offsetLeft - images[0].offsetLeft : 0; // Distance between images (width + gap)
-    
+        if (images.length === 0) return;
+
         const prevButton = document.getElementById('prev-image');
         const nextButton = document.getElementById('next-image');
-    
+
+        // Если фото меньше 3, слайдер не нужен
+        if (images.length <= 2) {
+            // Центрируем контейнер, если фото одно
+            if (images.length === 1) {
+                container.style.justifyContent = "center";
+            }
+            return; // Отключаем скрипт слайдера
+        }
+
+        // Слайдер работает только если фото >= 3
+        let currentIndex = 0;
+        const visibleImages = 2;
+        const imageWidth = images[0].offsetWidth;
+        const gap = 8; // gap-2 = 8px
+        const step = imageWidth + gap;
+
         function updateTransform() {
             container.style.transform = `translateX(-${currentIndex * step}px)`;
+            prevButton.disabled = currentIndex === 0;
+            nextButton.disabled = currentIndex >= images.length - visibleImages;
         }
-    
-        prevButton.addEventListener('click', function() {
-            if (currentIndex > 0) {
+
+        if (prevButton && nextButton) {
+            prevButton.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateTransform();
+                }
+            });
+
+            nextButton.addEventListener('click', function() {
+                if (currentIndex < images.length - visibleImages) {
+                    currentIndex++;
+                    updateTransform();
+                }
+            });
+        }
+
+        // Touch-свайп для мобильных
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        container.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        container.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, {passive: true});
+
+        function handleSwipe() {
+            const difference = touchStartX - touchEndX;
+            if (difference > 50 && currentIndex < images.length - visibleImages) {
+                currentIndex++;
+                updateTransform();
+            } else if (difference < -50 && currentIndex > 0) {
                 currentIndex--;
                 updateTransform();
             }
-        });
-    
-        nextButton.addEventListener('click', function() {
-            if (currentIndex < images.length - 1) {
-                currentIndex++;
-                updateTransform();
-            }
-        });
-    
-        // Initialize position
-        updateTransform();
-    
-        // Image view modal functionality
+        }
+
+        // Модальное окно для просмотра фото
         images.forEach(function(image) {
             image.addEventListener('click', function() {
                 const modal = document.getElementById('image-modal');
-                const modalImage = document.getElementById('modal-image');
-                modalImage.src = this.src;
-                modal.classList.remove('hidden');
+                if (modal) {
+                    const modalImage = document.getElementById('modal-image');
+                    modalImage.src = this.src;
+                    modal.classList.remove('hidden');
+                }
             });
-        });
-    
-        // Close modal when clicking outside the image
-        document.getElementById('image-modal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.classList.add('hidden');
-            }
         });
     });
 </script>
