@@ -2,16 +2,17 @@
 {% load static %}
 {% block topbar %}
 {% load widget_tweaks %}
-<div class=" pl-20 pr-[120px]">
+<div class="pl-20 pr-[120px] bg-white">
     
     <div class="container mx-auto px-4 py-8">
-        <div class="flex flex-col md:flex-row gap-4">
+        <div class="flex flex-col md:flex-row gap-6">
             <!-- Sidebar Categories -->
-            <div class="w-full md:w-1/5">
-                <h2 class="text-xl font-semibold mb-4 text-gray-700">Categories</h2>
-                <div class="space-y-2">
+            <div class="w-full md:w-1/5 transition-all duration-300 hover:shadow-md p-4 rounded-lg bg-gray-50">
+                <h2 class="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">Categories</h2>
+                <div class="space-y-3">
                     {% for category in categories %}
-                        <a href="?category={{ category.id }}" class="block text-gray-600 hover:text-gray-900 transition duration-300">
+                        <a href="?category={{ category.id }}" 
+                           class="block text-gray-600 hover:text-black transition duration-300 transform hover:translate-x-1 py-1.5 px-2 rounded hover:bg-gray-100">
                             {{ category.title }}
                         </a>
                     {% endfor %}
@@ -20,36 +21,39 @@
             
             <div class="w-full md:w-5/6">
                 <!-- Filter Form -->
-                <form method="get" class="mb-6 flex flex-wrap gap-4">
-                    <div class=" ">
-                        
-                        {{ filter_form.category|add_class:"p-2  border-[2px] border-[#9F9F9F] rounded-[5px] focus:border-gray-800 hover:border-gray-800" }}
+                <form method="get" class="mb-8 flex flex-wrap gap-4 p-5 bg-gray-50 rounded-lg shadow-sm transition-all duration-300 hover:shadow-md">
+                    <div class="relative group">
+                        {{ filter_form.category|add_class:"p-2 w-full border-[2px] border-[#9F9F9F] rounded-[5px] focus:border-gray-800 focus:outline-none transition-all duration-300 hover:border-gray-600" }}
+                        <span class="absolute -top-2.5 left-2 px-1 text-xs font-medium text-gray-500 bg-gray-50 transition-all duration-300 group-hover:text-gray-700">Category</span>
                     </div>
-                    <div class="">
-                        {{ filter_form.price_order|add_class:"p-2  border-[2px] border-[#9F9F9F] rounded-[5px] focus:border-gray-800 hover:border-gray-800" }}
+                    <div class="relative group">
+                        {{ filter_form.price_order|add_class:"p-2 w-full border-[2px] border-[#9F9F9F] rounded-[5px] focus:border-gray-800 focus:outline-none transition-all duration-300 hover:border-gray-600" }}
+                        <span class="absolute -top-2.5 left-2 px-1 text-xs font-medium text-gray-500 bg-gray-50 transition-all duration-300 group-hover:text-gray-700">Price</span>
                     </div>
-                    <div class="">
-                        {{ filter_form.size|add_class:"p-2  border-[2px] border-[#9F9F9F] rounded-[5px] focus:border-gray-800 hover:border-gray-800" }}
+                    <div class="relative group">
+                        {{ filter_form.size|add_class:"p-2 w-full border-[2px] border-[#9F9F9F] rounded-[5px] focus:border-gray-800 focus:outline-none transition-all duration-300 hover:border-gray-600" }}
+                        <span class="absolute -top-2.5 left-2 px-1 text-xs font-medium text-gray-500 bg-gray-50 transition-all duration-300 group-hover:text-gray-700">Size</span>
                     </div>
-                    <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-black transition duration-300">
+                    <button type="submit" class="bg-gray-800 text-white px-6 py-2 rounded-md hover:bg-black transition duration-300 transform hover:scale-105 shadow-sm hover:shadow">
                         Apply Filters
                     </button>
                 </form>
                 
                 <!-- Product Grid -->
-                <div class=" grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                     {% for product in products %}
-                        <div class="bg-white rounded-[2px] overflow-hidden hover:shadow-2xs transition duration-300 ">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 group">
                             <a href="{{ product.get_absolute_url }}" class="block">
                                 {% with product.get_main_image as main_image %}
-                                <div class="w-full  aspect-[5/7] overflow-hidden">
+                                <div class="w-full aspect-[5/7] overflow-hidden relative">
                                     <img src="{{ main_image.image.url }}" alt="{{ product.title }}" 
-                                         class="w-full h-full object-cover items-center" >
+                                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                    <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
                                 </div>
                                 {% endwith %}
-                                <div class="">
-                                    <p class="text-[20px] text-gray-900">{{ product.price }} ₸</p>
-                                    <p class="text-sm text-gray-600 truncate">{{ product.title }}</p>
+                                <div class="p-3 transition-all duration-300 group-hover:bg-gray-50">
+                                    <p class="text-[20px] font-medium text-gray-900">{{ product.price }} ₸</p>
+                                    <p class="text-sm text-gray-600 truncate group-hover:text-black transition-colors duration-300">{{ product.title }}</p>
                                 </div>
                             </a>
                         </div>
@@ -57,34 +61,34 @@
                 </div>
                 
                 <!-- Pagination -->
-                <div class="flex justify-center items-center space-x-2 mt-8">
+                <div class="flex justify-center items-center space-x-2 mt-10">
                     {% if products.has_previous %}
                         <a href="?{% if query_string %}{{ query_string }}&{% endif %}page=1" 
-                        class="px-3 py-2 bg-white border rounded-md hover:bg-gray-100">
+                        class="px-3 py-2 bg-white border rounded-md hover:bg-gray-100 transition-colors duration-300 shadow-sm">
                             <i class="fas fa-angle-double-left"></i>
                         </a>
                         <a href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ products.previous_page_number }}" 
-                        class="px-3 py-2 bg-white border rounded-md hover:bg-gray-100">
+                        class="px-3 py-2 bg-white border rounded-md hover:bg-gray-100 transition-colors duration-300 shadow-sm">
                             <i class="fas fa-angle-left"></i>
                         </a>
                     {% endif %}
 
                     {% for num in products.paginator.page_range %}
                         {% if products.number == num %}
-                            <span class="px-4 py-2 bg-gray-800 text-white rounded-md">{{ num }}</span>
+                            <span class="px-4 py-2 bg-gray-800 text-white rounded-md shadow-sm transform scale-105 transition-transform duration-300">{{ num }}</span>
                         {% elif num > products.number|add:"-3" and num < products.number|add:"3" %}
                             <a href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ num }}" 
-                            class="px-4 py-2 bg-white border rounded-md hover:bg-gray-100">{{ num }}</a>
+                            class="px-4 py-2 bg-white border rounded-md hover:bg-gray-800 hover:text-white transition-all duration-300 shadow-sm">{{ num }}</a>
                         {% endif %}
                     {% endfor %}
 
                     {% if products.has_next %}
                         <a href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ products.next_page_number }}" 
-                        class="px-3 py-2 bg-white border rounded-md hover:bg-gray-100">
+                        class="px-3 py-2 bg-white border rounded-md hover:bg-gray-100 transition-colors duration-300 shadow-sm">
                             <i class="fas fa-angle-right"></i>
                         </a>
                         <a href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ products.paginator.num_pages }}" 
-                        class="px-3 py-2 bg-white border rounded-md hover:bg-gray-100">
+                        class="px-3 py-2 bg-white border rounded-md hover:bg-gray-100 transition-colors duration-300 shadow-sm">
                             <i class="fas fa-angle-double-right"></i>
                         </a>
                     {% endif %}
@@ -93,4 +97,46 @@
         </div>
     </div>
 </div>
+
+<style>
+    /* Animation classes */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideInUp {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+    }
+    
+    .animate-slide-in {
+        animation: slideInUp 0.5s ease-out forwards;
+    }
+    
+    /* Apply animations to elements */
+    .grid > div {
+        opacity: 0;
+        animation: slideInUp 0.5s ease-out forwards;
+    }
+    
+    .grid > div:nth-child(1) { animation-delay: 0.1s; }
+    .grid > div:nth-child(2) { animation-delay: 0.15s; }
+    .grid > div:nth-child(3) { animation-delay: 0.2s; }
+    .grid > div:nth-child(4) { animation-delay: 0.25s; }
+    .grid > div:nth-child(5) { animation-delay: 0.3s; }
+    .grid > div:nth-child(6) { animation-delay: 0.35s; }
+    .grid > div:nth-child(7) { animation-delay: 0.4s; }
+    .grid > div:nth-child(8) { animation-delay: 0.45s; }
+</style>
 {% endblock %}

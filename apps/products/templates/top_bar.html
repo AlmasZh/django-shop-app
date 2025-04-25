@@ -4,36 +4,30 @@
 <div>
 <header class="w-full h-[105px] relative">
 	<div class="flex justify-between items-center h-full pl-[5%] pr-[5%]">
-		<div class="text-[32px] font-{Arial}" style="font-family: Alata"><a href="{% url 'products:home' %}">Vivid</a></div>
+		<div class="text-[32px] font-{Arial} transition-transform duration-300 hover:scale-105" style="font-family: Alata"><a href="{% url 'products:home' %}" class="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-black after:left-0 after:bottom-0 after:transition-all after:duration-300 hover:after:w-full">Vivid</a></div>
 		<div class="flex flex-row items-center">
-			{% comment %} <div class="mr-10">
-				<input
-					type="search"
-					placeholder="Search..."
-					class="border-[0.8px] border-gray-300 text-[18px] pl-[5%] rounded-[10px] w-[380px] h-[40px]"
-				/>
-			</div> {% endcomment %}
 			<form method="get" action="{% url 'products:shop' %}">
-				<!-- Search input -->
-				<div class="search-container">
+				<div class="search-container relative">
 					<input type="text" 
 						   name="q" 
 						   value="{{ search_query|default:'' }}" 
 						   placeholder="Search products by title..."
-						   class="border-[0.8px] border-gray-300 text-[18px] pl-[5%] rounded-[10px] w-[380px] h-[40px]">
-					{% comment %} <button type="submit">Search</button> {% endcomment %}
+						   class="search-input border-[0.8px] border-gray-300 text-[18px] pl-[5%] rounded-[10px] w-[380px] h-[40px] focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300">
+					<button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-700 transition-colors duration-300">
+                      
+                    </button>
 				</div>
 			</form>
 
 			<div class="flex flex-row items-center gap-[50px] ml-10">
-				<a href="{% url 'products:register' %}">
+				<a href="{% url 'products:register' %}" class="relative group">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
 						viewBox="0 0 24 24"
 						stroke-width="1.5"
 						stroke="currentColor"
-						class="w-[28px] h-[28px] text-[#666666] hover:text-black items-center"
+						class="nav-icon w-[28px] h-[28px] text-[#666666] group-hover:text-black"
 					>
 						<path
 							stroke-linecap="round"
@@ -41,15 +35,16 @@
 							d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
 						/>
 					</svg>
+                    <span class="absolute -bottom-5 left-1/2 transform -translate-x-1/2 text-xs text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Account</span>
 				</a>
-				<a href="{% url 'products:personal_likes' %}">
+				<a href="{% url 'products:personal_likes' %}" class="relative group">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
 						viewBox="0 0 24 24"
 						stroke-width="1.5"
 						stroke="currentColor"
-						class="w-[28px] h-[28px] text-[#666666] hover:text-black"
+						class="nav-icon w-[28px] h-[28px] text-[#666666] group-hover:text-black"
 					>
 						<path
 							stroke-linecap="round"
@@ -57,15 +52,16 @@
 							d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
 						/>
 					</svg>
+                    <span class="absolute -bottom-5 left-1/2 transform -translate-x-1/2 text-xs text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Favorites</span>
 				</a>
-				<a href="{% url "products:personal_cart" %}">
+				<a href="{% url 'products:personal_cart' %}" class="relative group">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
 						viewBox="0 0 24 24"
 						stroke-width="1.5"
 						stroke="currentColor"
-						class="w-[28px] h-[28px] text-[#666666] hover:text-black"
+						class="nav-icon w-[28px] h-[28px] text-[#666666] group-hover:text-black"
 					>
 						<path
 							stroke-linecap="round"
@@ -73,6 +69,7 @@
 							d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
 						/>
 					</svg>
+                    <span class="absolute -bottom-5 left-1/2 transform -translate-x-1/2 text-xs text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Cart</span>
 				</a>
 			</div>
 		</div>
@@ -84,55 +81,56 @@
 	class="flex flex-row items-center w-full h-[74px] gap-10 text-[24px] pl-[5%] pr-[5%]"
 	style="font-family: Microsoft Sans Serif"
 >
-	<button class="text-[#717171] hover:text-black font modal-page">Man</button>
-	<button id="openModalButtonWoman" class="text-[#717171] hover:text-black">Woman</button>
+	<button class="text-[#717171] hover:text-black font modal-page relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-black after:left-1/2 after:bottom-0 after:transition-all after:duration-300 hover:after:w-full hover:after:left-0 transition-all duration-300">Man</button>
+	<button id="openModalButtonWoman" class="text-[#717171] hover:text-black relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-black after:left-1/2 after:bottom-0 after:transition-all after:duration-300 hover:after:w-full hover:after:left-0 transition-all duration-300">Woman</button>
 </footer>
 <div class="w-full h-[1px] bg-[#f3f2f2] m-auto"></div>
-<section id="modal" class="absolute w-full h-[500px] flex-row mt-5 gap-10 bg-white flex z-[20] hidden">
+<section id="modal" class="absolute w-full h-[500px] flex-row mt-5 gap-10 bg-white flex z-[20] hidden opacity-0 transform -translate-y-4">
 	<div class="flex flex-col gap-5 text-[20px] pl-[104px]">
-		<p>Clothes</p>
-		<p>Accessories</p>
-		<p>Shoes</p>
-		<p>Parfums</p>
+		<p class="font-medium">Categories</p>
+		<p class="hover:text-primary transition-colors duration-300 cursor-pointer">Clothes</p>
+		<p class="hover:text-primary transition-colors duration-300 cursor-pointer">Accessories</p>
+		<p class="hover:text-primary transition-colors duration-300 cursor-pointer">Shoes</p>
+		<p class="hover:text-primary transition-colors duration-300 cursor-pointer">Parfums</p>
 	</div>
 	<div class="w-[5px] h-[500px]"></div>
 	<div class="flex flex-row gap-15">
 		<div>
-			<span class="text-[20px]">Clothes</span>
-			<div class="flex flex-col text-[18px] gap-1">
-				<a href="" class="text-[#717171] hover:text-[#000000]">T-Shirts</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Polo Shirts</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Shirts</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Jeans</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Trousers</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Sweatshirts & Hoodies</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Sweaters</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Cardigans</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Joggers</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Chinos</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Turtlenecks</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Blazers & Jackets</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Tank Tops</a>
+			<span class="text-[20px] font-medium">Clothes</span>
+			<div class="flex flex-col text-[18px] gap-1 mt-2">
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">T-Shirts</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Polo Shirts</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Shirts</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Jeans</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Trousers</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Sweatshirts & Hoodies</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Sweaters</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Cardigans</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Joggers</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Chinos</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Turtlenecks</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Blazers & Jackets</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Tank Tops</a>
 			</div>
 		</div>
-		<div>
-			<span class="text-[20px]">Outerwear</span>
-			<div class="flex flex-col text-[18px] gap-1">
-				<a href="" class="text-[#717171] hover:text-[#000000]">View All</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Blazers</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Jackets</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Bombers</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Trousers</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Leather Jackets</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Denim Jackets</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Vests</a>
+		<div class="ml-10">
+			<span class="text-[20px] font-medium">Outerwear</span>
+			<div class="flex flex-col text-[18px] gap-1 mt-2">
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">View All</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Blazers</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Jackets</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Bombers</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Trousers</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Leather Jackets</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Denim Jackets</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Vests</a>
 			</div>
 		</div>
-		<div>
-			<span class="text-[20px]">Other Sections:</span>
-			<div class="flex flex-col text-[18px] gap-1">
-				<a href="" class="text-[#717171] hover:text-[#000000]">Homewear</a>
-				<a href="" class="text-[#717171] hover:text-[#000000]">Underwear</a>
+		<div class="ml-10">
+			<span class="text-[20px] font-medium">Other Sections:</span>
+			<div class="flex flex-col text-[18px] gap-1 mt-2">
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Homewear</a>
+				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Underwear</a>
 			</div>
 		</div>
 	</div>
@@ -141,5 +139,62 @@
 {% block topbar %}{% endblock  %}
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Modal functionality with improved animations
+    const modal = document.getElementById('modal');
+    const openModalButtonWoman = document.getElementById('openModalButtonWoman');
+    const modalPage = document.querySelector('.modal-page');
+    
+    let isModalOpen = false;
+    
+    function toggleModal() {
+        if (isModalOpen) {
+            modal.classList.add('hiding');
+            setTimeout(() => {
+                modal.classList.remove('hiding');
+                modal.classList.remove('showing');
+                modal.style.opacity = '0';
+                modal.style.transform = 'translateY(-4px)';
+                modal.style.display = 'none';
+                isModalOpen = false;
+            }, 300);
+        } else {
+            modal.style.display = 'flex';
+            modal.classList.add('showing');
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                modal.style.transform = 'translateY(0)';
+                isModalOpen = true;
+            }, 10);
+        }
+    }
+    
+    openModalButtonWoman.addEventListener('click', toggleModal);
+    modalPage.addEventListener('click', toggleModal);
+    
+    // Close modal when clicking outside
+    document.addEventListener('click', function(event) {
+        if (isModalOpen && !modal.contains(event.target) && 
+            event.target !== openModalButtonWoman && 
+            event.target !== modalPage) {
+            toggleModal();
+        }
+    });
+    
+    // Add hover effect to category images
+    const categoryImages = document.querySelectorAll('.category-image');
+    categoryImages.forEach(img => {
+        img.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.05)';
+            this.style.filter = 'brightness(1.1)';
+        });
+        img.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+            this.style.filter = 'brightness(1)';
+        });
+    });
+});
+</script>
 <script src="{%static 'js/header.js'%}"></script>
 {% endblock %}

@@ -3,109 +3,130 @@
 {% load static %}
 <div class="min-h-screen flex flex-col md:flex-row">
 	<!-- Left side - Image -->
-	<div class="hidden md:flex md:w-1/2 bg-muted items-center justify-center p-6">
-		<div class="max-w-md text-center">
-			<div class="mb-4 flex justify-center"></div>
-			<h1 class="text-3xl font-bold mb-4">Vivid Store</h1>
-			<p class="text-muted-foreground mb-6">
+	<div class="hidden md:flex md:w-1/2 bg-gray-100 items-center justify-center p-6 relative overflow-hidden">
+		<div class="absolute inset-0 bg-gradient-to-br from-[#DD8AB7]/30 to-[#ec85fe]/30 z-0"></div>
+		<div class="max-w-md text-center relative z-10">
+			<div class="mb-6 flex justify-center">
+				<div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-md transform transition-transform hover:scale-110 duration-300">
+					<i class="fas fa-shopping-bag text-[#DD8AB7] text-2xl"></i>
+				</div>
+			</div>
+			<h1 class="text-3xl font-bold mb-4 text-gray-800">Vivid Store</h1>
+			<p class="text-gray-600 mb-8">
 				Discover the latest trends and styles. Sign in to access your account or create a new one to start shopping.
 			</p>
-			<div class="aspect-video relative overflow-hidden rounded-xl">
+			<div class="aspect-video relative overflow-hidden rounded-xl shadow-lg transform transition-transform hover:scale-105 duration-500">
 				<img
 					src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80"
 					alt="Fashion collection"
-					class="object-cover w-full h-full"
+					class="object-cover w-full h-full transition-transform duration-10000 hover:scale-110"
 				/>
+				<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
 			</div>
 		</div>
 	</div>
 
 	<!-- Right side - Auth forms -->
-	<div class="flex-1 flex items-center justify-center p-6 bg-gray-100">
-		<div class="w-full max-w-md space-y-8">
+	<div class="flex-1 flex items-center justify-center p-6 bg-white">
+		<div class="w-full max-w-md space-y-8 animate-fade-in">
 			<div class="text-center mb-8">
-				<div class="flex justify-center md:hidden mb-4">
-					<i class="fas fa-shopping-bag text-primary text-3xl"></i>
+				<div class="flex justify-center md:hidden mb-6">
+					<div class="w-16 h-16 bg-gradient-to-r from-[#DD8AB7] to-[#ec85fe] rounded-full flex items-center justify-center shadow-md">
+						<i class="fas fa-shopping-bag text-white text-2xl"></i>
+					</div>
 				</div>
-				<h2 class="text-2xl font-bold">Welcome to Fashion Store</h2>
-				<p class="text-muted-foreground">Sign in to your account or create a new one</p>
+				<h2 class="text-2xl font-bold text-gray-800">Welcome to Vivid Store</h2>
+				<p class="text-gray-500 mt-2">Sign in to your account or create a new one</p>
 			</div>
 
 			<div class="w-full">
 				<!-- Tabs -->
-				<div class="grid w-full grid-cols-2 mb-8 rounded-md overflow-hidden">
+				<div class="grid w-full grid-cols-2 mb-8 rounded-md overflow-hidden shadow-sm">
 					<button
 						id="login-tab"
-						class="tabs-trigger active py-2 font-medium text-sm transition-colors focus:outline-none"
+						class="tabs-trigger active py-3 font-medium text-sm transition-all duration-300 focus:outline-none relative overflow-hidden"
 					>
 						Login
+						<span class="tab-indicator"></span>
 					</button>
-					<button id="register-tab" class="tabs-trigger py-2 font-medium text-sm transition-colors focus:outline-none">
+					<button 
+						id="register-tab" 
+						class="tabs-trigger py-3 font-medium text-sm transition-all duration-300 focus:outline-none relative overflow-hidden"
+					>
 						Register
+						<span class="tab-indicator"></span>
 					</button>
 				</div>
 
 				<!-- Login Form -->
-				<div id="login-content" class="tab-content active space-y-6">
+				<div id="login-content" class="tab-content active space-y-6 transition-all duration-500">
 					<form method="post" class="space-y-6">
 						{% csrf_token %}
 
 						<div class="space-y-2">
-							<label for="{{ form.email.id_for_label }}" class="block text-sm font-medium">
+							<label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700">
 								{{ form.email.label|default:"Email" }}
 							</label>
-							{{ form.email }} {% if form.email.errors %}
-							<div class="text-red-500">{% for error in form.email.errors %} {{ error }} {% endfor %}</div>
+							<div class="relative group">
+								{{ form.email }}
+								<div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#DD8AB7] to-[#ec85fe] transition-all duration-300 group-focus-within:w-full"></div>
+							</div>
+							{% if form.email.errors %}
+							<div class="text-red-500 text-sm animate-pulse">{% for error in form.email.errors %} {{ error }} {% endfor %}</div>
 							{% endif %}
 						</div>
 
 						<div class="space-y-2">
 							<div class="flex items-center justify-between">
-								<label for="{{ form.password.id_for_label }}" class="block text-sm font-medium">
+								<label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-gray-700">
 									{{ form.password.label|default:"Password" }}
 								</label>
-								{% comment %} <a href="{% url 'password_reset' %}" class="text-sm text-primary hover:underline">Forgot password?</a> {% endcomment %}
+								{% comment %} <a href="{% url 'password_reset' %}" class="text-sm text-[#DD8AB7] hover:text-[#ec85fe] transition-colors duration-300">Forgot password?</a> {% endcomment %}
 							</div>
-							<div class="relative">
+							<div class="relative group">
 								{{ form.password }}
 								<button
 									type="button"
-									class="absolute right-0 top-0 h-full px-3 py-2 text-gray-500"
+									class="absolute right-0 top-0 h-full px-3 py-2 text-gray-500 hover:text-gray-700 transition-colors duration-300"
 									onclick="togglePasswordVisibility('id_password')"
 								>
 									<i class="fas fa-eye"></i>
 								</button>
+								<div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#DD8AB7] to-[#ec85fe] transition-all duration-300 group-focus-within:w-full"></div>
 								{% if form.password.errors %}
-								<div class="text-red-500">{% for error in form.password.errors %} {{ error }} {% endfor %}</div>
+								<div class="text-red-500 text-sm animate-pulse">{% for error in form.password.errors %} {{ error }} {% endfor %}</div>
 								{% endif %}
 							</div>
 						</div>
 
 						{% if form.non_field_errors %}
-						<div class="text-red-500">{% for error in form.non_field_errors %} {{ error }} {% endfor %}</div>
+						<div class="text-red-500 text-sm p-2 bg-red-50 rounded-md animate-pulse">{% for error in form.non_field_errors %} {{ error }} {% endfor %}</div>
 						{% endif %}
 
 						<button
 							type="submit"
-							class="w-full py-2 px-4 bg-primary text-white font-medium rounded-md bg-gradient-to-r from-[#DD8AB7] to-[#ec85fe] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+							class="w-full py-3 px-4 bg-primary text-black font-medium rounded-md bg-gradient-to-r from-[#DD8AB7] to-[#ec85fe] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#DD8AB7] shadow-md hover:shadow-lg transition-all duration-300 transform hover:translate-y-[-2px]"
 						>
 							Sign In
 						</button>
 					</form>
 				</div>
 				<!-- Register Form -->
-				<div id="register-content" class="tab-content space-y-6">
+				<div id="register-content" class="tab-content space-y-6 transition-all duration-500 opacity-0">
 					<form method="post" class="space-y-6">
 						{% csrf_token %}
 						
 						<div class="grid grid-cols-2 gap-4">
 							<div class="space-y-2">
-								<label for="{{ register_form.first_name.id_for_label }}" class="block text-sm font-medium">
+								<label for="{{ register_form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700">
 									First name
 								</label>
-								{{ register_form.first_name }}
+								<div class="relative group">
+									{{ register_form.first_name }}
+									<div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#DD8AB7] to-[#ec85fe] transition-all duration-300 group-focus-within:w-full"></div>
+								</div>
 								{% if register_form.first_name.errors %}
-									<div class="text-red-500 text-sm">
+									<div class="text-red-500 text-sm animate-pulse">
 										{% for error in register_form.first_name.errors %}
 											{{ error }}
 										{% endfor %}
@@ -113,12 +134,15 @@
 								{% endif %}
 							</div>
 							<div class="space-y-2">
-								<label for="{{ register_form.last_name.id_for_label }}" class="block text-sm font-medium">
+								<label for="{{ register_form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700">
 									Last name
 								</label>
-								{{ register_form.last_name }}
+								<div class="relative group">
+									{{ register_form.last_name }}
+									<div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#DD8AB7] to-[#ec85fe] transition-all duration-300 group-focus-within:w-full"></div>
+								</div>
 								{% if register_form.last_name.errors %}
-									<div class="text-red-500 text-sm">
+									<div class="text-red-500 text-sm animate-pulse">
 										{% for error in register_form.last_name.errors %}
 											{{ error }}
 										{% endfor %}
@@ -128,12 +152,15 @@
 						</div>
 				
 						<div class="space-y-2">
-							<label for="{{ register_form.email.id_for_label }}" class="block text-sm font-medium">
+							<label for="{{ register_form.email.id_for_label }}" class="block text-sm font-medium text-gray-700">
 								Email
 							</label>
-							{{ register_form.email }}
+							<div class="relative group">
+								{{ register_form.email }}
+								<div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#DD8AB7] to-[#ec85fe] transition-all duration-300 group-focus-within:w-full"></div>
+							</div>
 							{% if register_form.email.errors %}
-								<div class="text-red-500 text-sm">
+								<div class="text-red-500 text-sm animate-pulse">
 									{% for error in register_form.email.errors %}
 										{{ error }}
 									{% endfor %}
@@ -142,20 +169,21 @@
 						</div>
 				
 						<div class="space-y-2">
-							<label for="{{ register_form.password.id_for_label }}" class="block text-sm font-medium">
+							<label for="{{ register_form.password.id_for_label }}" class="block text-sm font-medium text-gray-700">
 								Password
 							</label>
-							<div class="relative">
+							<div class="relative group">
 								{{ register_form.password }}
 								<button
 									type="button"
-									class="absolute right-0 top-0 h-full px-3 py-2 text-gray-500"
+									class="absolute right-0 top-0 h-full px-3 py-2 text-gray-500 hover:text-gray-700 transition-colors duration-300"
 									onclick="togglePasswordVisibility('id_password')"
 								>
 									<i class="fas fa-eye"></i>
 								</button>
+								<div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#DD8AB7] to-[#ec85fe] transition-all duration-300 group-focus-within:w-full"></div>
 								{% if register_form.password.errors %}
-									<div class="text-red-500 text-sm">
+									<div class="text-red-500 text-sm animate-pulse">
 										{% for error in register_form.password.errors %}
 											{{ error }}
 										{% endfor %}
@@ -165,20 +193,21 @@
 						</div>
 				
 						<div class="space-y-2">
-							<label for="{{ register_form.confirm_password.id_for_label }}" class="block text-sm font-medium">
+							<label for="{{ register_form.confirm_password.id_for_label }}" class="block text-sm font-medium text-gray-700">
 								Confirm Password
 							</label>
-							<div class="relative">
+							<div class="relative group">
 								{{ register_form.confirm_password }}
 								<button
 									type="button"
-									class="absolute right-0 top-0 h-full px-3 py-2 text-gray-500"
+									class="absolute right-0 top-0 h-full px-3 py-2 text-gray-500 hover:text-gray-700 transition-colors duration-300"
 									onclick="togglePasswordVisibility('id_confirm_password')"
 								>
 									<i class="fas fa-eye"></i>
 								</button>
+								<div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#DD8AB7] to-[#ec85fe] transition-all duration-300 group-focus-within:w-full"></div>
 								{% if register_form.confirm_password.errors %}
-									<div class="text-red-500 text-sm">
+									<div class="text-red-500 text-sm animate-pulse">
 										{% for error in register_form.confirm_password.errors %}
 											{{ error }}
 										{% endfor %}
@@ -188,7 +217,7 @@
 						</div>
 				
 						{% if register_form.non_field_errors %}
-							<div class="text-red-500 text-sm">
+							<div class="text-red-500 text-sm p-2 bg-red-50 rounded-md animate-pulse">
 								{% for error in register_form.non_field_errors %}
 									{{ error }}
 								{% endfor %}
@@ -197,37 +226,144 @@
 				
 						<button
 							type="submit"
-							class="w-full py-2 px-4 bg-primary text-white font-medium rounded-md bg-gradient-to-r from-[#DD8AB7] to-[#ec85fe] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+							class="w-full py-3 px-4 bg-primary text-black font-medium rounded-md bg-gradient-to-r from-[#DD8AB7] to-[#ec85fe] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#DD8AB7] shadow-md hover:shadow-lg transition-all duration-300 transform hover:translate-y-[-2px]"
 						>
 							Create Account
 						</button>
 					</form>
 				</div>
-				<div class="flex justify-center mt-5 text-gray-300">
-					<a href="{% url 'products:home' %}">exit</a>
+				<div class="flex justify-center mt-8 text-gray-500">
+					<a href="{% url 'products:home' %}" class="text-sm hover:text-[#DD8AB7] transition-colors duration-300 flex items-center gap-1">
+						<i class="fas fa-arrow-left text-xs"></i> Back to home
+					</a>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
+<style>
+	/* Animation classes */
+	@keyframes fadeIn {
+		from { opacity: 0; }
+		to { opacity: 1; }
+	}
+	
+	.animate-fade-in {
+		animation: fadeIn 0.8s ease-out forwards;
+	}
+	
+	/* Tab styling */
+	.tabs-trigger {
+		background-color: #f3f4f6;
+		color: #6b7280;
+		position: relative;
+	}
+	
+	.tabs-trigger.active {
+		background-color: white;
+		color: #111827;
+		font-weight: 500;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	}
+	
+	.tab-indicator {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		height: 3px;
+		width: 0;
+		background: linear-gradient(to right, #DD8AB7, #ec85fe);
+		transition: width 0.3s ease;
+	}
+	
+	.tabs-trigger.active .tab-indicator {
+		width: 100%;
+	}
+	
+	.tab-content {
+		display: none;
+		opacity: 0;
+		transform: translateY(10px);
+		transition: all 0.5s ease;
+	}
+	
+	.tab-content.active {
+		display: block;
+		opacity: 1;
+		transform: translateY(0);
+	}
+	
+	/* Form styling */
+	input {
+		width: 100%;
+		padding: 0.75rem;
+		border: 1px solid #e5e7eb;
+		border-radius: 0.375rem;
+		transition: all 0.3s ease;
+	}
+	
+	input:focus {
+		outline: none;
+		border-color: #DD8AB7;
+		box-shadow: 0 0 0 2px rgba(221, 138, 183, 0.1);
+	}
+</style>
+
 <script>
-	// Tab switching functionality
-	document.getElementById("login-tab").addEventListener("click", function () {
-		document.getElementById("login-tab").classList.add("active");
-		document.getElementById("register-tab").classList.remove("active");
-		document.getElementById("login-content").classList.add("active");
-		document.getElementById("register-content").classList.remove("active");
+	// Tab switching functionality with animation
+	document.addEventListener('DOMContentLoaded', function() {
+		const loginTab = document.getElementById("login-tab");
+		const registerTab = document.getElementById("register-tab");
+		const loginContent = document.getElementById("login-content");
+		const registerContent = document.getElementById("register-content");
+		
+		loginTab.addEventListener("click", function () {
+			// Update tab states
+			loginTab.classList.add("active");
+			registerTab.classList.remove("active");
+			
+			// Fade out register content
+			registerContent.style.opacity = "0";
+			registerContent.style.transform = "translateY(10px)";
+			
+			// After fade out, hide register and show login
+			setTimeout(() => {
+				registerContent.classList.remove("active");
+				loginContent.classList.add("active");
+				
+				// Fade in login content
+				setTimeout(() => {
+					loginContent.style.opacity = "1";
+					loginContent.style.transform = "translateY(0)";
+				}, 50);
+			}, 300);
+		});
+
+		registerTab.addEventListener("click", function () {
+			// Update tab states
+			registerTab.classList.add("active");
+			loginTab.classList.remove("active");
+			
+			// Fade out login content
+			loginContent.style.opacity = "0";
+			loginContent.style.transform = "translateY(10px)";
+			
+			// After fade out, hide login and show register
+			setTimeout(() => {
+				loginContent.classList.remove("active");
+				registerContent.classList.add("active");
+				
+				// Fade in register content
+				setTimeout(() => {
+					registerContent.style.opacity = "1";
+					registerContent.style.transform = "translateY(0)";
+				}, 50);
+			}, 300);
+		});
 	});
 
-	document.getElementById("register-tab").addEventListener("click", function () {
-		document.getElementById("register-tab").classList.add("active");
-		document.getElementById("login-tab").classList.remove("active");
-		document.getElementById("register-content").classList.add("active");
-		document.getElementById("login-content").classList.remove("active");
-	});
-
-	// Password visibility toggle
+	// Password visibility toggle with animation
 	function togglePasswordVisibility(inputId) {
 		const input = document.getElementById(inputId);
 		const button = input.nextElementSibling;
@@ -237,18 +373,23 @@
 			input.type = "text";
 			icon.classList.remove("fa-eye");
 			icon.classList.add("fa-eye-slash");
+			
+			// Add subtle animation
+			button.classList.add("animate-pulse");
+			setTimeout(() => {
+				button.classList.remove("animate-pulse");
+			}, 300);
 		} else {
 			input.type = "password";
 			icon.classList.remove("fa-eye-slash");
 			icon.classList.add("fa-eye");
+			
+			// Add subtle animation
+			button.classList.add("animate-pulse");
+			setTimeout(() => {
+				button.classList.remove("animate-pulse");
+			}, 300);
 		}
 	}
 </script>
-<script>
-	function togglePasswordVisibility(inputId) {
-		const passwordInput = document.getElementById(inputId);
-		passwordInput.type = passwordInput.type === "password" ? "text" : "password";
-	}
-</script>
-
 {% endblock %}
