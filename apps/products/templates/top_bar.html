@@ -98,19 +98,11 @@
 		<div>
 			<span class="text-[20px] font-medium">Clothes</span>
 			<div class="flex flex-col text-[18px] gap-1 mt-2">
-				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">T-Shirts</a>
-				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Polo Shirts</a>
-				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Shirts</a>
-				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Jeans</a>
-				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Trousers</a>
-				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Sweatshirts & Hoodies</a>
-				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Sweaters</a>
-				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Cardigans</a>
-				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Joggers</a>
-				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Chinos</a>
-				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Turtlenecks</a>
-				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Blazers & Jackets</a>
-				<a href="" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">Tank Tops</a>
+				{% for category in categories %}
+				<a href="/shop/?category={{ category.id }}" class="text-[#717171] hover:text-[#000000] transition-colors duration-300 hover:translate-x-1 transform inline-block">
+					{{ category.title }}
+				</a>
+				{% endfor %}
 			</div>
 		</div>
 		<div class="ml-10">

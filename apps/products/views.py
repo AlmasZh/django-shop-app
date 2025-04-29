@@ -15,7 +15,8 @@ from .models import Product, ProductImage, Category, Review
 # from apps import QuantityForm
 
 def home(request):
-    return render(request, 'products/index.html')
+    product_categories = Category.objects.all()
+    return render(request, 'products/index.html', {'categories': product_categories})
 
 def manclothes(request):
     return render(request, 'products/Manclothes.html')
