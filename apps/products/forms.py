@@ -81,6 +81,12 @@ class ProductForm(forms.ModelForm):
         ('xl', 'XL'),
         ('xxl', 'XXL'),
     ]
+    GENDER_CHOICES = [
+        ('men', 'Men'),
+        ('women', 'Women'),
+        ('unisex', 'Unisex'),
+    ]
+
 
     title = forms.CharField(
         max_length=200,
@@ -136,9 +142,17 @@ class ProductForm(forms.ModelForm):
         })
     )
 
+    gender = forms.ChoiceField(
+        required=False,
+        choices=GENDER_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+        })
+    )
+
     class Meta:
         model = Product
-        fields = ['title', 'price', 'category', 'color', 'size', 'description']
+        fields = ['title', 'price', 'category', 'color', 'size', 'description', 'gender']
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
