@@ -131,10 +131,22 @@ class SellerApplicationForm(forms.ModelForm):
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = user  # Store the user if needed
+
+    ROLE_CHOICES = [
+        ('manager', 'Manager'),
+        ('courier', 'Courier'),
+    ]
+    
+    desired_role = forms.ChoiceField(
+        choices=ROLE_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+        })
+    )
     
     class Meta:
         model = SellerApplication
-        fields = ['description']
+        fields = ['description', 'desired_role']
         widgets = {
             'description': forms.Textarea(attrs={
                 'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[120px]',

@@ -235,16 +235,6 @@ def product_list(request):
     return render(request, 'products/product_list.html', context)
 
 
-# def personal_orders(request):
-#     orders = Order.objects.filter(user=request.user).order_by('-created')
-#     return render(request, 'products/personal_orders.html', {'orders': orders})
-# def personal_orders(request):
-#     orders = Order.objects.filter(user=request.user)  # Adjust query as needed
-#     status_sequence = ['pending', 'processing', 'shipped', 'delivered']
-#     return render(request, 'products/personal_orders.html', {
-#         'orders': orders,
-#         'status_sequence': status_sequence,
-#     })
 
 def personal_orders(request):
     if request.user.is_superuser or request.user.is_manager:

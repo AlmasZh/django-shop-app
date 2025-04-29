@@ -29,6 +29,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=50, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_courier = models.BooleanField(default=False)
     is_manager = models.BooleanField(default=False)
     likes = models.ManyToManyField(Product, blank=True, related_name='likes')
 
@@ -44,6 +45,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class SellerApplication(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     description = models.TextField()
+    
     status = models.CharField(
         max_length=20,
         choices=[('pending', 'Pending'), ('approved', 'Approved'), ('rejected', 'Rejected')],

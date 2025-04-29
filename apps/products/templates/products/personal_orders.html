@@ -24,6 +24,9 @@
                     <p class="mt-2 text-sm font-medium text-gray-700">{{ step.display }}</p>
                     {% if step.timestamp %}
                         <p class="text-xs text-gray-500">{{ step.timestamp|date:"d.m.Y H:i" }}</p>
+                    {% comment %} {% if order.delivery_status == "shipped" %}
+                        <p>Delivered by {{ order. }}</p>
+                    {% endif %} {% endcomment %}
                     {% endif %}
                 </div>
             {% endfor %}
@@ -37,7 +40,7 @@
             {% endif %}
 
             <!-- Manager and Admin Buttons -->
-            {% if request.user.is_manager or request.user.is_staff %}
+            {% if request.user.is_courier or request.user.is_staff %}
                 {% if order.delivery_status == 'processing' %}
                     <form method="post" action="{% url 'orders:update_order_status' order.id %}" class="inline">
                         {% csrf_token %}

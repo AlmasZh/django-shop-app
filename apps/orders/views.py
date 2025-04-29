@@ -15,7 +15,7 @@ def update_order_status(request, order_id):
         # Manager actions
         print('User:', request.user)
         print('Order:', hasattr(request.user, 'is_manager'))
-        if (hasattr(request.user, 'is_manager') and request.user.is_manager) or  request.user.is_superuser: 
+        if (hasattr(request.user, 'is_courier') and request.user.is_courier) or  request.user.is_superuser: 
             if order.delivery_status == 'processing' and new_status == 'shipped':
                 order.delivery_status = new_status
                 OrderStatusHistory.objects.create(order=order, status=new_status)
