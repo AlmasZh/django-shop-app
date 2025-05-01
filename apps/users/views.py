@@ -49,12 +49,12 @@ def seller_application(request):
         seller_app = SellerApplication.objects.filter(user=request.user, status='PENDING').first()
         if form.is_valid():
             desired_role = form.cleaned_data.get('desired_role')
-            if desired_role == 'courier':
-                request.user.is_courier = True
-                request.user.save()
-            elif desired_role == 'manager':
-                request.user.is_manager = True
-                request.user.save()
+            # if desired_role == 'courier':
+            #     request.user.is_courier = True
+            #     request.user.save()
+            # elif desired_role == 'manager':
+            #     request.user.is_manager = True
+            #     request.user.save()
             application = form.save(commit=False)
             if request.user.is_manager or request.user.is_staff:
                 messages.error(request, 'You are already a seller!')

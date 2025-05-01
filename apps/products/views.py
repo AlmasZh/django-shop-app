@@ -238,7 +238,7 @@ def product_list(request):
 
 
 def personal_orders(request):
-    if request.user.is_superuser or request.user.is_manager:
+    if request.user.is_superuser or request.user.is_courier:
         products = Product.objects.filter(user=request.user)
         orders = Order.objects.all().prefetch_related('status_history')
     else:
@@ -356,15 +356,19 @@ def personal_moderation(request):
 
 @login_required
 @user_passes_test(is_admin)
-def update_application_status(request, application_id, action):
+def update_application_status(request, application_id, action, desired_role):
     if request.method != 'POST':
         try:
             application = SellerApplication.objects.get(id=application_id)
             user = application.user
             if action == 'approve':
                 application.status = 'approved'
-                user.is_manager = True
-                user.save()
+                if desired_role == 'courier':
+                    user.is_courier = True
+                    user.save()
+                elif desired_role == 'manager':
+                    user.is_manager = True
+                    user.save()
             elif action == 'reject':
                 application.status = 'rejected'
             else:

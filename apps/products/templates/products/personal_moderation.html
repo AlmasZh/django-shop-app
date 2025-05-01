@@ -46,12 +46,12 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
                                 </button>
                                 {% if application.status == 'pending' %}
-                                <a href="{% url "products:update_application_status" application.id 'approve' %}">
+                                <a href="{% url "products:update_application_status" application.id 'approve' application.desired_role %}">
                                     <button class="p-1 hover:bg-green-50 rounded-full text-green-600 approve-application" data-id="{{ application.id }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                                     </button>
                                 </a>
-                                <a href="{% url "products:update_application_status" application.id 'reject' %}">
+                                <a href="{% url "products:update_application_status" application.id 'reject' application.desired_role %}">
                                     <button class="p-1 hover:bg-red-50 rounded-full text-red-600 reject-application" data-id="{{ application.id }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                                     </button>
@@ -60,72 +60,6 @@
                             </div>
                         </td>
                     </tr>
-
-
-                    <!-- Application Modal -->
-                    <div id="application-modal-{{application.id}}" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden modal opacity-0 transition-opacity duration-300">
-                        <div class="bg-white rounded-lg shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
-                            <div class="p-6">
-                                <div class="flex justify-between items-start mb-4">
-                                    <h3 class="text-lg font-semibold">Application Details</h3>
-                                    <button class="text-gray-500 hover:text-gray-700 close-modal" data-id="{{ application.id }}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M18 6 6 18"></path>
-                                            <path d="m6 6 12 12"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class="space-y-4">
-                                    <div class="flex flex-col items-center gap-2 mb-4">
-                                        <div class="w-20 h-20 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl font-medium">
-                                            {{ application.user.first_name|first }}{{ application.user.last_name|first }}
-                                        </div>
-                                        <h3 class="text-xl font-semibold">{{application.user.first_name}} {{application.user.last_name}}</h3>
-                                        <span class="px-2 py-1 text-xs font-medium rounded-full 
-                                            {% if application.status == 'rejected' %}bg-red-100 text-red-800{% endif %}
-                                            {% if application.status == 'pending' %}bg-yellow-100 text-yellow-800{% endif %}
-                                            {% if application.status == 'approved' %}bg-green-100 text-green-800{% endif %}">
-                                            {{ application.status|capfirst }}
-                                        </span>
-                                    </div>
-                            
-                                    <div class="space-y-2">
-                                        <label class="text-sm font-medium">Email</label>
-                                        <div class="p-2 bg-gray-100 rounded-md">{{application.user.email}}</div>
-                                    </div>
-                                    
-                                    <div class="space-y-2">
-                                        <label class="text-sm font-medium">Phone</label>
-                                        <div class="p-2 bg-gray-100 rounded-md">{{application.user.phone_number}}</div>
-                                    </div>
-                                    
-                                    <div class="space-y-2">
-                                        <label class="text-sm font-medium">Store Description</label>
-                                        <div class="p-2 bg-gray-100 rounded-md whitespace-pre-wrap">
-                                            {{application.description}}
-                                        </div>
-                                    </div>
-                            
-                                </div>
-                                <div class="flex flex-col sm:flex-row gap-2 mt-6">
-                                    {% if application.status == 'pending' %}
-                                    <a href="{% url 'products:update_application_status' application.id 'approve' %}" class="w-full">
-                                        <button class="w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded-md font-medium">
-                                            Approve
-                                        </button>
-                                    </a>
-                                    <a href="{% url 'products:update_application_status' application.id 'reject' %}" class="w-full">
-                                        <button class="w-full py-2 px-4 bg-red-600 hover:bg-red-700 text-white rounded-md font-medium">
-                                            Reject
-                                        </button>
-                                    </a>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Application Modal -->
-
                     {% empty %}
                     <tr>
                         <td colspan="5" class="p-4 text-center text-gray-500">No applications found</td>
@@ -135,8 +69,79 @@
             </table>
         </div>
     </div>
-
 </div>
+
+{% for application in applications %}
+<!-- Application Modal -->
+<div id="application-modal-{{application.id}}" class="fixed inset-0 mt-[-200px] bg-black/50 flex items-center justify-center z-50 hidden modal opacity-0 transition-opacity duration-300">
+    <div class="bg-white rounded-lg shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-start mb-4">
+                <h3 class="text-lg font-semibold">Application Details</h3>
+                <button class="text-gray-500 hover:text-gray-700 close-modal" data-id="{{ application.id }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18"></path>
+                        <path d="m6 6 12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div class="flex flex-col items-center gap-2 mb-4">
+                    <div class="w-20 h-20 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl font-medium">
+                        {{ application.user.first_name|first }}{{ application.user.last_name|first }}
+                    </div>
+                    <h3 class="text-xl font-semibold">{{application.user.first_name}} {{application.user.last_name}}</h3>
+                    <span class="px-2 py-1 text-xs font-medium rounded-full 
+                        {% if application.status == 'rejected' %}bg-red-100 text-red-800{% endif %}
+                        {% if application.status == 'pending' %}bg-yellow-100 text-yellow-800{% endif %}
+                        {% if application.status == 'approved' %}bg-green-100 text-green-800{% endif %}">
+                        {{ application.status|capfirst }}
+                    </span>
+                </div>
+        
+                <div class="space-y-2">
+                    <label class="text-sm font-medium">Email</label>
+                    <div class="p-2 bg-gray-100 rounded-md">{{application.user.email}}</div>
+                </div>
+                
+                <div class="space-y-2">
+                    <label class="text-sm font-medium">Desired role</label>
+                    <div class="p-2 bg-gray-100 rounded-md">{{application.desired_role}}</div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-sm font-medium">Phone</label>
+                    <div class="p-2 bg-gray-100 rounded-md">{{application.user.phone_number}}</div>
+                </div>
+                
+                <div class="space-y-2">
+                    <label class="text-sm font-medium">Store Description</label>
+                    <div class="bg-gray-100 rounded-md">
+                        {{application.description}}
+                    </div>
+                </div>
+        
+            </div>
+            <div class="flex flex-col sm:flex-row gap-2 mt-6">
+                {% if application.status == 'pending' %}
+                <a href="{% url 'products:update_application_status' application.id 'approve' application.desired_role %}" class="w-full">
+                    <button class="w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded-md font-medium">
+                        Approve
+                    </button>
+                </a>
+                <a href="{% url 'products:update_application_status' application.id 'reject' application.desired_role %}" class="w-full">
+                    <button class="w-full py-2 px-4 bg-red-600 hover:bg-red-700 text-white rounded-md font-medium">
+                        Reject
+                    </button>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Application Modal -->
+{% endfor %}
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

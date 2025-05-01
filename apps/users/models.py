@@ -45,6 +45,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class SellerApplication(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     description = models.TextField()
+    desired_role = models.CharField(
+        max_length=20,
+        choices=[('courier', 'Courier'), ('manager', 'Manager')],
+        default='courier'
+    )
     
     status = models.CharField(
         max_length=20,
