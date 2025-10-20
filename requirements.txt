@@ -2,11 +2,9 @@ Django
 psycopg2-binary
 pytest
 Pillow
-djangorestframework
 pytest-django
 django-environ
 faker
-drf-yasg
 pluggy
 requests
 stripe
