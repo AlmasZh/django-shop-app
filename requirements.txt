@@ -1,6 +1,6 @@
 Django
-psycopg2-binary
 pytest
+psycopg
 Pillow
 pytest-django
 django-environ
