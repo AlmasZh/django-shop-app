@@ -4,9 +4,9 @@
 {% block topbar %}
 <section class="w-full max-w-full overflow-hidden h-[500px] flex justify-center items-center mt-10 z-[10] relative">
 	<div class="flex gap-4 slider-container">
-	  <div class="w-[1300px] h-[500px] bg-gradient-to-r from-[#BFD7FD] to-[#DD8AB7] flex justify-center items-center slide"><a href="Manclothes.html"><img src="{% static 'Photo/photo_for_slider.png' %}" alt="Photo" class="transform transition-transform duration-700 hover:scale-105"></a></div>
-	  <div class="w-[1300px] h-[500px] bg-gradient-to-r from-[#BFD7FD] to-[#DD8AB7] flex justify-center items-center slide"><img src="{% static 'Photo/photo_for_slider_2.png' %}" alt="Photo" class="transform transition-transform duration-700 hover:scale-105"></div>
-	  <div class="w-[1300px] h-[500px] bg-gradient-to-r from-[#BFD7FD] to-[#DD8AB7] flex justify-center items-center slide"><img src="{% static 'Photo/Без имени-2.png' %}" alt="Photo" class="transform transition-transform duration-700 hover:scale-105"></div>
+	  <div class="w-[1300px] h-[500px] bg-gradient-to-r from-[#BFD7FD] to-[#DD8AB7] flex justify-center items-center slide"><a href="Manclothes.html"><img src="{% static 'images/images_for_slider.png' %}" alt="images" class="transform transition-transform duration-700 hover:scale-105"></a></div>
+	  <div class="w-[1300px] h-[500px] bg-gradient-to-r from-[#BFD7FD] to-[#DD8AB7] flex justify-center items-center slide"><img src="{% static 'images/images_for_slider_2.png' %}" alt="images" class="transform transition-transform duration-700 hover:scale-105"></div>
+	  <div class="w-[1300px] h-[500px] bg-gradient-to-r from-[#BFD7FD] to-[#DD8AB7] flex justify-center items-center slide"><img src="{% static 'images/Без имени-2.png' %}" alt="images" class="transform transition-transform duration-700 hover:scale-105"></div>
 	</div>
 	<div id="button" class="absolute flex flex-row justify-between items-center w-full" style="padding: 7% 7%;">
 	  <button id="prevBtn" class="w-[70px] h-[70px] bg-white rounded-[50px] flex justify-center items-center hover:bg-gray-200 transition-all duration-300 shadow-xl hover-scale"><svg class="w-[25px] h-[25px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg></button>
@@ -26,7 +26,7 @@
     <div class="flex flex-row w-full justify-between gap-2.5" >
       <div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden group">
             <a href="{% url 'products:shop' %}?category" class="relative w-full h-full overflow-hidden">
-                <img src="{%static 'Photo/Screenshot_7.png'%}" class="w-full h-full category-image transition-all duration-500 group-hover:scale-110" alt="T-shirt">
+                <img src="{%static 'images/Screenshot_7.png'%}" class="w-full h-full category-image transition-all duration-500 group-hover:scale-110" alt="T-shirt">
                 <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <span class="text-white text-xl font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">View Category</span>
                 </div>
@@ -34,7 +34,7 @@
           </div>
           <div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden group" >
             <a href="{% url 'products:shop' %}" class="relative w-full h-full overflow-hidden">
-                <img src="{%static 'Photo/Screenshot_1 copy.png'%}" class="w-full h-full category-image transition-all duration-500 group-hover:scale-110" alt="accessories">
+                <img src="{%static 'images/Screenshot_1 copy.png'%}" class="w-full h-full category-image transition-all duration-500 group-hover:scale-110" alt="accessories">
                 <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <span class="text-white text-xl font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">View Category</span>
                 </div>
@@ -42,7 +42,7 @@
           </div>
           <div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden group">
             <a href="{% url 'products:shop' %}" class="relative w-full h-full overflow-hidden">
-                <img src="{%static 'Photo/Screenshot_2.png'%}" class="w-full h-full category-image transition-all duration-500 group-hover:scale-110" alt="Shose">
+                <img src="{%static 'images/Screenshot_2.png'%}" class="w-full h-full category-image transition-all duration-500 group-hover:scale-110" alt="Shose">
                 <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <span class="text-white text-xl font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">View Category</span>
                 </div>
@@ -50,7 +50,7 @@
           </div>
           <div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden group">
             <a href="" class="relative w-full h-full overflow-hidden">
-                <img src="{%static 'Photo/Screenshot_3.png'%}" class="w-full h-full category-image transition-all duration-500 group-hover:scale-110" alt="Parfume">
+                <img src="{%static 'images/Screenshot_3.png'%}" class="w-full h-full category-image transition-all duration-500 group-hover:scale-110" alt="Parfume">
                 <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <span class="text-white text-xl font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">View Category</span>
                 </div>
@@ -60,7 +60,7 @@
     <div class="flex flex-row w-full justify-between gap-2.5" >
       <div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden group">
           <a href="{% url 'products:shop' %}" class="relative w-full h-full overflow-hidden">
-              <img src="{%static 'Photo/Screenshot_4.png'%}" class="w-full h-full category-image transition-all duration-500 group-hover:scale-110" alt="T-shirt">
+              <img src="{%static 'images/Screenshot_4.png'%}" class="w-full h-full category-image transition-all duration-500 group-hover:scale-110" alt="T-shirt">
               <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <span class="text-white text-xl font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">View Category</span>
               </div>
@@ -68,7 +68,7 @@
         </div>
         <div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden group" >
           <a href="{% url 'products:shop' %}" class="relative w-full h-full overflow-hidden">
-              <img src="{%static 'Photo/Screenshot_5.png'%}" class="w-full h-full category-image transition-all duration-500 group-hover:scale-110" alt="accessories">
+              <img src="{%static 'images/Screenshot_5.png'%}" class="w-full h-full category-image transition-all duration-500 group-hover:scale-110" alt="accessories">
               <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <span class="text-white text-xl font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">View Category</span>
               </div>
@@ -76,7 +76,7 @@
         </div>
         <div class="flex flex-col justify-center items-center w-[310px] h-[310px] bg-black overflow-hidden group">
           <a href="{% url 'products:shop' %}" class="relative w-full h-full overflow-hidden">
-              <img src="{%static 'Photo/Screenshot_6.png'%}" class="w-full h-full category-image transition-all duration-500 group-hover:scale-110" alt="Shose">
+              <img src="{%static 'images/Screenshot_6.png'%}" class="w-full h-full category-image transition-all duration-500 group-hover:scale-110" alt="Shose">
               <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <span class="text-white text-xl font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">View Category</span>
               </div>
@@ -91,7 +91,7 @@
 <section class="w-[84%] h-[180px] bg-black m-auto flex items-center overflow-hidden mb-10 relative group">
   <a href="{% url 'products:shop' %}" class="block w-full h-full">
     <div class="relative w-full h-full overflow-hidden"> 
-      <img class="relative top-20 w-full scale-110 blur-[1px] transition-all duration-700 group-hover:blur-none group-hover:scale-105" src="{%static 'Photo\jaanus-jagomagi-FFUPFHcp2YU-unsplash.jpg'%}" alt="">
+      <img class="relative top-20 w-full scale-110 blur-[1px] transition-all duration-700 group-hover:blur-none group-hover:scale-105" src="{%static 'images\jaanus-jagomagi-FFUPFHcp2YU-unsplash.jpg'%}" alt="">
     </div>
     <div class="absolute flex flex-col pl-[3%] text-[25px] text-white font-bold top-1/2 transform -translate-y-1/2">
       <span class="transform transition-transform duration-500 group-hover:translate-x-2">Sale of collections</span>
